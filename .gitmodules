@@ -1,0 +1,6 @@
+[submodule "externals/jquery"]
+	path = externals/jquery
+	url = git://github.com/jquery/jquery.git
+[submodule "externals/blockly"]
+	path = externals/blockly
+	url = https://github.com/google/blockly.git
