@@ -1,0 +1,72 @@
+<xml xmlns="http://www.w3.org/1999/xhtml"><block type="factory_base" id="64:1!iE;iUNXe*y^}}/D" deletable="false" movable="false" x="0" y="0">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">command_selectslot</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="Dj,{I2Uf$)C5A1AkmY,a">
+        <field name="INPUTNAME">Inventory Slot</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="%2GJB3o%x+;vmjsExVKf">
+            <field name="TEXT">Go to Inventory Slot</field>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id="]rHlnvomj@OekR-RxL?q"></shadow>
+          <block type="type_number" id="s/aqzP=}#,NVj%~#:3`P"></block>
+        </value>
+      </block>
+    </statement>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="/H$GHNax2/^h+@AUiTgO"></shadow>
+      <block type="type_null" id="gQhFxvD`4Lyz+11PX(Ud"></block>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="ZHKTEO#}iwISI/_$_]9i"></shadow>
+      <block type="type_null" id="Aeyp(7IAMY@!%DZ$.#xg"></block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="DWfa+L,TTs.ksCtAG?}0">
+        <mutation colour="#a5745b"></mutation>
+        <field name="HUE">20</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="A!nLuTb#*}F-OVSxX-gB" deletable="false" movable="false" x="0" y="0">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">select_slot1</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="nS)0iRZ$c{*P%yYIU(pI">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="%zyg4=IWy(eX,y*k~V]V">
+            <field name="TEXT">Select cobblestone</field>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="u%tTPn[MvX^g4fjjx`qc" deletable="false" movable="false">
+        <field name="TEXT">Select cobblestone from your inventory</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="o6`mw_!u=L-GG`s6jr0J" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="4@8SxsKTMFQ7NkEGv@zn"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="~O9BQr/VLY{#t3O?)TbD"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="{BCs7:BF`{6-D_,Ee%Cu">
+        <mutation colour="#5b67a5"></mutation>
+        <field name="HUE">230</field>
+      </block>
+    </value>
+  </block></xml>
