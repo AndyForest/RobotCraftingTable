@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Blockly Demo: Resizable Blockly (Part 2)</title>
+  <script src="../externals/blockly/blockly_compressed.js"></script>
+  <script src="../externals/blockly/blocks_compressed.js"></script>
+  <script src="../externals/blockly/javascript_compressed.js"></script>
+  <script src="../externals/blockly/msg/js/en.js"></script>
+  <script src="./js/craftingBlockDefinitions.js"></script>
+  <script src="./js/craftingBlockGenerators.js"></script>
+  <script src="./js/workspace.js"></script>
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    body {
+      background-color: #fff;
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+    h1 {
+      font-weight: normal;
+      font-size: 140%;
+    }
+    table {
+      height: 100%;
+      width: 100%;
+    }
+    #blocklyArea {
+      height: 99%;
+    }
+  </style>
+</head>
+<body>
+
+  <table>
+    <tr>
+      <td>
+
+
+        <p>
+          <button onclick="showCode()">Show JavaScript</button>
+          <button onclick="runCode()">Run JavaScript</button>
+          <a href="#" id="sendInstruction">test event</a>
+        </p>
+
+      </td>
+    </tr>
+    <tr>
+      <td id="blocklyArea">
+      </td>
+    </tr>
+  </table>
+
+  <div id="blocklyDiv" style="position: absolute"></div>
+
+  <xml xmlns="http://www.w3.org/1999/xhtml" id="toolbox" style="display: none;">
+    <category name="Basic Crafting">
+      <block type="select_slot">
+        <field name="blockMaterial">1</field>
+      </block>
+      <block type="place_crafting">
+        <field name="CraftingSlot">1</field>
+      </block>
+    </category>
+    <category name="Mining">
+      <block type="mine_blocks"></block>
+      <block type="check_inventory">
+        <field name="blockMaterial">1</field>
+      </block>
+      <block type="select_slot_number">
+        <value name="blockMaterial">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="place_crafting_number">
+        <value name="CraftingSlot">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <category name="Loops" colour="#5CA65C">
+      <block type="controls_repeat_ext">
+        <value name="TIMES">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="controls_whileUntil">
+        <field name="MODE">UNTIL</field>
+      </block>
+      <block type="controls_whileUntil">
+        <field name="MODE">UNTIL</field>
+        <value name="BOOL">
+          <block type="logic_compare">
+            <field name="OP">EQ</field>
+            <value name="A">
+              <block type="check_inventory">
+                <field name="blockMaterial">1</field>
+              </block>
+            </value>
+            <value name="B">
+              <block type="math_number">
+                <field name="NUM">1</field>
+              </block>
+            </value>
+          </block>
+        </value>
+      </block>
+      <block type="controls_for">
+        <field name="VAR">i</field>
+        <value name="FROM">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="TO">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+        <value name="BY">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="controls_forEach">
+        <field name="VAR">j</field>
+      </block>
+      <block type="controls_flow_statements" disabled="true">
+        <field name="FLOW">BREAK</field>
+      </block>
+    </category>
+    <category name="Logic" colour="#5C81A6">
+      <block type="controls_if"></block>
+      <block type="logic_compare">
+        <field name="OP">EQ</field>
+      </block>
+      <block type="logic_operation">
+        <field name="OP">AND</field>
+      </block>
+      <block type="logic_negate"></block>
+      <block type="logic_boolean">
+        <field name="BOOL">TRUE</field>
+      </block>
+      <block type="logic_null"></block>
+      <block type="logic_ternary"></block>
+    </category>
+    <category name="Math" colour="#5C68A6">
+      <block type="math_number">
+        <field name="NUM">0</field>
+      </block>
+      <block type="math_arithmetic">
+        <field name="OP">ADD</field>
+        <value name="A">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="B">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_number_property">
+        <mutation divisor_input="false"></mutation>
+        <field name="PROPERTY">EVEN</field>
+        <value name="NUMBER_TO_CHECK">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_modulo">
+        <value name="DIVIDEND">
+          <shadow type="math_number">
+            <field name="NUM">64</field>
+          </shadow>
+        </value>
+        <value name="DIVISOR">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <category name="Variables" colour="#A65C81" custom="VARIABLE"></category>
+  </xml>
+
+  <script src="http://localhost:8080/socket.io/socket.io.js"></script>
+
+  <script src="./js/interface.js"></script>
+
+</body>
+</html>
