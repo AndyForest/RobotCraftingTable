@@ -1,0 +1,36 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>SteamLABs DigiPlaySpace MineCraft Admin</title>
+  <meta name="description" content="SteamLABs DigiPlaySpace">
+  <meta name="author" content="Marc Pelland">
+
+  <link rel="stylesheet" href="/styles/main.css?v=1.0">
+
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+  <p>welcome to the admin area for the minecraft system</p>
+<ul>
+  <li><a href="#" id="unlock">unlock</a></li>
+  <li><a href="#" id="home">home</a></li>
+  <li><a href="#" id="engageMagnet">engage magnet</a></li>
+  <li><a href="#" id="disengageMagnet">disengage magnet</a></li>
+  <li><a href="#" id="raiseMagnet">raise magnet</a></li>
+  <li><a href="#" id="lowerMagnet">lower magnet</a></li>
+  <li><a href="#" id="goToPosition">goto position 5, 5</a></li>
+  <li><a href="#" id="moveFromTo">From To</a> from col: <input type="number" id="moveFromCol" value='1'></input> to area: <input type="number" id="moveToArea" value='1'></input></li>
+  <li><a href="#" id="sendMessage">Send Message</a> message: <input type="text" id="messageText" value='test message'></input> duration (seconds): <input type="number" id="messageDuration" value='5'></input></li>
+</ul>
+
+  <script src="http://localhost:8080/socket.io/socket.io.js"></script>
+
+  <script src="./js/interface.js"></script>
+</body>
+</html>

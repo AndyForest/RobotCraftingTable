@@ -1,0 +1,8 @@
+{
+    "baudrate" : 115200,
+    "com" : {
+        "manufacturer" : "arduino"
+    },
+    "bootDelay" : 400,
+    "terminator" : "\r\n"
+}
