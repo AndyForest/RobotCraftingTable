@@ -88,7 +88,10 @@ function sendRobotInstructionSequence() {
   if (checkForSequenceError() == 0) {
     // TODO: Send the sequence to the robot
     // It is contained in the variable: robotInstructionSequence
+    // Send to robotServerURL
+    
     console.log(JSON.stringify(robotInstructionSequence));
+
   }
 }
 
