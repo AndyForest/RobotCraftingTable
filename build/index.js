@@ -110,7 +110,9 @@
         this.serialPort.connect()
       })
 
-      this.serialPort.on('connected', () => console.log('Connected to connection:', this.serialPort.connection.path))
+      this.serialPort.on('connected', () => {
+        console.log('Connected to connection:', this.serialPort.connection.path)
+      })
 
       this.serialPort.on('disconnected', () => console.log('disconnected'))
       // Erroring (not working as expected… try not to error)

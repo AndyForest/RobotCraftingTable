@@ -9,24 +9,61 @@
 
     let currentPosition = [10, 3]
 
-    let layout = [
-      '################',
-      '#00000000000000#',
-      '#00000000000000#',
-      '################',
-      '################',
-      '################',
-      '################',
-      '################',
-      '################',
-      '################',
-      '################',
-      '################',
-      '################',
-      '#00000000000000#',
-      '#00000000000000#',
-      '################'
+    // even rows
+    //
+    // 4 = travellable space
+    // 2 = space height
+    // 0 = block height
+    //
+    // odd rows are full (5 cm)
+    // even rows are smaller (35/8 cm)
+    // odd cols are smaller (35/8 cm)
+    // even cols are full (5 cm)
+    //
+
+    const activeRowWidth = 5
+    const halfActiveRowWidth = activeRowWidth / 0.5
+    const passiveRowWidth = 35 / 8
+    const passiveRowHeight = 20 / 8
+
+    var positions = [
+      [ 5, 19 ],
+      [ 8, 19 ],
+      [ 11, 19 ],
+      [ 5, 16 ],
+      [ 8, 16 ],
+      [ 11, 16 ],
+      [ 5, 13 ],
+      [ 8, 14 ],
+      [ 11, 14 ]
     ]
+
+    var layout = [
+      [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 4, 4, 4, 4, 4],
+      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4],
+      [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 4, 4, 4, 4, 4],
+
+      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+      [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 1, 4, 4, 1, 4, 4, 1, 4, 4],
+
+      [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+      [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 4, 4, 4, 1, 4, 4, 1, 4, 4, 1, 4, 4],
+      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+      [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+
+      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 1, 4, 4, 1, 4, 4, 1, 4, 4],
+      [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+
+      [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 4, 4, 4, 4, 4],
+      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4],
+      [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 4, 4, 4, 4, 4]
+    ]
+
+    var inventory = [9, 9, 5, 5, 5, 5, 5, 9, 9]
+    var board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     let SteamTIFF = null
 
@@ -38,11 +75,12 @@
 
     this.begin = () => new Promise((resolve, reject) => {
       SteamTIFF.log.notify(config)
+
       resolve()
-                .catch(err => {
-                  SteamTIFF.log.error(`⚡ XCarve Error: ${JSON.stringify(err, true, 2)}`)
-                  reject(err)
-                })
+        .catch(err => {
+          SteamTIFF.log.error(`⚡ XCarve Error: ${JSON.stringify(err, true, 2)}`)
+          reject(err)
+        })
     })
 
     this.attachListeners = () => new Promise((resolve, reject) => {
@@ -52,8 +90,54 @@
 
     this.processCommands = (data) => new Promise((resolve, reject) => {
       console.log('process command', data)
+
+      var gcode = 'G10 P0 L20 X0 Y0 Z0\n'
+      gcode += 'G21\n'
+
+      for (var item in data) {
+        if (data[item].pickup) {
+          // figure out which block to pick up
+          var startRow = data[item].pickup - 1
+          var startCol = inventory[startRow] - 1
+
+          // move to
+          console.log(startRow, startCol, layout[startRow * 2][startCol * 2])
+          inventory[startRow] -- // adjust inventory
+
+          var absPos = this.getAbsolutePosition(startRow, startCol)
+
+          // move to position
+          gcode += 'G90 Z-5\n'    // raise
+          gcode += 'G90 X' + (absPos[0] * 10) + ' Y' + (absPos[1] * 10) + '\n'  // move to position
+          gcode += 'G90 Z-15\n'   // lower
+          gcode += 'M7\n'         // turn on
+          gcode += 'G04 P1\n'     // pause
+
+          // move to drop zone
+          
+
+
+          // let destination = (data[item].drop - 1) * 2
+        } else {
+          SteamTIFF.socketServer.io.emit('global', { evt: 'message', data: data[item] })
+          // console.log('ASDASD', data, data.delay)
+          // this.dwell(data[item].delay)
+          gcode += 'G04 P' + data[item].delay + '\n'
+        }
+      }
+      gcode += 'G90 X10 Y10 Z-5'
+      console.log(gcode)
+      SteamTIFF.serialPort.send(gcode)
       resolve()
     })
+
+    this.getAbsolutePosition = (x, y) => {
+      let absoluteX = ((activeRowWidth + passiveRowWidth) * x) + halfActiveRowWidth
+      let absoluteY = ((activeRowWidth + passiveRowHeight) * y) + halfActiveRowWidth
+
+      console.log(x, y, absoluteX, absoluteY)
+      return [absoluteX, absoluteY]
+    }
 
     this.goToPosition = (x, y) => new Promise((resolve, reject) => {
       this.moveTo(x, y)
@@ -129,7 +213,13 @@
 
     this.dwell = (duration) => new Promise((resolve, reject) => {
       SteamTIFF.log.notify('⚡  pause the machine')
-      SteamTIFF.serialPort.send('M3 P' + duration)
+      // console.log(duration)
+      SteamTIFF.serialPort.send('G21 G91 G0 X' + 1 + ' Y' + 1)
+        .delay(1000)
+        .then(() => { SteamTIFF.serialPort.send('G04 P' + duration) })
+        .delay(1000)
+        .SteamTIFF.serialPort.send('G21 G91 G0 X-' + 1 + ' Y-' + 1)
+
       resolve()
     })
 
