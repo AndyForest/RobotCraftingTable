@@ -11,16 +11,60 @@
   <link rel="stylesheet" href="/styles/main.css?v=1.0">
 
   <!--[if lt IE 9]>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
   <![endif]-->
 </head>
 
 <body>
-  <p>welcome to the admin area for the minecraft system</p>
-  <p id="demoMessage"></p>
+
 
   <script src="http://localhost:8080/socket.io/socket.io.js"></script>
 
   <script src="./js/interface.js"></script>
+
+  <section class="content">
+      <h1>Robot Crafting Table</h1>
+    <section class="whosNext">
+      <h2>Who's Next?</h2>
+      <p>
+        <ol>
+          <li>Blue Player</li>
+          <li>Red Player</li>
+          <li>Green Player</li>
+
+        </ol>
+      </p>
+    </section>
+
+    <section class="displayArea craftingDisplay">
+        <h3>Crafting</h3>
+        <section>
+          <table border=1>
+            <tr>
+              <td>1</td>
+              <td>2</td>
+              <td>3</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>5</td>
+              <td>6</td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>8</td>
+              <td>9</td>
+            </tr>
+          </table>
+        </section>
+    </section>
+  </section>
+  <footer>
+    <a href="http://steamlabs.ca"><img src="STEAMLabsLogo.png"/></a>
+    <p>Made by STEAMLabs</p>
+  </footer>
+
+  <p>Debug messages:</p>
+  <p id="demoMessage"></p>
 </body>
 </html>

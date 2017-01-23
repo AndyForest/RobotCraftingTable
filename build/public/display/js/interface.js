@@ -12,7 +12,7 @@
 
   var displayMessage = (data) => {
     document.getElementById('demoMessage').innerHTML = data.data.message
-    setTimeout(clearScreen, parseInt(data.data.duration) * 1000)
+    setTimeout(clearScreen, parseInt(data.data.duration))
   }
 
   var clearScreen = () => {
