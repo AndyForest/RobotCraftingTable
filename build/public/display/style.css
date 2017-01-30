@@ -1,0 +1,120 @@
+/* 
+Minecraft Colours 
+Green: #609e60;
+Brown: #4F2F19;
+*/
+
+body {
+  text-align: center;
+  font-family: 'Courier', sans-serif;
+  color: #000;
+  font-weight: 200;
+  text-transform: lowercase;
+  padding: 0;
+  margin: 0;
+}
+
+h3 { 
+  background: #ABABAB;
+  display: inline-block;
+  padding: 10px;
+  border: 3px inset #000;
+  font-size: 28px;
+ }
+
+.container {
+  background: url('images/grass.jpg');
+  padding-top: 32px;
+  z-index: -1;
+  position: relative;
+}
+
+.wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  padding: 0 20px;
+  min-height: 748px;
+}
+
+.header { 
+  height: 250px;
+  background: url('images/sky.png') no-repeat fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  border-bottom: 10px solid #000;
+}
+
+.header img {
+  margin-top: 30px;
+}
+
+.content-wrapper {
+  float: right;
+  width: 100%;
+}
+
+.content {
+  background: url('images/wall.jpg') no-repeat;
+  margin-left: 352px;
+  clear: both;
+  overflow: auto;
+  min-height: 744px;
+}
+
+.axe { 
+  z-index: 9999;
+  float: right;
+  margin-top: -315px;
+ }
+
+.box {
+  width: 248px;
+  height: 248px;
+  float: left;
+}
+
+.sidebar {
+  background: rgba(255,255,255, 0.75);
+  position: relative;
+  width: 316px;
+  margin-right: -320px;
+  padding-top: 40px;
+  float: right;
+  overflow: hidden;
+  min-height: 500px;
+  border: 2px solid #000;
+}
+
+ol {
+	padding: 0;
+	margin: 0;
+}
+
+li {
+	list-style-type: none;
+  padding: 20px;
+}
+
+li img{ 
+	width: 100px;
+	height: 100px;
+	vertical-align: middle;
+ }
+
+#animationTime {
+ -webkit-animation-duration: 2s;
+  -webkit-animation-delay: 1s;
+  -webkit-animation-iteration-count: infinite;
+}
+
+@media only screen and (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+  .content {
+    margin-left: 0;
+  }
+}

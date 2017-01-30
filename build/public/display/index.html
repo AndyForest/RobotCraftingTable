@@ -1,14 +1,13 @@
 <!doctype html>
-
 <html lang="en">
 <head>
   <meta charset="utf-8">
-
-  <title>SteamLABs DigiPlaySpace MineCraft Display</title>
-  <meta name="description" content="SteamLABs DigiPlaySpace">
+  <title>STEAMLabs Crafting Table</title>
+  <meta name="description" content="STEAMLabs Crafting Table">
   <meta name="author" content="Marc Pelland">
 
-  <link rel="stylesheet" href="/styles/main.css?v=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="animate.css">
 
   <!--[if lt IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
@@ -16,53 +15,37 @@
 </head>
 
 <body>
-
-
   <script src="http://localhost:8080/socket.io/socket.io.js"></script>
-
   <script src="./js/interface.js"></script>
 
-  <section class="content">
-      <h1>Robot Crafting Table</h1>
-    <section class="whosNext">
-      <h2>Who's Next?</h2>
-      <p>
-        <ol>
-          <li>Blue Player</li>
-          <li>Red Player</li>
-          <li>Green Player</li>
-
-        </ol>
-      </p>
-    </section>
-
-    <section class="displayArea craftingDisplay">
-        <h3>Crafting</h3>
-        <section>
-          <table border=1>
-            <tr>
-              <td>1</td>
-              <td>2</td>
-              <td>3</td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>5</td>
-              <td>6</td>
-            </tr>
-            <tr>
-              <td>7</td>
-              <td>8</td>
-              <td>9</td>
-            </tr>
-          </table>
+  <section class="header">
+    <img src="images/header.png"/>
+  </section>
+  <section class="container">
+    <section class="wrapper">
+      <section class="content-wrapper">
+        <section class="content">
+          <section class="box"/><img src="images/iron.jpg"/></section>
+          <section class="box"/></section>
+          <section class="box"/></section>
+          <section class="box"/></section>
+          <section class="box"/></section>
+          <section class="box"/><img src="images/diamond.jpg"/></section>
+          <section class="box"/></section>
+          <section class="box"/></section>
+          <section class="box"/></section>
         </section>
+      </section>
+      <section class="sidebar">
+        <ol>
+          <li id="animationTime" class="animated infinite bounce"><h3>Now:</h3><img src="images/iPad1.png"/></li>
+          <li><h3>Next:</h3><img src="images/iPad2.png"/></li>
+          <li><h3>Next:</h3><img src="images/iPad3.png"/></li>
+        </ol>
+      </section>
     </section>
   </section>
-  <footer>
-    <a href="http://steamlabs.ca"><img src="STEAMLabsLogo.png"/></a>
-    <p>Made by STEAMLabs</p>
-  </footer>
+  <img class="axe animated infinite pulse" src="images/axe.png"/>
 
   <p>Debug messages:</p>
   <p id="demoMessage"></p>
