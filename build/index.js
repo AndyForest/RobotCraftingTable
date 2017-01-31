@@ -42,6 +42,13 @@
 
     this.init = () => new Promise((resolve, reject) => {
 //             // Introduction
+      console.log('\r\n\r\n███████╗████████╗███████╗ █████╗ ███╗   ███╗')
+      console.log('██╔════╝╚══██╔══╝██╔════╝██╔══██╗████╗ ████║')
+      console.log('███████╗   ██║   █████╗  ███████║██╔████╔██║')
+      console.log('╚════██║   ██║   ██╔══╝  ██╔══██║██║╚██╔╝██║')
+      console.log('███████║   ██║   ███████╗██║  ██║██║ ╚═╝ ██║')
+      console.log('╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝')
+
       console.log('\r\n\r\n          ⚗  Welcome to SteamTIFF ⚗')
       console.log('––––––––––––––––––––––––––––––––––––––––––———')
       console.log('Various icons within the console stream')
@@ -112,13 +119,14 @@
 
       this.serialPort.on('connected', () => {
         console.log('Connected to connection:', this.serialPort.connection.path)
+        setTimeout(this.xcarve.begin, 1500)
       })
 
       this.serialPort.on('disconnected', () => console.log('disconnected'))
       // Erroring (not working as expected… try not to error)
       this.serialPort.on('error', (err) => console.log('Oops, I errored', err))
       // The raw data as it is coming in. Note that this is a buffer so it needs to be converted to a string
-      this.serialPort.on('data', (rawBufferData) => console.log(rawBufferData.toString()))
+      this.serialPort.on('data', (rawBufferData) => this.xcarve.gotSerialData(rawBufferData.toString()))
       // Any complete message that contains the terminator string (default: \r\n)
       this.serialPort.on('message', (message) => console.log('Incoming from serialport:', message))
 

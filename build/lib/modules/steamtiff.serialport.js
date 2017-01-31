@@ -35,7 +35,8 @@
     this.availableConnections = () => new Promise((resolve, reject) => {
       SerialPort.list((err, ports) => {
         if (err) reject(err)
-        else resolve(ports)
+        console.log(ports)
+        resolve(ports)
       })
     })
 
@@ -54,6 +55,7 @@
               Object.keys(com).forEach(key => {
                 if (!this.connection) {
                   this.connection = this.potentialConnections.find(connection => (connection[key] && connection[key].toString().toLowerCase().indexOf(com[key].toString().toLowerCase()) !== -1))
+                  console.log(this.connection.comName)
                   if (this.connection) this.connection = new SerialPort(this.connection.comName, { baudRate: baud })
                 }
               })

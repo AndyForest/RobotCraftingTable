@@ -1,7 +1,7 @@
 {
     "baudrate" : 115200,
     "com" : {
-        "manufacturer" : "arduino"
+        "manufacturer" : "Inventables"
     },
     "bootDelay" : 400,
     "terminator" : "\r\n"
