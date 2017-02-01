@@ -104,7 +104,7 @@
       SteamTIFF.log.error('⚡ SerialPort Error: ' + JSON.stringify(err, true, 2))
       this.emit('error', err)
       if (!this.connection.isOpen()) {
-        this.reconnect()
+        setTimeout(this.reconnect, 5000)
       }
     }
 

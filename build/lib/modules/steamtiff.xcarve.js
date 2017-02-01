@@ -22,6 +22,7 @@
     //
 
     let commandQueue = []
+    let busy = false
 
     const OBJECT_WIDTH = 5
     const USABLE_WIDTH = 80
@@ -98,8 +99,9 @@
       SteamTIFF.log.notify(config)
 
       this.sendGCode(this.unlockMachine(false))
-      this.sendGCode(this.initCommands(false))
-      this.sendGCode('G21')
+      setTimeout(() => { this.initCommands() }, 5000)
+      // this.initCommands();
+      // this.sendGCode('G21')
 
       resolve()
         .catch(err => {
@@ -117,7 +119,10 @@
       SteamTIFF.log.notify('⚡  init commands, must be run from homed machine')
       direct = (direct !== undefined) ? direct : true
       if (direct) {
-        SteamTIFF.serialPort.send('G10 P0 L20 X0 Y0 Z0\nG21\n')
+        this.sendGCode({ gcode: this.homeMachine(false) })
+        this.sendGCode({ gcode: 'G10 P0 L20 X0 Y0 Z0' })
+        this.sendGCode({ gcode: 'G21' })
+        // SteamTIFF.serialPort.send('G10 P0 L20 X0 Y0 Z0\nG21\n')
         // resolve()
       } else {
         return 'G10 P0 L20 X0 Y0 Z0'
@@ -180,17 +185,17 @@
           // gcode += this.dwell(1, false) // 'G04 P1\n'     // pause
           // gcode += this.raiseMagnet(false) // 'G90 Z-5\n'    // raise
           //
-          this.sendGCode(this.disengageMagnet(false)) // 'G90 Z-5\n'    // raise
-          this.sendGCode(this.raiseMagnet(false)) // 'G90 Z-5\n'    // raise
-          this.sendGCode(this.moveTo(absPos[0], absPos[1], false)) // 'G90 X' + (absPos[0] * 10) + ' Y' + (absPos[1] * 10) + '\n'  // move to position
-          this.sendGCode(this.lowerMagnet(false)) // 'G90 Z-15\n'   // lower
-          this.sendGCode(this.engageMagnet(false)) // 'M7\n'         // turn on
-          this.sendGCode(this.dwell(1, false)) // 'G04 P1\n'     // pause
-          this.sendGCode(this.raiseMagnet(false)) // 'G90 Z-5\n'    // raise
-          this.sendGCode(this.moveTo(positions[data[item].drop - 1][0], positions[data[item].drop - 1][1], false))
-          this.sendGCode(this.lowerMagnet(false)) // 'G90 Z-15\n'   // lower
-          this.sendGCode(this.disengageMagnet(false)) // 'M7\n'         // turn on
-          this.sendGCode(this.dwell(1, false)) // 'G04 P1\n'     // pause
+          this.sendGCode({ gcode: this.disengageMagnet(false) }) // 'G90 Z-5\n'    // raise
+          this.sendGCode({ gcode: this.raiseMagnet(false) }) // 'G90 Z-5\n'    // raise
+          this.sendGCode({ gcode: this.moveTo(absPos[0], absPos[1], false) }) // 'G90 X' + (absPos[0] * 10) + ' Y' + (absPos[1] * 10) + '\n'  // move to position
+          this.sendGCode({ gcode: this.lowerMagnet(false) }) // 'G90 Z-15\n'   // lower
+          this.sendGCode({ gcode: this.engageMagnet(false) }) // 'M7\n'         // turn on
+          this.sendGCode({ gcode: this.dwell(1, false) }) // 'G04 P1\n'     // pause
+          this.sendGCode({ gcode: this.raiseMagnet(false) }) // 'G90 Z-5\n'    // raise
+          this.sendGCode({ gcode: this.moveTo(positions[data[item].drop - 1][0], positions[data[item].drop - 1][1], false) })
+          this.sendGCode({ gcode: this.lowerMagnet(false) }) // 'G90 Z-15\n'   // lower
+          this.sendGCode({ gcode: this.disengageMagnet(false) }) // 'M7\n'         // turn on
+          this.sendGCode({ gcode: this.dwell(1, false) }) // 'G04 P1\n'     // pause
 
           // var targetRow = positions[data[item].drop - 1][0]
           // var targetCol = positions[data[item].drop - 1][1]
@@ -202,11 +207,10 @@
 
           // let destination = (data[item].drop - 1) * 2
         } else {
-          // SteamTIFF.socketServer.io.emit('global', { evt: 'message', data: data[item] })
           // console.log('ASDASD', data, data.delay)
           // this.dwell(data[item].delay)
           // gcode += 'G04 P' + data[item].delay + '\n'
-          this.sendGCode(this.dwell(data[item].delay, false))
+          this.sendGCode({ gcode: this.dwell(data[item].delay, false), message: data[item] })
         }
       }
       // gcode += 'G90 G0 X0 Y0 Z-10'
@@ -217,7 +221,6 @@
     })
 
     this.getAbsolutePosition = (x, y) => {
-
       let absoluteX = 30 + (92 * x) // ((OBJECT_WIDTH + passiveRowWidth) * x) + halfActiveRowWidth
       let absoluteY = 30 + (72 * y) // ((OBJECT_WIDTH + passiveRowHeight) * y) + halfActiveRowWidth
 
@@ -269,7 +272,7 @@
         SteamTIFF.serialPort.send('$H')
         // resolve()
       } else {
-        return '$h'
+        return '$H'
       }
     }
 
@@ -280,7 +283,7 @@
         SteamTIFF.serialPort.send('$X')
         // resolve()
       } else {
-        return '$x'
+        return '$X'
       }
     }
 
@@ -291,7 +294,7 @@
         SteamTIFF.serialPort.send('M8\nM4 P1\n')
         // resolve()
       } else {
-        return 'M8 M4 P1'
+        return 'M8'
       }
     }
 
@@ -302,7 +305,7 @@
         SteamTIFF.serialPort.send('M9\nM4 P1\n')
         // resolve()
       } else {
-        return 'M9 M4 P1'
+        return 'M9'
       }
     }
 
@@ -397,15 +400,24 @@
     }
 
     this.sendGCode = (command) => {
-      console.log("SENDING COMMAND", command)
-      commandQueue.push(command)
-      SteamTIFF.serialPort.send(commandQueue.shift())
+      if (busy) return commandQueue.push(command)
+
+      console.log('SENDING COMMAND', command)
+      // commandQueue.push(command)
+      // if (commandQueue.length > 0){
+        // SteamTIFF.serialPort.send(commandQueue.shift())
+      // }  else {
+      if (command.message) SteamTIFF.socketServer.io.emit('global', { evt: 'message', data: command.message })
+
+      SteamTIFF.serialPort.send(command.gcode)
+      // }
+      busy = true
     }
 
     this.gotSerialData = (message) => {
-      if (message.indexOf('\n') !== -1) {
-        console.log('XCARVE', message, commandQueue.length)
-
+      if (message.indexOf('ok') !== -1) {
+        console.log('XCARVE got serial data', message, commandQueue)
+        busy = false
         if (commandQueue.length > 0) this.sendGCode(commandQueue.shift())
       }
     }

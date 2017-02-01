@@ -6,19 +6,18 @@
     resolve()
   })
 
-  var addListeners = () => {
-    server.on('global', displayMessage)
-  }
-
   var displayMessage = (data) => {
+    console.log(data.data.message)
     document.getElementById('demoMessage').innerHTML = data.data.message
-    setTimeout(clearScreen, parseInt(data.data.duration))
+    setTimeout(clearScreen, parseInt(data.data.duration) * 1000)
   }
 
   var clearScreen = () => {
     document.getElementById('demoMessage').innerHTML = ''
   }
-
+  var addListeners = () => {
+    server.on('global', displayMessage)
+  }
   init()
     .then(addListeners)
     .then(() => server.emit('register', 'display'))

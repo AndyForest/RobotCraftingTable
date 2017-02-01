@@ -119,16 +119,16 @@
 
       this.serialPort.on('connected', () => {
         console.log('Connected to connection:', this.serialPort.connection.path)
-        setTimeout(this.xcarve.begin, 1500)
+        setTimeout(this.xcarve.begin, 5000)
       })
 
       this.serialPort.on('disconnected', () => console.log('disconnected'))
       // Erroring (not working as expected… try not to error)
       this.serialPort.on('error', (err) => console.log('Oops, I errored', err))
       // The raw data as it is coming in. Note that this is a buffer so it needs to be converted to a string
-      this.serialPort.on('data', (rawBufferData) => this.xcarve.gotSerialData(rawBufferData.toString()))
+      // this.serialPort.on('data', (rawBufferData) => this.xcarve.gotSerialData(rawBufferData.toString()))
       // Any complete message that contains the terminator string (default: \r\n)
-      this.serialPort.on('message', (message) => console.log('Incoming from serialport:', message))
+      this.serialPort.on('message', (message) => this.xcarve.gotSerialData(message)) // console.log('Incoming from serialport:', message))
 
       this.socketServer.potentialEvents.hello = (data, connection) => {
         connection.emit('welcome', 'Good day to you to: ' + connection.id)
@@ -168,7 +168,7 @@
 
       this.socketServer.potentialEvents.sendMessage = (data, connection) => {
         this.socketServer.io.emit('global', { evt: 'message', data: data })
-        this.xcarve.dwell(data.duration)
+        // this.xcarve.dwell(data.duration)
       }
 
       this.socketServer.potentialEvents.instructCommand = (data, connection) => {
