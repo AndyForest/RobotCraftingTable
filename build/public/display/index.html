@@ -18,36 +18,51 @@
   <script src="http://localhost:8080/socket.io/socket.io.js"></script>
   <script src="./js/interface.js"></script>
 
-  <section class="header">
-    <img src="images/header.png"/>
-  </section>
-  <section class="container">
-    <section class="wrapper">
-      <section class="content-wrapper">
-        <section class="content">
-          <section class="box"/><img src="images/iron.jpg"/></section>
-          <section class="box"/></section>
-          <section class="box"/></section>
-          <section class="box"/></section>
-          <section class="box"/></section>
-          <section class="box"/><img src="images/diamond.jpg"/></section>
-          <section class="box"/></section>
-          <section class="box"/></section>
-          <section class="box"/></section>
-        </section>
-      </section>
-      <section class="sidebar">
-        <ol>
-          <li id="animationTime" class="animated infinite bounce"><h3>Now:</h3><img src="images/iPad1.png"/></li>
-          <li><h3>Next:</h3><img src="images/iPad2.png"/></li>
-          <li><h3>Next:</h3><img src="images/iPad3.png"/></li>
-        </ol>
-      </section>
+<div id="pagewrap">
+  <header>
+    <img class="animated infinite pulse" src="images/header.png"/>
+  </header>
+    
+  <section id="container">    
+    <section id="sidebarLeft">
+    <h2>Queue</h2>
+      <ol>
+        <li id="animationTime" class="animated infinite bounce"><h3>Now:</h3><img src="images/iPad1.png"/></li>
+        <li><h3>Next:</h3><img src="images/iPad2.png"/></li>
+        <li><h3>Next:</h3><img src="images/iPad3.png"/></li>
+      </ol>
+    </section>
+    
+    <section id="middle">
+      <section class="box"/><img src="images/iron.jpg"/></section>
+      <section class="box"/></section>
+      <section class="box"/></section>
+      <section class="box"/></section>
+      <section class="box"/></section>
+      <section class="box"/><img src="images/diamond.jpg"/></section>
+      <section class="box"/></section>
+      <section class="box"/></section>
+      <section class="box"/></section>
+      <img class="axe" src="images/axe.png"/>
+    </section>
+
+    <section id="sidebarRight">
+    <h2>Recently Crafted</h2>
+      <ol>
+        <li><img src="images/recipeSuccess/part1/03_boat.png"/></li>
+        <li><img src="images/recipeSuccess/part1/02_slabs.png"/></li>
+        <li><img src="images/recipeSuccess/part1/01_woodDoor.png"/></li>
+      </ol>
     </section>
   </section>
-  <img class="axe animated infinite pulse" src="images/axe.png"/>
+  
+  <footer>
+    <p>Debug messages:</p>
+    <p id="demoMessage"></p>
+  </footer>
+</div>
 
-  <p>Debug messages:</p>
-  <p id="demoMessage"></p>
 </body>
 </html>
+
+
