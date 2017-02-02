@@ -1,7 +1,7 @@
 {
     "baudrate" : 115200,
     "com" : {
-        "manufacturer" : "Inventables"
+        "manufacturer" : "FTDI"
     },
     "bootDelay" : 400,
     "terminator" : "\r\n"

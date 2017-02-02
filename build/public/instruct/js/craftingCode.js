@@ -89,7 +89,7 @@ function checkMiningBlockID(blockNum) {
   var messageToSend = "checkMiningBlock," + blockNum;
   // Hilight the block being checked on the display screen for user feedback
 
-  robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 500};
+  robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 0.5};
 
   return miningTargets[blockNum];
 }
@@ -99,7 +99,7 @@ function mineBlockSequence(blockNum) {
   var messageToSend = "mineBlock," + blockNum;
   // Hilight the block being checked on the display screen for user feedback
 
-  robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 1000};
+  robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 1};
 
   // Update inventory level
   inventoryCount[miningTargets[blockNum]] = inventoryCount[miningTargets[blockNum]] +1;
@@ -167,7 +167,7 @@ function placeCraftingItemSequence(craftingTableSlotNum) {
           // Recipe is complete!
           recipeCompleteID = craftingRecipesArr[i]["ID"];
           var messageToSend = "recipeComplete," + recipeCompleteID;
-          robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 3000};
+          robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 3};
 
         }
       }
