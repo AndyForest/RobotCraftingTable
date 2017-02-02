@@ -165,7 +165,8 @@ function placeCraftingItemSequence(craftingTableSlotNum) {
 
         if (singleRecipeBlank == false && singleRecipeComplete == true) {
           // Recipe is complete!
-          var messageToSend = "recipeComplete," + i;
+          recipeCompleteID = craftingRecipesArr[i]["ID"];
+          var messageToSend = "recipeComplete," + recipeCompleteID;
           robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 3000};
 
         }
