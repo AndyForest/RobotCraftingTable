@@ -8,6 +8,11 @@ var inventoryCount
 // Instructions to send to the robot
 var robotInstructionSequence
 
+/*
+{ pickup: 1, drop: 4}
+{ message: “Some message to send to LCD”, delay: 1000}
+*/
+
 // Item ID that the robot is currently holding
 var robotHolding
 // Item ID lookup table
@@ -16,6 +21,9 @@ var itemCodeLookup = [["Blank","0"], ["Planks","1"], ["Cobblestone","2"], ["Stic
 var craftingTableItems
 // If this is changed from 0 to anything else, there has been an error, stop processing the sequence
 var sequenceError
+// The array of the currenty displayed mining materials on the screen
+var miningTargets
+var miningTargetsString
 
 function initCraftingSequence(userLevel) {
   // Starting inventory levels
@@ -32,10 +40,31 @@ function initCraftingSequence(userLevel) {
 
   craftingTableItems = [0,0,0,0,0,0,0,0,0];
   robotInstructionSequence = new Array();
+
+  // Initialize the sequence with some mining materials on screen
+  generateMiningTargets();
+
   robotHolding = 0;
   sequenceError = 0;
 }
 
+function generateMiningTargets() {
+
+  miningTargets = [8, 0, 0, 0, 0, 0, 0, 0, 0];
+
+  var diamondPosition = getRandomInt(1,8);
+  miningTargets[diamondPosition] = 9;
+  miningTargetsString = "miningTargets,";
+  for (var i=0; i<9; i++) {
+    miningTargetsString = miningTargetsString + miningTargets[i].toString();
+  }
+
+  robotInstructionSequence[robotInstructionSequence.length] = {message: miningTargetsString, delay: 0};
+}
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 function selectInventorySlotSequence(inventorySlotNum) {
   // Pick up an item from an inventory slot
@@ -89,11 +118,18 @@ function sendRobotInstructionSequence() {
     // TODO: Send the sequence to the robot
     // It is contained in the variable: robotInstructionSequence
     // Send to robotServerURL
-    
+
     console.log(JSON.stringify(robotInstructionSequence));
 
+    // evt.preventDefault()
+    server = window.io();
+    server.emit('instructCommand',
+      robotInstructionSequence
+    )
   }
 }
+
+
 
 function alertMessage(alertMessage){
   window.alert(alertMessage);

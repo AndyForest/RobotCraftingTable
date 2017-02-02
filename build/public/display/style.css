@@ -1,5 +1,5 @@
-/* 
-Minecraft Colours 
+/*
+Minecraft Colours
 Green: #609e60;
 Brown: #4F2F19;
 */
@@ -25,7 +25,7 @@ header img {
   margin-top: 30px;
 }
 
-#container { 
+#container {
   width: 1024px;
   height: 504px;
   margin: 0 auto;
@@ -68,14 +68,14 @@ body {
   margin: 0;
 }
 
-h2 { 
+h2 {
   font-size:20px;
   display: inline-block;
   border-bottom: 2px solid black;
   padding-bottom: 10px;
  }
 
-h3 { 
+h3 {
   background: #ABABAB;
   display: inline-block;
   padding: 10px;
@@ -84,7 +84,7 @@ h3 {
  }
 
 
-.axe { 
+.axe {
   z-index: 9999;
   float: right;
   margin-top: -210px;
@@ -94,6 +94,18 @@ h3 {
   width: 168px;
   height: 168px;
   float: left;
+}
+
+.selectedbox {
+  background-color:rgba(0, 0, 0, 0.5);
+}
+
+.selectedboxOld {
+  width: 164px;
+  height: 164px;
+  float: left;
+  border: 2px solid white;
+
 }
 
 ol {
@@ -106,7 +118,7 @@ li {
   padding: 20px;
 }
 
-li img{ 
+li img{
 	width: 100px;
 	height: 100px;
 	vertical-align: middle;

@@ -5,6 +5,8 @@
   <title>STEAMLabs Crafting Table</title>
   <meta name="description" content="STEAMLabs Crafting Table">
   <meta name="author" content="Marc Pelland">
+  <meta name="author" content="Kat Barrett">
+  <meta name="author" content="Andy Forest">
 
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="animate.css">
@@ -12,6 +14,8 @@
   <!--[if lt IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
   <![endif]-->
+
+  <script src="../externals/jquery-3.1.1.min.js"></script>
 </head>
 
 <body>
@@ -22,8 +26,8 @@
   <header>
     <img class="animated infinite pulse" src="images/header.png"/>
   </header>
-    
-  <section id="container">    
+
+  <section id="container">
     <section id="sidebarLeft">
     <h2>Queue</h2>
       <ol>
@@ -32,17 +36,18 @@
         <li><h3>Next:</h3><img src="images/iPad3.png"/></li>
       </ol>
     </section>
-    
+
+    <!-- <img src="images/mining8.png"/> -->
     <section id="middle">
-      <section class="box"/><img src="images/iron.jpg"/></section>
-      <section class="box"/></section>
-      <section class="box"/></section>
-      <section class="box"/></section>
-      <section class="box"/></section>
-      <section class="box"/><img src="images/diamond.jpg"/></section>
-      <section class="box"/></section>
-      <section class="box"/></section>
-      <section class="box"/></section>
+      <section class="box" id="mining1"/></section>
+      <section class="box" id="mining2"/></section>
+      <section class="box" id="mining3"/></section>
+      <section class="box" id="mining4"/></section>
+      <section class="box" id="mining5"/></section>
+      <section class="box" id="mining6"/></section>
+      <section class="box" id="mining7"/></section>
+      <section class="box" id="mining8"/></section>
+      <section class="box" id="mining9"/></section>
       <img class="axe" src="images/axe.png"/>
     </section>
 
@@ -55,7 +60,7 @@
       </ol>
     </section>
   </section>
-  
+
   <footer>
     <p>Debug messages:</p>
     <p id="demoMessage"></p>
@@ -64,5 +69,3 @@
 
 </body>
 </html>
-
-

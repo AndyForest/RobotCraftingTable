@@ -45,7 +45,11 @@
         <p>
 
           <button onclick="runCode()">Send Instructions to Robot</button>
+          TESTING:
+          <button onclick="showCode()">Show JavaScript</button>
+          <a href="#" id="sendInstruction">send test instructions</a>
         </p>
+
 
       </td>
     </tr>
@@ -276,7 +280,7 @@
     var blocklyArea = document.getElementById('blocklyArea');
     var blocklyDiv = document.getElementById('blocklyDiv');
     var workspace = Blockly.inject(blocklyDiv,
-        {media: '../../media/',
+        {media: '../externals/blockly/media/',
          toolbox: document.getElementById('toolbox')});
     var onresize = function(e) {
       // Compute the absolute coordinates and dimensions of blocklyArea.
