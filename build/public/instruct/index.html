@@ -10,7 +10,10 @@
   <script src="./js/craftingBlockDefinitions.js"></script>
   <script src="./js/craftingBlockGenerators.js"></script>
   <!-- <script src="workspace.js"></script> -->
+  <script src="../externals/jquery-3.1.1.min.js"></script>
   <script src="./js/craftingCode.js"></script>
+  <script src="./js/recipes.js"></script>
+
 
   <style>
     html, body {
@@ -86,7 +89,7 @@
         <field name="MODE">UNTIL</field>
       </block>
       <block type="logic_compare">
-        <field name="OP">EQ</field>
+        <field name="OP">GTE</field>
       </block>
       <block type="check_inventory">
         <field name="blockMaterial">2</field>
@@ -116,7 +119,7 @@
       </block>
       <block type="controls_if"></block>
       <block type="logic_compare">
-        <field name="OP">EQ</field>
+        <field name="OP">GTE</field>
       </block>
       <block type="miningtargetblocktypeid">
         <value name="Mining Block">
@@ -148,15 +151,15 @@
         <field name="MODE">UNTIL</field>
         <value name="BOOL">
           <block type="logic_compare">
-            <field name="OP">EQ</field>
+            <field name="OP">GTE</field>
             <value name="A">
               <block type="check_inventory">
-                <field name="blockMaterial">1</field>
+                <field name="blockMaterial">8</field>
               </block>
             </value>
             <value name="B">
               <block type="math_number">
-                <field name="NUM">1</field>
+                <field name="NUM">3</field>
               </block>
             </value>
           </block>

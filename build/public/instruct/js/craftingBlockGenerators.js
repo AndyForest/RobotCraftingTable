@@ -15,7 +15,8 @@ Blockly.JavaScript['place_crafting_number'] = function(block) {
 Blockly.JavaScript['check_inventory'] = function(block) {
   var dropdown_blockmaterial = block.getFieldValue('blockMaterial');
   // TODO: Assemble JavaScript into code variable.
-  var code = '...';
+  // checkInventory(dropdown_blockmaterial);
+  var code = 'checkInventory(' + dropdown_blockmaterial + ')';
   // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.JavaScript.ORDER_NONE];
 };
@@ -23,22 +24,25 @@ Blockly.JavaScript['check_inventory'] = function(block) {
 Blockly.JavaScript['mine_block'] = function(block) {
   var value_mineblocknum = Blockly.JavaScript.valueToCode(block, 'mineBlockNum', Blockly.JavaScript.ORDER_ATOMIC);
   // TODO: Assemble JavaScript into code variable.
-  var code = '...;\n';
+  var code = 'mineBlockSequence(' + value_mineblocknum + ');\n';
+  // mineBlockSequence(value_mineblocknum);
   return code;
 };
 
 Blockly.JavaScript['blocktypeid'] = function(block) {
   var dropdown_blockmaterial = block.getFieldValue('blockMaterial');
   // TODO: Assemble JavaScript into code variable.
-  var code = '...';
+  var code = dropdown_blockmaterial;
   // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
 Blockly.JavaScript['miningtargetblocktypeid'] = function(block) {
+  // Check the block type in a specific mining slot
   var value_mining_block = Blockly.JavaScript.valueToCode(block, 'Mining Block', Blockly.JavaScript.ORDER_ATOMIC);
   // TODO: Assemble JavaScript into code variable.
-  var code = '...';
+  var code = 'checkMiningBlockID(' + value_mining_block + ')';
+  //var code = checkMiningBlockID(value_mining_block);
   // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.JavaScript.ORDER_NONE];
 };

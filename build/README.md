@@ -11,7 +11,10 @@ if you are running the server, all content within the public folder can be acces
 ie:
 * XCarve Admin - http://localhost:8080/admin
 * Display - http://localhost:8080/display
-* Instruct (Blockly) - http://localhost:8080/instruct
+* Instruct (Blockly) - 3 different URLs for the 3 different iPads:
+http://localhost:8080/instruct/?myID=1
+http://localhost:8080/instruct/?myID=2
+http://localhost:8080/instruct/?myID=3
 
 ## display page
 the display javascript code under "build/public/display/js/interface.js" has a sample tied to the socket server that will cause the content of a div to update.  This can be tested by opening the display page in one window and the admin in another.  Type something in the "Send Message" area and click the link, it will be updated in the display window for the duration specific.
@@ -25,4 +28,3 @@ this page allows for testing commands and overriding if needed
 ## standards
 [![Standard - JavaScript Style Guide](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 Code is written trying to follow the JS Standard (http://standardjs.com/) in order to maintain editability and compatibility with libraries and multiple developers.
-

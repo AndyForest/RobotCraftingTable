@@ -38,8 +38,14 @@ function initCraftingSequence(userLevel) {
     inventoryCount = [0,9,9,5,5,5,5,0,0,0];
   }
 
-  craftingTableItems = [0,0,0,0,0,0,0,0,0];
+  // starts at 1, not 0
+  craftingTableItems = [0,0,0,0,0,0,0,0,0,0];
   robotInstructionSequence = new Array();
+
+  // Add this iPad's ID number to the sequence
+  var myID = $.urlParam('myID')
+  var messageToSend = "myID," + myID;
+  robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 0};
 
   // Initialize the sequence with some mining materials on screen
   generateMiningTargets();
@@ -50,12 +56,13 @@ function initCraftingSequence(userLevel) {
 
 function generateMiningTargets() {
 
-  miningTargets = [8, 0, 0, 0, 0, 0, 0, 0, 0];
+  // starts at 1, not 0
+  miningTargets = [0, 8, 0, 0, 0, 0, 0, 0, 0, 0];
 
-  var diamondPosition = getRandomInt(1,8);
+  var diamondPosition = getRandomInt(2,9);
   miningTargets[diamondPosition] = 9;
   miningTargetsString = "miningTargets,";
-  for (var i=0; i<9; i++) {
+  for (var i=1; i<=9; i++) {
     miningTargetsString = miningTargetsString + miningTargets[i].toString();
   }
 
@@ -64,6 +71,45 @@ function generateMiningTargets() {
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// example.com?param1=name&param2=&id=6
+// $.urlParam('param1'); // name
+$.urlParam = function(name){
+    var results = new RegExp('[\?&]' + name + '=([^]*)').exec(window.location.href);
+    if (results==null){
+       return null;
+    }
+    else{
+       return results[1] || 0;
+    }
+}
+
+function checkMiningBlockID(blockNum) {
+  var messageToSend = "checkMiningBlock," + blockNum;
+  // Hilight the block being checked on the display screen for user feedback
+
+  robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 500};
+
+  return miningTargets[blockNum];
+}
+
+
+function mineBlockSequence(blockNum) {
+  var messageToSend = "mineBlock," + blockNum;
+  // Hilight the block being checked on the display screen for user feedback
+
+  robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 1000};
+
+  // Update inventory level
+  inventoryCount[miningTargets[blockNum]] = inventoryCount[miningTargets[blockNum]] +1;
+
+  // Create new mining targets
+  generateMiningTargets();
+}
+
+function checkInventory(itemCode) {
+  return inventoryCount[itemCode];
 }
 
 function selectInventorySlotSequence(inventorySlotNum) {
@@ -95,6 +141,37 @@ function placeCraftingItemSequence(craftingTableSlotNum) {
       craftingTableItems[craftingTableSlotNum] = robotHolding;
       robotInstructionSequence[robotInstructionSequence.length] = {pickup: robotHolding, drop: craftingTableSlotNum};
       robotHolding = 0;
+
+      // Check if we have completed a recipe
+
+      var recipeComplete = false;
+      var recipeCompleteID = 0;
+      for (var i = 0, len = craftingRecipesArr.length; i < len; i++) {
+        // Check the next recipe
+        var singleRecipeBlank = true;
+        var singleRecipeComplete = true;
+        for (var h=1; h<=9; h++) {
+          // Check the items in the recipe
+          var singleRecipeItem = craftingRecipesArr[i][h.toString()];
+          if (singleRecipeItem != 0) {
+            singleRecipeBlank = false;
+          }
+
+          if (craftingTableItems[h] != singleRecipeItem) {
+            // Not a match
+            singleRecipeComplete = false;
+          }
+        }
+
+        if (singleRecipeBlank == false && singleRecipeComplete == true) {
+          // Recipe is complete!
+          var messageToSend = "recipeComplete," + i;
+          robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 3000};
+
+        }
+      }
+
+
     }
   }
 }
@@ -115,7 +192,7 @@ function checkForSequenceError(hideAlert) {
 
 function sendRobotInstructionSequence() {
   if (checkForSequenceError() == 0) {
-    // TODO: Send the sequence to the robot
+    // Send the sequence to the robot
     // It is contained in the variable: robotInstructionSequence
     // Send to robotServerURL
 

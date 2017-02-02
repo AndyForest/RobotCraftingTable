@@ -85,7 +85,7 @@
       <field name="MODE">UNTIL</field>
       <value name="BOOL">
         <block type="logic_compare">
-          <field name="OP">GTE</field>
+          <field name="OP">EQ</field>
           <value name="A">
             <block type="check_inventory">
               <field name="blockMaterial">1</field>

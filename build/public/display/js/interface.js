@@ -34,7 +34,10 @@ function parseMessage(messageData, messageParameter) {
 
   var messageArr = messageData.split(",")
 
+
   if (messageArr[0] == "checkMiningBlock") {
+    // Hilight a mining target block that is being checked
+    // eg: "checkMiningBlock,1"
     var blockNum = parseInt(messageParameter);
     console.log("blockNum: " + blockNum);
     selectMiningBlock (messageArr[1]);
@@ -51,6 +54,28 @@ function parseMessage(messageData, messageParameter) {
         $("#mining" + i).html('<img src="images/mining' + miningtargetblocktypeid + '.png"/>');
       }
     }
+  } else if (messageArr[0] == "mineBlock") {
+    // mineBlock,2
+    // TODO: display the mining of the block on screen
+
+  } else if (messageArr[0] == "recipeComplete") {
+    // recipeComplete,32
+    $("#success3").html($("#success2").html());
+    $("#success2").html($("#success1").html());
+
+    $("#success1").removeClass("animated zoomInUp");
+
+    setTimeout(function(){
+      $("#success1").html('<img src="images/recipeSuccess/' + messageArr[1] + '.png"/>');
+      $("#success1").addClass("animated zoomInUp");
+
+    }, 100);
+
+  } else if (messageArr[0] == "queue") {
+    console.log("message: " + messageArr[1].charAt(0));
+    $("#queue1").html('<h3>Now:</h3><img src="./images/iPad' + messageArr[1].charAt(0) + '.png"/>');
+    $("#queue2").html('<h3>Next:</h3><img src="images/iPad' + messageArr[1].charAt(1) + '.png"/>');
+    $("#queue3").html('<h3>Next:</h3><img src="images/iPad' + messageArr[1].charAt(2) + '.png"/>');
   }
 
 }
