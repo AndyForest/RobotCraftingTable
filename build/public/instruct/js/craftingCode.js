@@ -10,7 +10,7 @@ var robotInstructionSequence
 
 /*
 { pickup: 1, drop: 4}
-{ message: “Some message to send to LCD”, delay: 1000}
+{ message: “Some message to send to LCD”, delay: 2}
 */
 
 // Item ID that the robot is currently holding
@@ -44,6 +44,9 @@ function initCraftingSequence(userLevel) {
 
   // Add this iPad's ID number to the sequence
   var myID = $.urlParam('myID')
+  if (  myID == null) {
+    myID = 1;
+  }
   var messageToSend = "myID," + myID;
   robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 0};
 
@@ -89,7 +92,7 @@ function checkMiningBlockID(blockNum) {
   var messageToSend = "checkMiningBlock," + blockNum;
   // Hilight the block being checked on the display screen for user feedback
 
-  robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 500};
+  robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 0.5};
 
   return miningTargets[blockNum];
 }
@@ -99,7 +102,7 @@ function mineBlockSequence(blockNum) {
   var messageToSend = "mineBlock," + blockNum;
   // Hilight the block being checked on the display screen for user feedback
 
-  robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 1000};
+  robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 1};
 
   // Update inventory level
   inventoryCount[miningTargets[blockNum]] = inventoryCount[miningTargets[blockNum]] +1;
@@ -167,7 +170,7 @@ function placeCraftingItemSequence(craftingTableSlotNum) {
           // Recipe is complete!
           recipeCompleteID = craftingRecipesArr[i]["ID"];
           var messageToSend = "recipeComplete," + recipeCompleteID;
-          robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 3000};
+          robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 3};
 
         }
       }
