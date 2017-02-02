@@ -10,7 +10,7 @@ var robotInstructionSequence
 
 /*
 { pickup: 1, drop: 4}
-{ message: “Some message to send to LCD”, delay: 1000}
+{ message: “Some message to send to LCD”, delay: 2}
 */
 
 // Item ID that the robot is currently holding
@@ -44,6 +44,9 @@ function initCraftingSequence(userLevel) {
 
   // Add this iPad's ID number to the sequence
   var myID = $.urlParam('myID')
+  if (  myID == null) {
+    myID = 1;
+  }
   var messageToSend = "myID," + myID;
   robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 0};
 
