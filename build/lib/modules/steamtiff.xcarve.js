@@ -213,7 +213,7 @@
           // console.log('ASDASD', data, data.delay)
           // this.dwell(data[item].delay)
           // gcode += 'G04 P' + data[item].delay + '\n'
-          
+
           this.sendGCode({ gcode: this.dwell(data[item].delay, false), message: data[item] })
         }
       }
@@ -353,6 +353,8 @@
       direct = (direct !== undefined) ? direct : true
       if (direct) {
         SteamTIFF.serialPort.send('G90 G0 Z-25')
+        // Note: looks like we need to lower by 86 mm instead:
+        // SteamTIFF.serialPort.send('G90 G0 Z-86')
         // resolve()
       } else {
         return 'G90 G0 Z-35'
