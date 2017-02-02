@@ -60,6 +60,9 @@
 //     30, 122, 214, 306
 //     30, 102, 174, 246, 318
 //
+
+    let lastCommand = []
+
     var layout = [
       [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 4, 4, 4, 4, 4],
       [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4],
@@ -133,7 +136,7 @@
       console.log('process command', data)
 
       // gcode += 'G21\n' // millimeters
-
+      lastCommand = data
       for (var item in data) {
         if (data[item].pickup) {
           // figure out which block to pick up
@@ -210,15 +213,51 @@
           // console.log('ASDASD', data, data.delay)
           // this.dwell(data[item].delay)
           // gcode += 'G04 P' + data[item].delay + '\n'
+          
           this.sendGCode({ gcode: this.dwell(data[item].delay, false), message: data[item] })
         }
       }
       // gcode += 'G90 G0 X0 Y0 Z-10'
-      this.sendGCode('G90 G0 X0 Y0 Z-20')
+      this.sendGCode({ gcode: 'G90 G0 X0 Y0 Z-20' })
       // console.log('GCODE', gcode)
+      this.sendGCode({ gcode: this.dwell(10, false) }) // 'G04 P1\n'     // pause
+      this.reverseData()
+
       // SteamTIFF.serialPort.send(gcode)
       resolve()
     })
+
+    this.reverseData = () => {
+      console.log(lastCommand)
+      console.log(inventory)
+      for (var item in lastCommand) {
+        if (lastCommand[item].pickup) {
+          var startRow = lastCommand[item].pickup - 1
+          var startCol = inventory[startRow]
+
+          // move to
+          inventory[startRow] ++ // adjust inventory
+
+          var absPos = this.getAbsolutePosition(startRow, startCol)
+          // move to position
+          this.sendGCode({ gcode: this.disengageMagnet(false) }) // 'G90 Z-5\n'    // raise
+          this.sendGCode({ gcode: this.raiseMagnet(false) }) // 'G90 Z-5\n'    // raise
+          this.sendGCode({ gcode: this.moveTo(positions[lastCommand[item].drop - 1][0], positions[lastCommand[item].drop - 1][1], false) })
+          this.sendGCode({ gcode: this.lowerMagnet(false) }) // 'G90 Z-15\n'   // lower
+          this.sendGCode({ gcode: this.engageMagnet(false) }) // 'M7\n'         // turn on
+          this.sendGCode({ gcode: this.dwell(1, false) }) // 'G04 P1\n'     // pause
+          this.sendGCode({ gcode: this.raiseMagnet(false) }) // 'G90 Z-5\n'    // raise
+          this.sendGCode({ gcode: this.moveTo(absPos[0], absPos[1], false) }) // 'G90 X' + (absPos[0] * 10) + ' Y' + (absPos[1] * 10) + '\n'  // move to position
+          this.sendGCode({ gcode: this.lowerMagnet(false) }) // 'G90 Z-15\n'   // lower
+          this.sendGCode({ gcode: this.disengageMagnet(false) }) // 'M7\n'         // turn on
+          this.sendGCode({ gcode: this.dwell(1, false) }) // 'G04 P1\n'     // pause
+        }
+      }
+
+      console.log("INVENTORY", inventory)
+
+      this.initCommands()
+    }
 
     this.getAbsolutePosition = (x, y) => {
       let absoluteX = 30 + (92 * x) // ((OBJECT_WIDTH + passiveRowWidth) * x) + halfActiveRowWidth
