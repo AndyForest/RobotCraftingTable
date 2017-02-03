@@ -9,15 +9,19 @@
   })
 
   var displayMessage = (data) => {
-    if (data.data.message) {
+    console.log("GOT DATA", data)
+    if (data.evt === 'message') {
         parseMessage(data.data.message.toString(), data.data.delay * 1000)
-    } else if (data.data.changeSource) {
-      console.log("change source", data.data)
+    } else if (data.evt === 'changeSource') {
+      console.log("change source", data.data.identifier)
       // active = data.data.// IDEA:
-    } else {
-      console.log("added quueue", data.data)
-      // queue.push(data.data.identifier)
+      active = queue.shift()
+    } else if (data.evt === 'addedToQueue'){
+      
+      queue.push(data.data)
     }
+
+    console.log(queue)
 
     /*
     console.log(data.data.message)
