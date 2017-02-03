@@ -1,5 +1,7 @@
 (function () {
   'use strict'
+  var queue = []
+  var active = undefined
   var server
   var init = () => new Promise((resolve, reject) => {
     server = window.io()
@@ -9,8 +11,12 @@
   var displayMessage = (data) => {
     if (data.data.message) {
         parseMessage(data.data.message.toString(), data.data.delay * 1000)
-    } else {
+    } else if (data.data.changeSource) {
       console.log("change source", data.data)
+      // active = data.data.// IDEA:
+    } else {
+      console.log("added quueue", data.data)
+      // queue.push(data.data.identifier)
     }
 
     /*

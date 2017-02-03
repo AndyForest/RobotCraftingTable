@@ -116,10 +116,10 @@
       let identifier = undefined
       if (data[0].identifier) {
         identifier = data.shift()
-        console.log(identifier.identifier)
+        SteamTIFF.socketServer.io.emit('global', { evt: 'addedToQueue', data: identifier.identifier })
         // currentIdentifier = identifier.identifier
       } else {
-        SteamTIFF.log.error("cannot find identifier")
+        return SteamTIFF.log.error("cannot find identifier")
       }
 
       // gcode += 'G21\n' // millimeters
