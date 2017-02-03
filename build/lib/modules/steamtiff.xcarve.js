@@ -22,6 +22,7 @@
     //
 
     let commandQueue = []
+    let lastCommandSource = undefined
     let busy = false
 
     const OBJECT_WIDTH = 5
@@ -62,30 +63,7 @@
 //
 
     let lastCommand = []
-
-    var layout = [
-      [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 4, 4, 4, 4, 4],
-      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4],
-      [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 4, 4, 4, 4, 4],
-
-      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-      [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 1, 4, 4, 1, 4, 4, 1, 4, 4],
-
-      [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-      [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 4, 4, 4, 1, 4, 4, 1, 4, 4, 1, 4, 4],
-      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-      [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-
-      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 1, 4, 4, 1, 4, 4, 1, 4, 4],
-      [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-
-      [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 4, 4, 4, 4, 4],
-      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4],
-      [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 4, 4, 4, 4, 4]
-    ]
+    let currentIdentifier = 0
 
     var inventory = [9, 9, 5, 5, 5, 5, 5, 9, 9]
     // var board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -133,10 +111,20 @@
     }
 
     this.processCommands = (data) => new Promise((resolve, reject) => {
-      console.log('process command', data)
+      SteamTIFF.log.notify('process command')
+      console.log(data[0])
+      let identifier = undefined
+      if (data[0].identifier) {
+        identifier = data.shift()
+        console.log(identifier.identifier)
+        // currentIdentifier = identifier.identifier
+      } else {
+        SteamTIFF.log.error("cannot find identifier")
+      }
 
       // gcode += 'G21\n' // millimeters
       lastCommand = data
+
       for (var item in data) {
         if (data[item].pickup) {
           // figure out which block to pick up
@@ -148,57 +136,18 @@
 
           var absPos = this.getAbsolutePosition(startRow, startCol)
           // move to position
-          // this.moveToYExtreme(false)
-                  // .then((code) => { gcode += code; console.log(code) })
-                  // .then(this.raiseMagnet(false))
-                  // .then((code) => { gcode += code })
-                  // .then(this.engageMagnet(false))
-                  // .then((code) => { gcode += code })
-                  // .then(this.dwell(1, false))
-                  // .then((code) => { gcode += code })
-                  // .then(this.raiseMagnet(false))
-                  // .then((code) => { gcode += code })
-                  // .then(this.moveToYExtreme(false))
-                  // .then((code) => { gcode += code })
-                  // .then(this.moveTo(positions[data[item].drop - 1][0], Y_EXTREME, false))
-                  // .then((code) => { gcode += code })
-                  // .then(this.moveTo(positions[data[item].drop - 1][0], positions[data[item].drop - 1][1], false))
-                  // .then((code) => { gcode += code })
-                  // .then(this.lowerMagnet(false))
-                  // .then((code) => { gcode += code })
-                  // .then(this.disengageMagnet(false))
-                  // .then((code) => { gcode += code })
-                  // .then(this.dwell(1, false))
-                  // .then((code) => { gcode += code })
-                  // .then(this.raiseMagnet(false))
-                  // .then((code) => { gcode += code })
-                  // .then(this.moveToYExtreme(false))
-                  // .then((code) => { console.log(gcode); gcode += code })
 
-          // gcode += this.disengageMagnet(false) // 'G90 Z-5\n'    // raise
-          // gcode += this.raiseMagnet(false) // 'G90 Z-5\n'    // raise
-          // gcode += this.moveTo(absPos[0] * 10, absPos[1] * 10, false) // 'G90 X' + (absPos[0] * 10) + ' Y' + (absPos[1] * 10) + '\n'  // move to position
-          // gcode += this.lowerMagnet(false) // 'G90 Z-15\n'   // lower
-          // gcode += this.engageMagnet(false) // 'M7\n'         // turn on
-          // gcode += this.dwell(1, false) // 'G04 P1\n'     // pause
-          // gcode += this.raiseMagnet(false) // 'G90 Z-5\n'    // raise
-          // gcode += this.moveTo(positions[data[item].drop - 1][0], positions[data[item].drop - 1][1], false)
-          // gcode += this.lowerMagnet(false) // 'G90 Z-15\n'   // lower
-          // gcode += this.disengageMagnet(false) // 'M7\n'         // turn on
-          // gcode += this.dwell(1, false) // 'G04 P1\n'     // pause
-          // gcode += this.raiseMagnet(false) // 'G90 Z-5\n'    // raise
-          //
-          this.sendGCode({ gcode: this.disengageMagnet(false) }) // 'G90 Z-5\n'    // raise
-          this.sendGCode({ gcode: this.raiseMagnet(false) }) // 'G90 Z-5\n'    // raise
-          this.sendGCode({ gcode: this.moveTo(absPos[0], absPos[1], false) }) // 'G90 X' + (absPos[0] * 10) + ' Y' + (absPos[1] * 10) + '\n'  // move to position
-          this.sendGCode({ gcode: this.lowerMagnet(false) }) // 'G90 Z-15\n'   // lower
-          this.sendGCode({ gcode: this.engageMagnet(false) }) // 'M7\n'         // turn on
-          this.sendGCode({ gcode: this.dwell(1, false) }) // 'G04 P1\n'     // pause
-          this.sendGCode({ gcode: this.raiseMagnet(false) }) // 'G90 Z-5\n'    // raise
-          this.sendGCode({ gcode: this.moveTo(positions[data[item].drop - 1][0], positions[data[item].drop - 1][1], false) })
-          this.sendGCode({ gcode: this.lowerMagnet(false) }) // 'G90 Z-15\n'   // lower
-          this.sendGCode({ gcode: this.disengageMagnet(false) }) // 'M7\n'         // turn on
-          this.sendGCode({ gcode: this.dwell(1, false) }) // 'G04 P1\n'     // pause
+          this.sendGCode({ source: identifier, gcode: this.disengageMagnet(false) }) // 'G90 Z-5\n'    // raise
+          this.sendGCode({ source: identifier, gcode: this.raiseMagnet(false) }) // 'G90 Z-5\n'    // raise
+          this.sendGCode({ source: identifier, gcode: this.moveTo(absPos[0], absPos[1], false) }) // 'G90 X' + (absPos[0] * 10) + ' Y' + (absPos[1] * 10) + '\n'  // move to position
+          this.sendGCode({ source: identifier, gcode: this.lowerMagnet(false) }) // 'G90 Z-15\n'   // lower
+          this.sendGCode({ source: identifier, gcode: this.engageMagnet(false) }) // 'M7\n'         // turn on
+          this.sendGCode({ source: identifier, gcode: this.dwell(1, false) }) // 'G04 P1\n'     // pause
+          this.sendGCode({ source: identifier, gcode: this.raiseMagnet(false) }) // 'G90 Z-5\n'    // raise
+          this.sendGCode({ source: identifier, gcode: this.moveTo(positions[data[item].drop - 1][0], positions[data[item].drop - 1][1], false) })
+          this.sendGCode({ source: identifier, gcode: this.lowerMagnet(false) }) // 'G90 Z-15\n'   // lower
+          this.sendGCode({ source: identifier, gcode: this.disengageMagnet(false) }) // 'M7\n'         // turn on
+          this.sendGCode({ source: identifier, gcode: this.dwell(1, false) }) // 'G04 P1\n'     // pause
 
           // var targetRow = positions[data[item].drop - 1][0]
           // var targetCol = positions[data[item].drop - 1][1]
@@ -214,13 +163,13 @@
           // this.dwell(data[item].delay)
           // gcode += 'G04 P' + data[item].delay + '\n'
 
-          this.sendGCode({ gcode: this.dwell(data[item].delay, false), message: data[item] })
+          this.sendGCode({ source: identifier, gcode: this.dwell(data[item].delay, false), message: data[item] })
         }
       }
       // gcode += 'G90 G0 X0 Y0 Z-10'
-      this.sendGCode({ gcode: 'G90 G0 X0 Y0 Z-20' })
+      this.sendGCode({ source: identifier, gcode: 'G90 G0 X0 Y0 Z-20' })
       // console.log('GCODE', gcode)
-      this.sendGCode({ gcode: this.dwell(10, false) }) // 'G04 P1\n'     // pause
+      this.sendGCode({ source: identifier, gcode: this.dwell(10, false) }) // 'G04 P1\n'     // pause
       this.reverseData()
 
       // SteamTIFF.serialPort.send(gcode)
@@ -228,8 +177,7 @@
     })
 
     this.reverseData = () => {
-      console.log(lastCommand)
-      console.log(inventory)
+
       for (var item in lastCommand) {
         if (lastCommand[item].pickup) {
           var startRow = lastCommand[item].pickup - 1
@@ -254,7 +202,7 @@
         }
       }
 
-      console.log("INVENTORY", inventory)
+      // console.log("INVENTORY", inventory)
 
       this.initCommands()
     }
@@ -383,81 +331,26 @@
       }
     }
 
-    this.getPathToPosition = (start, end) => new Promise((resolve, reject) => {
-      try {
-        // console.log(start, end)
-        let that = this
-        let results = aStar({
-          start: start,
-          isEnd: function (n) {
-            return n[0] === end[0] && n[1] === end[1]
-          },
-          neighbor: function (xy) {
-            return that.planarNeighbors(xy).filter(function (xy) {
-            // cell is walkable if it's not a "#" sign
-              // console.log(layout, xy, xy[1], layout[xy[1]], xy[0])
-              return layout[xy[1]].charAt(xy[0]) !== '0'
-            })
-          },
-          distance: this.euclideanDistance,
-          heuristic: function (xy) {
-            return that.euclideanDistance(xy, end)
-          }
-        })
-
-        SteamTIFF.log.notify(results.success)
-        resolve(results.path)
-      } catch (e) {
-        SteamTIFF.log.error(e)
-        reject(e)
-      }
-    })
-
-    this.planarNeighbors = (xy) => {
-      let x = xy[0]
-      let y = xy[1]
-      return [
-        [x - 1, y - 1],
-        [x - 1, y + 0],
-        [x - 1, y + 1],
-        [x + 0, y - 1],
-
-        [x + 0, y + 1],
-        [x + 1, y - 1],
-        [x + 1, y + 0],
-        [x + 1, y + 1]
-      ]
-    }
-    this.euclideanDistance = (a, b) => {
-      let dx = b[0] - a[0]
-      let dy = b[1] - a[1]
-      return Math.sqrt(dx * dx + dy * dy)
-    }
-
-    this.rectilinearDistance = (a, b) => {
-      let dx = b[0] - a[0]
-      let dy = b[1] - a[1]
-      return Math.abs(dx) + Math.abs(dy)
-    }
-
     this.sendGCode = (command) => {
       if (busy) return commandQueue.push(command)
 
-      console.log('SENDING COMMAND', command)
+      // SteamTIFF.log.notify()
       // commandQueue.push(command)
       // if (commandQueue.length > 0){
         // SteamTIFF.serialPort.send(commandQueue.shift())
       // }  else {
       if (command.message) SteamTIFF.socketServer.io.emit('global', { evt: 'message', data: command.message })
-
+      if (command.source && command.source !== lastCommandSource) SteamTIFF.socketServer.io.emit('global', { evt: 'changeSource', data: command.source })
       SteamTIFF.serialPort.send(command.gcode)
       // }
+
+      lastCommandSource = command.source || undefined
       busy = true
     }
 
     this.gotSerialData = (message) => {
       if (message.indexOf('ok') !== -1) {
-        console.log('XCARVE got serial data', message, commandQueue)
+        // console.log('XCARVE got serial data', message, commandQueue)
         busy = false
         if (commandQueue.length > 0) this.sendGCode(commandQueue.shift())
       }

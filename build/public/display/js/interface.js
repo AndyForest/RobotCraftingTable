@@ -7,7 +7,12 @@
   })
 
   var displayMessage = (data) => {
-    parseMessage(data.data.message.toString(), data.data.delay * 1000)
+    if (data.data.message) {
+        parseMessage(data.data.message.toString(), data.data.delay * 1000)
+    } else {
+      console.log("change source", data.data)
+    }
+
     /*
     console.log(data.data.message)
     document.getElementById('demoMessage').innerHTML = data.data.message

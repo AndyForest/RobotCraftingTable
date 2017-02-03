@@ -6,13 +6,38 @@
   var blocklyDiv = document.getElementById('blocklyDiv')
   var workspace = window.Blockly.inject(blocklyDiv, { media: '../../media/', toolbox: document.getElementById('toolbox') })
 
+  var idSelectorDiv = document.getElementById('pre')
+
   var init = () => new Promise((resolve, reject) => {
     server = window.io()
-    onresize()
-    window.Blockly.svgResize(workspace)
-
+    sortCookie();
     resolve()
   })
+
+  var onChangeId = (e) => {
+    window.localStorage['selector'] = JSON.stringify({ identifier: e.srcElement.value })
+
+    sortCookie();
+  }
+
+  var sortCookie = () => {
+    var data = window.localStorage['selector'] ? JSON.parse(window.localStorage['selector']) : '' // load
+
+    if (data === '') {
+      console.log('nothing is set yet')
+      idSelectorDiv.style.display = 'block'
+      // contentDiv.style.display = 'none'
+      document.getElementById('idSelector').addEventListener('change', onChangeId)
+    } else {
+      console.log('this ipad has already received an id', data)
+      idSelectorDiv.style.display = 'none'
+      // contentDiv.style.display = 'block'
+
+      onresize()
+      window.Blockly.svgResize(workspace)
+
+    }
+  }
 
   var addListeners = () => {
     window.addEventListener('resize', onresize, false)
@@ -80,4 +105,6 @@
     .then(addListeners)
     .then(() => server.emit('register', 'display'))
     .catch(err => console.log(err))
+
+  window.app = this
 }())

@@ -172,6 +172,7 @@
       }
 
       this.socketServer.potentialEvents.instructCommand = (data, connection) => {
+        console.log(data)
         this.xcarve.processCommands(data)
       }
 
