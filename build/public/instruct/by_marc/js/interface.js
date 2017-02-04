@@ -6,8 +6,12 @@
   var blocklyDiv = document.getElementById('blocklyDiv')
   var workspace = window.Blockly.inject(blocklyDiv, { media: '../../media/', toolbox: document.getElementById('toolbox') })
 
+  var idSelectorDiv = document.getElementById('idSelector')
+  var contentDiv = document.getElementById('pagewrap')
+
   var init = () => new Promise((resolve, reject) => {
     server = window.io()
+
     onresize()
     window.Blockly.svgResize(workspace)
 

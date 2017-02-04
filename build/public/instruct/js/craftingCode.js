@@ -200,10 +200,12 @@ function sendRobotInstructionSequence() {
     // It is contained in the variable: robotInstructionSequence
     // Send to robotServerURL
 
-    console.log(JSON.stringify(robotInstructionSequence));
+    robotInstructionSequence.unshift(JSON.parse(localStorage['selector']))
 
+    // console.log(JSON.stringify(robotInstructionSequence));
     // evt.preventDefault()
     server = window.io();
+    console.log(robotInstructionSequence)
     server.emit('instructCommand',
       robotInstructionSequence
     )

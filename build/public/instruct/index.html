@@ -36,9 +36,40 @@
     #blocklyArea {
       height: 99%;
     }
+
+    #pre {
+        position: fixed;
+        top: 0;
+        left:0;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+        background: white;
+    }
+
+    #contentforeground {
+      width: 100px;
+      height: 100px;
+      position: relative;
+      top: 50%;
+      margin: -50px auto 0;
+
+    }
+
   </style>
 </head>
 <body>
+
+  <div id="pre">
+    <!-- <div id="contentbackground"></div> -->
+    <div id="contentforeground">
+      <select id="idSelector">
+        <option value="1">ipad 1</option>
+        <option value="2">ipad 2</option>
+        <option value="3">ipad 3</option>
+      </select>
+    </div>
+  </div>
 
   <table>
     <tr>
