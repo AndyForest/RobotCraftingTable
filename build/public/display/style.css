@@ -4,7 +4,7 @@ Green: #609e60;
 Brown: #4F2F19;
 */
 
-/* STRUCTURE */
+/* no scroll  html, body {margin: 0; height: 100%; overflow: hidden} */
 
 #pagewrap {
   width: 100%;
@@ -12,7 +12,7 @@ Brown: #4F2F19;
 }
 
 header {
-  height: 240px;
+  height: 186px;
   background: url('images/sky.png') no-repeat fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -26,8 +26,8 @@ header img {
 }
 
 #container {
-  width: 1024px;
-  height: 504px;
+  width: 1120px;
+  height: 604px;
   margin: 0 auto;
  }
 
@@ -39,24 +39,37 @@ header img {
 }
 
 #middle {
-  background: url('images/wall.jpg') no-repeat;
-  width: 504px; /* Account for margins + border values */
+  background: url('images/wall.jpg') no-repeat center center;
+  background-color: black;
+  width: 544px; /* Account for margins + border values */
   float: left;
-  margin: 0 20px 0 20px;
+  margin: 0 32px 0 32px;
 }
 
 #sidebarRight {
   background: rgba(255,255,255, 0.75);
-  width: 240px;
+  width: 272px;
   height: 504px;
   float: left;
 }
 
 footer {
   clear: both;
-  padding: 0 15px;
+  height: 100px;
+  background: #ABABAB;
 }
 
+footer h2 { 
+  display: block;
+  border: none;
+  padding-top: 20px;
+}
+
+ .inventory { 
+    width: 100px;
+    height: 100px;
+    float: left;
+  }
 
 body {
   text-align: center;
@@ -94,6 +107,7 @@ h3 {
   width: 168px;
   height: 168px;
   float: left;
+  margin: 0 6.5px 0 6.5px;
 }
 
 .box h1 { 
