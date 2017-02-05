@@ -36,9 +36,19 @@
 
     // const Y_EXTREME = 750
 
-    const row1 = 240
+    /*
+    const row1 = 240 // 1 cm too far up
     const row2 = 400
-    const row3 = 560
+    const row3 = 560 // 1 cm too far down
+
+    const col1 = 752
+    const col2 = 592
+    const col3 = 432
+    */
+
+    const row1 = 230
+    const row2 = 400
+    const row3 = 570
 
     const col1 = 752
     const col2 = 592
@@ -65,7 +75,8 @@
     let lastCommand = []
     let currentIdentifier = 0
 
-    var inventory = [9, 9, 5, 5, 5, 5, 5, 9, 9]
+    //var inventory = [9, 9, 5, 5, 5, 5, 5, 9, 9]
+    var inventory = [8, 8, 4, 4, 5, 1, 0, 8, 8]
     // var board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     let SteamTIFF = null
@@ -208,8 +219,13 @@
     }
 
     this.getAbsolutePosition = (x, y) => {
-      let absoluteX = 30 + (92 * x) // ((OBJECT_WIDTH + passiveRowWidth) * x) + halfActiveRowWidth
-      let absoluteY = 30 + (72 * y) // ((OBJECT_WIDTH + passiveRowHeight) * y) + halfActiveRowWidth
+      // Turn a col and row into an absolute position for the cnc gcode
+
+      // let absoluteX = 30 + (92 * x) // ((OBJECT_WIDTH + passiveRowWidth) * x) + halfActiveRowWidth
+      // let absoluteY = 30 + (72 * y) // ((OBJECT_WIDTH + passiveRowHeight) * y) + halfActiveRowWidth
+
+      let absoluteX = 25 + (92 * x)
+      let absoluteY = 43 + (72 * y)
 
       console.log(x, y, absoluteX, absoluteY)
       return [absoluteX, absoluteY]
@@ -300,12 +316,17 @@
       SteamTIFF.log.notify('⚡  lower the magnet')
       direct = (direct !== undefined) ? direct : true
       if (direct) {
-        SteamTIFF.serialPort.send('G90 G0 Z-25')
-        // Note: looks like we need to lower by 86 mm instead:
-        // SteamTIFF.serialPort.send('G90 G0 Z-86')
+        // Lower by 25 mm:
+        // SteamTIFF.serialPort.send('G90 G0 Z-25')
+
+        // lower by 86 mm height instead:
+        SteamTIFF.serialPort.send('G90 G0 Z-84')
+
         // resolve()
       } else {
-        return 'G90 G0 Z-35'
+        // return 'G90 G0 Z-35'
+        // lower by 86 mm height instead:
+        return 'G90 G0 Z-84'
       }
     }
 
