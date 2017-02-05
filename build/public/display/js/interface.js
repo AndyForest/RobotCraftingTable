@@ -16,9 +16,11 @@
       console.log("change source", data.data.identifier)
       // active = data.data.// IDEA:
       active = queue.shift()
+      updateQueue()
     } else if (data.evt === 'addedToQueue'){
-      
       queue.push(data.data)
+
+      updateQueue();
     }
 
     console.log(queue)
@@ -28,6 +30,16 @@
     document.getElementById('demoMessage').innerHTML = data.data.message
     setTimeout(clearScreen, parseInt(data.data.duration) * 1000)
     */
+  }
+
+  var updateQueue = () {
+    if (active !== undefined) {
+      $('#queue1').html('<h3>Now:</h3><img src="./images/iPad' + active + '.png"/>')
+    }
+
+    if (queue.length >= 1) $('#queue2').html('<h3>Next:</h3><img src="images/iPad' + queue[0] + '.png"/>')
+    if (queue.length >= 2) $('#queue3').html('<h3>Next:</h3><img src="images/iPad' + queue[1] + '.png"/>')
+    // $('#queue3').html('<h3>Next:</h3><img src="images/iPad' + messageArr[1].charAt(2) + '.png"/>')
   }
 
   var clearScreen = () => {
