@@ -29,13 +29,13 @@ function initCraftingSequence(userLevel) {
   // Starting inventory levels
   if (userLevel == 2) {
     // Everything unlocked
-    inventoryCount = [0,9,9,5,5,5,5,0,9,9];
+    inventoryCount = [0, 8, 8, 4, 4, 5, 1, 0, 8, 8];
   } else if (userLevel == 1) {
     // Iron unlocked
-    inventoryCount = [0,9,9,5,5,5,5,0,9,0];
+    inventoryCount = [0, 8, 8, 4, 4, 5, 1, 0, 8, 0];
   } else {
     // Basic items unlocked
-    inventoryCount = [0,9,9,5,5,5,5,0,0,0];
+    inventoryCount = [0, 8, 8, 4, 4, 5, 1, 0, 0, 0];
   }
 
   // starts at 1, not 0
@@ -128,6 +128,12 @@ function selectInventorySlotSequence(inventorySlotNum) {
       robotHolding = inventorySlotNum;
       inventoryCount[inventorySlotNum] = inventoryCount[inventorySlotNum] -1;
 
+      // Send the current inventory counts
+      var messageToSend = "inventoryCount"
+      for (var i=1;i<=9;i++) {
+        messageToSend = messageToSend + "," + inventoryCount[i]
+      }
+      robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 0};
     }
   }
 }
@@ -209,6 +215,8 @@ function sendRobotInstructionSequence() {
     server.emit('instructCommand',
       robotInstructionSequence
     )
+
+    alertMessage('Your instructions have been sent to the robot!');
   }
 }
 

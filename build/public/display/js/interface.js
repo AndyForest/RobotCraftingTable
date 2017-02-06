@@ -32,7 +32,7 @@
     */
   }
 
-  var updateQueue = () {
+  var updateQueue = () => {
     if (active !== undefined) {
       $('#queue1').html('<h3>Now:</h3><img src="./images/iPad' + active + '.png"/>')
     }
@@ -101,6 +101,12 @@ function parseMessage (messageData, messageParameter) {
     $('#queue1').html('<h3>Now:</h3><img src="./images/iPad' + messageArr[1].charAt(0) + '.png"/>')
     $('#queue2').html('<h3>Next:</h3><img src="images/iPad' + messageArr[1].charAt(1) + '.png"/>')
     $('#queue3').html('<h3>Next:</h3><img src="images/iPad' + messageArr[1].charAt(2) + '.png"/>')
+  } else if (messageArr[0] === 'inventoryCount') {
+    // Update the inventory counts
+    for (var i=1;i<=9;i++) {
+      $('#inventory' + i).html(messageArr[i]);
+    }
+
   }
 }
 
