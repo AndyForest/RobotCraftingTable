@@ -59,17 +59,66 @@ footer {
   background: #ABABAB;
 }
 
-footer h2 { 
+footer h2 {
   display: block;
   border: none;
   padding-top: 20px;
 }
 
- .inventory { 
+ .inventory {
     width: 100px;
     height: 100px;
     float: left;
+    color: white;
+    font-size: 50px;
+    text-shadow: 2px 2px 1px rgba(0,0,0,1);
+    text-align: right;
+    vertical-align: bottom;
+    font: courier;
+    background-size: contain;
   }
+
+p.inventory {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.inventory1 {
+  background-image: url('images/materials/1.png');
+}
+
+.inventory2 {
+  background-image: url('images/materials/2.png');
+}
+
+.inventory3 {
+  background-image: url('images/materials/3.png');
+}
+
+.inventory4 {
+  background-image: url('images/materials/4.png');
+}
+
+.inventory5 {
+  background-image: url('images/materials/5.png');
+}
+
+.inventory6 {
+  background-image: url('images/materials/6.png');
+}
+
+.inventory7 {
+  /* background-image: url('images/materials/7.png'); */
+}
+
+.inventory8 {
+  background-image: url('images/materials/8.png');
+}
+
+.inventory9 {
+  background-image: url('images/materials/9.png');
+}
 
 body {
   text-align: center;
@@ -110,7 +159,7 @@ h3 {
   margin: 0 6.5px 0 6.5px;
 }
 
-.box h1 { 
+.box h1 {
   color: #FFF;
   font-size: 100px;
   display: inline-block;
