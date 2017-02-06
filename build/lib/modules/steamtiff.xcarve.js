@@ -254,7 +254,8 @@
           // TODO: Hunt for the block in case it shifted
           var moveCoords = [positions[lastCommand[item].drop - 1][0], positions[lastCommand[item].drop - 1][1]];
           for (var spiralNum = 0; spiralNum < spiralOffsets.length; spiralNum++) {
-            this.sendGCode({ source: identifier, gcode: this.moveTo(moveCoords[0] +  spiralOffsets[spiralNum][0], moveCoords[1] +  spiralOffsets[spiralNum][1], false) })
+            // this.sendGCode({ source: identifier, gcode: this.moveTo(moveCoords[0] +  spiralOffsets[spiralNum][0], moveCoords[1] +  spiralOffsets[spiralNum][1], false) })
+            this.sendGCode({ gcode: this.moveTo(moveCoords[0] +  spiralOffsets[spiralNum][0], moveCoords[1] +  spiralOffsets[spiralNum][1], false) })
           }
 
           this.sendGCode({ gcode: this.raiseMagnet(false) }) // 'G90 Z-5\n'    // raise
