@@ -160,7 +160,7 @@
         [0,0]
       ];
       */
-      spiralOffsets = [0,0]
+      spiralOffsets = [0,0];
 
       for (var item in data) {
         if (data[item].pickup) {
