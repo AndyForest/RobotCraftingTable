@@ -90,8 +90,17 @@
       [0,0]
     ];
     */
-    spiralOffsets = [0,0];
-    
+    spiralOffsets = [
+      [1,0],
+      [1,1],
+      [0,1],
+      [-1,1],
+      [-1,0],
+      [-1,-1],
+      [0,-1],
+      [1,-1]
+    ];
+
 //
 // spacing = 92 horizontally
 //           72 vertically
