@@ -65,6 +65,33 @@
       [ row2, col3 ],
       [ row3, col3 ]
     ]
+
+    // spiral offsets
+    /*
+    var spiralOffsets = [
+      [1,0],
+      [1,1],
+      [0,1],
+      [-1,1],
+      [-1,0],
+      [-1,-1],
+      [0,-1],
+      [1,-1],
+
+      [3,0],
+      [3,3],
+      [0,3],
+      [-3,3],
+      [-3,0],
+      [-3,-3],
+      [0,-3],
+      [3,-3],
+
+      [0,0]
+    ];
+    */
+    spiralOffsets = [0,0];
+    
 //
 // spacing = 92 horizontally
 //           72 vertically
@@ -136,31 +163,7 @@
       // gcode += 'G21\n' // millimeters
       lastCommand = data
 
-      // spiral offsets
-      /*
-      var spiralOffsets = [
-        [1,0],
-        [1,1],
-        [0,1],
-        [-1,1],
-        [-1,0],
-        [-1,-1],
-        [0,-1],
-        [1,-1],
 
-        [3,0],
-        [3,3],
-        [0,3],
-        [-3,3],
-        [-3,0],
-        [-3,-3],
-        [0,-3],
-        [3,-3],
-
-        [0,0]
-      ];
-      */
-      spiralOffsets = [0,0];
 
       for (var item in data) {
         if (data[item].pickup) {
