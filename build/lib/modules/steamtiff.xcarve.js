@@ -137,6 +137,7 @@
       lastCommand = data
 
       // spiral offsets
+      /*
       var spiralOffsets = [
         [1,0],
         [1,1],
@@ -158,6 +159,8 @@
 
         [0,0]
       ];
+      */
+      spiralOffsets = [0,0]
 
       for (var item in data) {
         if (data[item].pickup) {
