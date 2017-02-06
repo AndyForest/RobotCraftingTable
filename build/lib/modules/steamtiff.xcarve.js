@@ -136,6 +136,36 @@
       // gcode += 'G21\n' // millimeters
       lastCommand = data
 
+      // spiral offsets
+      var spiralOffsets = [
+        [1,0],
+        [1,1],
+        [0,1],
+        [-1,1],
+        [-1,0],
+        [-1,-1],
+        [0,-1],
+        [1,-1],
+
+        [2,0],
+        [2,2],
+        [0,2],
+        [-2,2],
+        [-2,0],
+        [-2,-2],
+        [0,-2],
+        [2,-2],
+
+        [3,0],
+        [3,3],
+        [0,3],
+        [-3,3],
+        [-3,0],
+        [-3,-3],
+        [0,-3],
+        [3,-3]
+      ];
+
       for (var item in data) {
         if (data[item].pickup) {
           // figure out which block to pick up
@@ -154,6 +184,13 @@
           this.sendGCode({ source: identifier, gcode: this.lowerMagnet(false) }) // 'G90 Z-15\n'   // lower
           this.sendGCode({ source: identifier, gcode: this.engageMagnet(false) }) // 'M7\n'         // turn on
           this.sendGCode({ source: identifier, gcode: this.dwell(1, false) }) // 'G04 P1\n'     // pause
+
+          // TODO: Hunt for the block in case it shifted
+          var moveCoords = [absPos[0], absPos[1]];
+          for (var spiralNum = 0; spiralNum < spiralOffsets.length; spiralNum++) {
+            this.sendGCode({ source: identifier, gcode: this.moveTo(moveCoords[0] +  spiralOffsets[spiralNum][0], moveCoords[1] +  spiralOffsets[spiralNum][1], false) })
+          }
+
           this.sendGCode({ source: identifier, gcode: this.raiseMagnet(false) }) // 'G90 Z-5\n'    // raise
           this.sendGCode({ source: identifier, gcode: this.moveTo(positions[data[item].drop - 1][0], positions[data[item].drop - 1][1], false) })
           this.sendGCode({ source: identifier, gcode: this.lowerMagnet(false) }) // 'G90 Z-15\n'   // lower
@@ -205,6 +242,9 @@
           this.sendGCode({ gcode: this.lowerMagnet(false) }) // 'G90 Z-15\n'   // lower
           this.sendGCode({ gcode: this.engageMagnet(false) }) // 'M7\n'         // turn on
           this.sendGCode({ gcode: this.dwell(1, false) }) // 'G04 P1\n'     // pause
+
+          // TODO: Hunt for the block in case it shifted
+
           this.sendGCode({ gcode: this.raiseMagnet(false) }) // 'G90 Z-5\n'    // raise
           this.sendGCode({ gcode: this.moveTo(absPos[0], absPos[1], false) }) // 'G90 X' + (absPos[0] * 10) + ' Y' + (absPos[1] * 10) + '\n'  // move to position
           this.sendGCode({ gcode: this.lowerMagnet(false) }) // 'G90 Z-15\n'   // lower
