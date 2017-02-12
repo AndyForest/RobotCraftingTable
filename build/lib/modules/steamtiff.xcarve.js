@@ -196,6 +196,9 @@
           this.sendGCode({ source: identifier, gcode: this.moveTo(positions[data[item].drop - 1][0], positions[data[item].drop - 1][1], false) })
           this.sendGCode({ source: identifier, gcode: this.lowerMagnet(false) }) // 'G90 Z-15\n'   // lower
           this.sendGCode({ source: identifier, gcode: this.disengageMagnet(false) }) // 'M7\n'         // turn on
+          this.sendGCode({ source: identifier, gcode: this.reversePolarity(false) }) // 'M7\n'         // turn on
+          this.sendGCode({ source: identifier, gcode: this.dwell(0.02, false) }) // 'G04 P1\n'     // pause
+          this.sendGCode({ source: identifier, gcode: this.disengageMagnet(false) }) // 'M7\n'         // turn on
           this.sendGCode({ source: identifier, gcode: this.dwell(1, false) }) // 'G04 P1\n'     // pause
 
           // var targetRow = positions[data[item].drop - 1][0]
@@ -254,6 +257,9 @@
           this.sendGCode({ gcode: this.raiseMagnet(false) }) // 'G90 Z-5\n'    // raise
           this.sendGCode({ gcode: this.moveTo(absPos[0], absPos[1], false) }) // 'G90 X' + (absPos[0] * 10) + ' Y' + (absPos[1] * 10) + '\n'  // move to position
           this.sendGCode({ gcode: this.lowerMagnet(false) }) // 'G90 Z-15\n'   // lower
+          this.sendGCode({ gcode: this.disengageMagnet(false) }) // 'M7\n'         // turn on
+          this.sendGCode({ gcode: this.reversePolarity(false) }) // 'M7\n'         // turn on
+          this.sendGCode({ gcode: this.dwell(0.02, false) }) // 'G04 P1\n'     // pause
           this.sendGCode({ gcode: this.disengageMagnet(false) }) // 'M7\n'         // turn on
           this.sendGCode({ gcode: this.dwell(1, false) }) // 'G04 P1\n'     // pause
         }
@@ -351,10 +357,21 @@
       SteamTIFF.log.notify('⚡  disengage the magnet')
       direct = (direct !== undefined) ? direct : true
       if (direct) {
-        SteamTIFF.serialPort.send('M9\nM4 P1\n')
+        SteamTIFF.serialPort.send('M9')
         // resolve()
       } else {
         return 'M9'
+      }
+    }
+	
+    this.reversePolarity = (direct) => {
+      SteamTIFF.log.notify('⚡  reverse polarity of the magnet')
+      direct = (direct !== undefined) ? direct : true
+      if (direct) {
+        SteamTIFF.serialPort.send('M7')
+        // resolve()
+      } else {
+        return 'M7'
       }
     }
 
