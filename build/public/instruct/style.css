@@ -15,6 +15,19 @@ table {
   height: 100%;
   width: 100%;
 }
+
+.Off {
+  visibility: hidden;
+}
+
+#helpDisplay {
+  position: absolute;
+  top: 110px;
+  left: 100px;
+  z-index: 2000;
+  background: white;
+}
+
 #blocklyArea {
   height: 99%;
 }

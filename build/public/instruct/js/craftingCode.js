@@ -45,6 +45,11 @@ if (  $.urlParam('myID') != null) {
   window.localStorage['selector'] = JSON.stringify({ identifier: myID })
 }
 
+$( document ).ready(function() {
+  showHelp();
+});
+
+
 function initCraftingSequence(userLevelOverride) {
 
   if ( userLevelOverride == null) {
@@ -366,4 +371,79 @@ function timerIncrement() {
 
 function alertMessage(alertMessage){
   window.alert(alertMessage);
+}
+
+function closeHelp(){
+  $('#helpDisplay').removeClass('animated zoomIn');
+  setTimeout(function () {
+    $('#helpDisplay').addClass('animated zoomOut');
+  }, 100)
+  setTimeout(function () {
+    $('#helpDisplay').addClass('Off');
+  }, 500)
+}
+
+function showHelp(helpLevel){
+  var helpHTML = '';
+  if (helpLevel == null) helpLevel = 1;
+  if (userLevel == 1) {
+    if (helpLevel == 1) {
+      helpHTML = '<h2 onclick="closeHelp()">There are coding blocks in the “Crafting” section on the left. Use the “Select Inventory” block to select an inventory item. Then use the “Place in crafting table” block to position it for the recipe you want to complete. Craft some sticks to progress to the next level with more recipes available!</h2>';
+    } else {
+      helpHTML = '<h2 onclick="closeHelp()">Here’s the recipe to progress to the next level:</h2>';
+    }
+  } else if (userLevel == 2) {
+    // Level 2 help
+    if (helpLevel == 1) {
+      helpHTML = '<h2 onclick="closeHelp()"></h2>';
+    } else {
+      helpHTML = '<h2 onclick="closeHelp()"></h2>';
+    }
+  } else if (userLevel == 3) {
+    // Level 3 help
+    if (helpLevel == 1) {
+      helpHTML = '<h2 onclick="closeHelp()"></h2>';
+    } else {
+      helpHTML = '<h2 onclick="closeHelp()"></h2>';
+    }
+  } else if (userLevel == 4) {
+    // Level 4 help
+    if (helpLevel == 1) {
+      helpHTML = '<h2 onclick="closeHelp()"></h2>';
+    } else {
+      helpHTML = '<h2 onclick="closeHelp()"></h2>';
+    }
+  } else if (userLevel == 5) {
+    // Level 5 help
+    if (helpLevel == 1) {
+      helpHTML = '<h2 onclick="closeHelp()"></h2>';
+    } else {
+      helpHTML = '<h2 onclick="closeHelp()"></h2>';
+    }
+  } else if (userLevel == 6) {
+    // Level 6 help
+    if (helpLevel == 1) {
+      helpHTML = '<h2 onclick="closeHelp()"></h2>';
+    } else {
+      helpHTML = '<h2 onclick="closeHelp()"></h2>';
+    }
+}
+
+  if (helpLevel == 1) {
+    helpHTML = helpHTML + '<button onclick="showHelp(2)">More Help</button>\n';
+  } else if (helpLevel == 2) {
+    helpHTML = helpHTML + '<button onclick="showHelp(1)">More Help</button>\n';
+  }
+
+  helpHTML = helpHTML + '<button onclick="closeHelp()">Close Help</button>\n';
+
+  $('#helpDisplay').addClass('Off');
+  $('#helpDisplay').removeClass('animated zoomIn zoomOut');
+  $('#helpDisplay').html('');
+
+  setTimeout(function () {
+    $('#helpDisplay').html(helpHTML);
+    $('#helpDisplay').addClass('animated zoomIn');
+    $('#helpDisplay').removeClass('Off');
+  }, 100)
 }
