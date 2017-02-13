@@ -46,13 +46,14 @@
     const col3 = 432
     */
 
-    const row1 = 230
-    const row2 = 400
-    const row3 = 570
+    /* 450 mm wide grid */
+    const row1 = 245
+    const row2 = row1 + 450/3
+    const row3 = row2 + 450/3
 
-    const col1 = 752
-    const col2 = 592
-    const col3 = 432
+    const col1 = 744
+    const col2 = col1 - 450/3
+    const col3 = col2 - 450/3
 
     var positions = [
       [ row1, col1 ],
@@ -180,7 +181,7 @@
           // move to position
 
           this.sendGCode({ source: identifier, gcode: this.disengageMagnet(false) }) // 'G90 Z-5\n'    // raise
-          this.sendGCode({ source: identifier, gcode: this.raiseMagnet(false) }) // 'G90 Z-5\n'    // raise
+          this.sendGCode({ source: identifier, gcode: this.raiseMagnetABit(false) }) // 'G90 Z-5\n'    // raise
           this.sendGCode({ source: identifier, gcode: this.moveTo(absPos[0], absPos[1], false) }) // 'G90 X' + (absPos[0] * 10) + ' Y' + (absPos[1] * 10) + '\n'  // move to position
           this.sendGCode({ source: identifier, gcode: this.lowerMagnet(false) }) // 'G90 Z-15\n'   // lower
           this.sendGCode({ source: identifier, gcode: this.engageMagnet(false) }) // 'M7\n'         // turn on
@@ -196,10 +197,11 @@
           this.sendGCode({ source: identifier, gcode: this.moveTo(positions[data[item].drop - 1][0], positions[data[item].drop - 1][1], false) })
           this.sendGCode({ source: identifier, gcode: this.lowerMagnet(false) }) // 'G90 Z-15\n'   // lower
           this.sendGCode({ source: identifier, gcode: this.disengageMagnet(false) }) // 'M7\n'         // turn on
-		  this.sendGCode({ source: identifier, gcode: this.reversePolarity(false) }) // 'M7\n'         // turn on
-		  this.sendGCode({ source: identifier, gcode: this.dwell(0.02, false) }) // 'G04 P1\n'     // pause
-		  this.sendGCode({ source: identifier, gcode: this.disengageMagnet(false) }) // 'M7\n'         // turn on
-          this.sendGCode({ source: identifier, gcode: this.dwell(1, false) }) // 'G04 P1\n'     // pause
+          this.sendGCode({ source: identifier, gcode: this.reversePolarity(false) }) // 'M7\n'         // turn on
+          this.sendGCode({ source: identifier, gcode: this.dwell(0.02, false) }) // 'G04 P1\n'     // pause
+          this.sendGCode({ source: identifier, gcode: this.disengageMagnet(false) }) // 'M7\n'         // turn on
+          this.sendGCode({ source: identifier, gcode: this.dwell(0.2, false) }) // 'G04 P1\n'     // pause
+          this.sendGCode({ source: identifier, gcode: this.raiseMagnetABit(false) })
 
           // var targetRow = positions[data[item].drop - 1][0]
           // var targetCol = positions[data[item].drop - 1][1]
@@ -219,9 +221,11 @@
         }
       }
       // gcode += 'G90 G0 X0 Y0 Z-10'
-      this.sendGCode({ source: identifier, gcode: 'G90 G0 X0 Y0 Z-20' })
+      // Move the arm out of the way so you can see what you built
+      this.sendGCode({ source: identifier, gcode: this.disengageMagnet(false) })
+      this.sendGCode({ source: identifier, gcode: 'G90 G0 X0 Y750 Z-62' })
       // console.log('GCODE', gcode)
-      this.sendGCode({ source: identifier, gcode: this.dwell(10, false) }) // 'G04 P1\n'     // pause
+      this.sendGCode({ source: identifier, gcode: this.dwell(2, false) }) // 'G04 P1\n'     // pause
       this.reverseData()
 
       // SteamTIFF.serialPort.send(gcode)
@@ -241,7 +245,7 @@
           var absPos = this.getAbsolutePosition(startRow, startCol)
           // move to position
           this.sendGCode({ gcode: this.disengageMagnet(false) }) // 'G90 Z-5\n'    // raise
-          this.sendGCode({ gcode: this.raiseMagnet(false) }) // 'G90 Z-5\n'    // raise
+          this.sendGCode({ gcode: this.raiseMagnetABit(false) }) // 'G90 Z-5\n'    // raise
           this.sendGCode({ gcode: this.moveTo(positions[lastCommand[item].drop - 1][0], positions[lastCommand[item].drop - 1][1], false) })
           this.sendGCode({ gcode: this.lowerMagnet(false) }) // 'G90 Z-15\n'   // lower
           this.sendGCode({ gcode: this.engageMagnet(false) }) // 'M7\n'         // turn on
@@ -259,15 +263,21 @@
           this.sendGCode({ gcode: this.lowerMagnet(false) }) // 'G90 Z-15\n'   // lower
           this.sendGCode({ gcode: this.disengageMagnet(false) }) // 'M7\n'         // turn on
           this.sendGCode({ gcode: this.reversePolarity(false) }) // 'M7\n'         // turn on
-		  this.sendGCode({ gcode: this.dwell(0.02, false) }) // 'G04 P1\n'     // pause
-		  this.sendGCode({ gcode: this.disengageMagnet(false) }) // 'M7\n'         // turn on
-		  this.sendGCode({ gcode: this.dwell(1, false) }) // 'G04 P1\n'     // pause
+    		  this.sendGCode({ gcode: this.dwell(0.02, false) }) // 'G04 P1\n'     // pause
+    		  this.sendGCode({ gcode: this.disengageMagnet(false) }) // 'M7\n'         // turn on
+          this.sendGCode({ gcode: this.raiseMagnetABit(false) })
+    		  this.sendGCode({ gcode: this.dwell(0.2, false) }) // 'G04 P1\n'     // pause
         }
       }
 
       // console.log("INVENTORY", inventory)
 
-      this.initCommands()
+      // Move the machine to 0,0 so that it can return to home faster
+      this.sendGCode({ gcode: this.moveTo(0, 0, false) })
+      this.sendGCode({ gcode: this.dwell(2, false) })
+
+      // Andy commented this out
+      // this.initCommands()
     }
 
     this.getAbsolutePosition = (x, y) => {
@@ -276,8 +286,8 @@
       // let absoluteX = 30 + (92 * x) // ((OBJECT_WIDTH + passiveRowWidth) * x) + halfActiveRowWidth
       // let absoluteY = 30 + (72 * y) // ((OBJECT_WIDTH + passiveRowHeight) * y) + halfActiveRowWidth
 
-      let absoluteX = 25 + (92 * x)
-      let absoluteY = 43 + (72 * y)
+      let absoluteX = 26.5 + (92 * x)
+      let absoluteY = 44 + (72 * y)
 
       console.log(x, y, absoluteX, absoluteY)
       return [absoluteX, absoluteY]
@@ -363,11 +373,11 @@
         return 'M9'
       }
     }
-	
+
 	this.reversePolarity = (direct) => {
 		SteamTIFF.log.notify(' reverse polarity of the magnet')
 		direct = (direct !== undefined) ? direct : true
-		if (direct) { 
+		if (direct) {
 		SteamTIFF.serialPort.send('M7')
 		// resolve()
 		} else {
@@ -382,14 +392,13 @@
         // Lower by 25 mm:
         // SteamTIFF.serialPort.send('G90 G0 Z-25')
 
-        // lower by 86 mm height instead:
-        SteamTIFF.serialPort.send('G90 G0 Z-82.3')
+        SteamTIFF.serialPort.send('G90 G0 Z-72')
 
         // resolve()
       } else {
         // return 'G90 G0 Z-35'
         // lower by 86 mm height instead:
-        return 'G90 G0 Z-84'
+        return 'G90 G0 Z-72'
       }
     }
 
@@ -397,10 +406,21 @@
       SteamTIFF.log.notify('⚡  raise the magnet')
       direct = (direct !== undefined) ? direct : true
       if (direct) {
-        SteamTIFF.serialPort.send('G90 G0 Z0')
+        SteamTIFF.serialPort.send('G90 G0 Z-5')
         // resolve()
       } else {
-        return 'G90 Z-20'
+        return 'G90 Z-5'
+      }
+    }
+
+    this.raiseMagnetABit = (direct) => {
+      SteamTIFF.log.notify('⚡  raise the magnet')
+      direct = (direct !== undefined) ? direct : true
+      if (direct) {
+        SteamTIFF.serialPort.send('G90 G0 Z-62')
+        // resolve()
+      } else {
+        return 'G90 Z-62'
       }
     }
 
@@ -437,6 +457,10 @@
         // console.log('XCARVE got serial data', message, commandQueue)
         busy = false
         if (commandQueue.length > 0) this.sendGCode(commandQueue.shift())
+      } else  {
+        // ALARM: Hard limit
+        // when the z axis limit switch triggers
+        console.log('XCARVE got serial data', message, commandQueue)
       }
     }
 

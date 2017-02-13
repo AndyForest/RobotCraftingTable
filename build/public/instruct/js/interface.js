@@ -4,7 +4,7 @@
 
   var blocklyArea = document.getElementById('blocklyArea')
   var blocklyDiv = document.getElementById('blocklyDiv')
-  var workspace = window.Blockly.inject(blocklyDiv, { media: '../../media/', toolbox: document.getElementById('toolbox') })
+  // var workspace = window.Blockly.inject(blocklyDiv, { media: '../externals/blockly/media/', toolbox: document.getElementById('toolbox') })
 
   var idSelectorDiv = document.getElementById('pre')
 

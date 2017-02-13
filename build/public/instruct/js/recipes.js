@@ -1,3 +1,6 @@
+// Item ID lookup table
+var itemCodeLookup = [["Blank","0"], ["Planks","1"], ["Cobblestone","2"], ["Sticks","3"], ["Sand","4"], ["Gunpowder","5"], ["Redstone","6"], ["Empty", "7"], ["Iron", "8"], ["Diamond","9"]];
+
 craftingRecipesArr = [
   {
     "1": 1,

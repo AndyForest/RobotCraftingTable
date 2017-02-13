@@ -16,10 +16,11 @@
   <![endif]-->
 
   <script src="../externals/jquery-3.1.1.min.js"></script>
+  <script src="../instruct/js/recipes.js"></script>
 </head>
 
 <body>
-  <script src="http://localhost:8080/socket.io/socket.io.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
   <script src="./js/interface.js"></script>
 
 <section id="pagewrap">
@@ -39,8 +40,8 @@
 
     <!-- <img src="images/mining8.png"/> -->
     <section id="middle">
-	  <h3>Mine to get stone, iron and diamond!</h3>
-      <section class="box" id="mining1"/><h1>1</h1></section>
+	  <h3>First challenge: Craft some sticks</h3>
+      <section class="box" id="mining1"/><h1>1</h1><img src="images/mining8.png"/></section>
       <section class="box" id="mining2"/><h1>2</h1></section>
       <section class="box" id="mining3"/><h1>3</h1></section>
       <section class="box" id="mining4"/><h1>4</h1></section>
@@ -55,11 +56,20 @@
     <section id="sidebarRight">
     <h2>Recently Crafted</h2>
       <ol>
-        <li id="success1"></li>
+        <li id="success1"><!-- <img src="images/recipeSuccess/22.png"/> --></li>
         <li id="success2"></li>
         <li id="success3"></li>
       </ol>
+      <section id="craftingMessage" class="Off">
+        <!-- Example Success Message: -->
+        <!--
+        <h2>Success!</h3>
+          <p>You have built a stone pickaxe, unlocking iron mining. Build an iron pickaxe to unlock the next level.</p>
+        -->
+      </section>
     </section>
+
+
 
     <footer>
 	  <section class="inventory"><h2>inventory:</h2></section>

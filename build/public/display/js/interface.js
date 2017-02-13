@@ -1,3 +1,5 @@
+var myID;
+
 (function () {
   'use strict'
   var queue = []
@@ -37,8 +39,18 @@
       $('#queue1').html('<h3>Now:</h3><img src="./images/iPad' + active + '.png"/>')
     }
 
-    if (queue.length >= 1) $('#queue2').html('<h3>Next:</h3><img src="images/iPad' + queue[0] + '.png"/>')
-    if (queue.length >= 2) $('#queue3').html('<h3>Next:</h3><img src="images/iPad' + queue[1] + '.png"/>')
+    if (queue.length >= 1) {
+      $('#queue2').html('<h3>Next:</h3><img src="images/iPad' + queue[0] + '.png"/>')
+    } else {
+      $('#queue2').html('');
+    }
+
+    if (queue.length >= 2) {
+      $('#queue3').html('<h3>Next:</h3><img src="images/iPad' + queue[1] + '.png"/>')
+    } else {
+      $('#queue3').html('');
+    }
+
     // $('#queue3').html('<h3>Next:</h3><img src="images/iPad' + messageArr[1].charAt(2) + '.png"/>')
   }
 
@@ -59,16 +71,21 @@
 function parseMessage (messageData, messageParameter) {
   // Display message for debugging
   console.log(messageData + ' ' + messageParameter)
-  document.getElementById('demoMessage').innerHTML = messageData + ' ' + messageParameter
+  // document.getElementById('demoMessage').innerHTML = messageData + ' ' + messageParameter
 
   var messageArr = messageData.split(',')
 
-  if (messageArr[0] === 'checkMiningBlock') {
+  if (messageArr[0] == 'checkMiningBlock') {
     // Hilight a mining target block that is being checked
     // eg: "checkMiningBlock,1"
-    var blockNum = parseInt(messageParameter)
+    var blockNum = parseInt(messageArr[1])
     console.log('blockNum: ' + blockNum)
-    selectMiningBlock(messageArr[1])
+    selectMiningBlock(blockNum)
+  } else if (messageArr[0] === 'myID') {
+    // Initialize display
+    $('#craftingMessage').addClass('Off');
+    myID = messageArr[1];
+
   } else if (messageArr[0] === 'miningTargets') {
     // Set the mining target blocks displayed on the screen
     // eg: "miningTargets,800900000"
@@ -76,14 +93,28 @@ function parseMessage (messageData, messageParameter) {
       console.log('miningTargets setting: ' + i)
       var miningtargetblocktypeid = messageArr[1].charAt(i - 1)
       if (miningtargetblocktypeid === '0') {
-        $('#mining' + i).html('')
+        $('#mining' + i).html('<h1>1</h1>')
+      } else if (miningtargetblocktypeid === '2') {
+        $('#mining' + i).html('<h1>' + i + '</h1>')
       } else {
-        $('#mining' + i).html('<img src="images/mining' + miningtargetblocktypeid + '.png"/>')
+        $('#mining' + i).html('<h1>' + i + '</h1>' + '<img src="images/mining' + miningtargetblocktypeid + '.png" />')
       }
     }
   } else if (messageArr[0] === 'mineBlock') {
-    // mineBlock,2
-    // TODO: display the mining of the block on screen
+    // mineBlock,2,4
+    // Display the mining of the block on screen
+    var minedBlockID = parseInt(messageArr[1])
+    var miningLocationID = parseInt(messageArr[2])
+
+    $('#inventory' + minedBlockID).removeClass('animated bounceIn')
+    $('#mining' + miningLocationID).removeClass('animated bounceIn')
+
+    setTimeout(function () {
+      $('#inventory' + minedBlockID).addClass('animated bounceIn')
+      $('#mining' + miningLocationID).addClass('animated bounceIn')
+    }, 100)
+
+    showSuccessMessage('You have mined some ' + itemCodeLookup[minedBlockID][0]);
 
   } else if (messageArr[0] === 'recipeComplete') {
     // recipeComplete,32
@@ -91,9 +122,10 @@ function parseMessage (messageData, messageParameter) {
     $('#success2').html($('#success1').html())
 
     $('#success1').removeClass('animated zoomInUp')
+    $('#success1').html('');
 
     setTimeout(function () {
-      $('#success1').html('<img src="images/recipeSuccess/' + messageArr[1] + '.png"/>')
+      $('#success1').html('<img src="images/recipeSuccess/' + messageArr[1] + '.png"/><img src="./images/iPad' + myID + '.png"/>')
       $('#success1').addClass('animated zoomInUp')
     }, 100)
   } else if (messageArr[0] === 'queue') {
@@ -104,10 +136,52 @@ function parseMessage (messageData, messageParameter) {
   } else if (messageArr[0] === 'inventoryCount') {
     // Update the inventory counts
     for (var i=1;i<=9;i++) {
-      $('#inventory' + i).html(messageArr[i]);
+      $('#inventory' + i).html('<p>' + messageArr[i] + '</p>');
     }
 
+
+  } else if (messageArr[0] == 'userLevel') {
+    userLevel = parseInt(messageArr[1]);
+
+    if (userLevel < 3) {
+      // Hide Mining area
+      $('#middle').addClass('Off');
+    } else {
+      $('#middle').removeClass('Off');
+    }
+
+    if (messageArr[2] == "true") {
+      // Announce the successful level increase
+
+      if (userLevel == 2) {
+        showSuccessMessage('You have crafted some sticks, unlocking more recipes. Craft a wooden pickaxe to unlock the next level');
+      } else if (userLevel == 3) {
+        showSuccessMessage('You have crafted a wooden pickaxe, unlocking mining. Mine some cobblestone and craft a stone pickaxe to unlock the next level.');
+      } else if (userLevel == 4) {
+        showSuccessMessage('You have crafted a stone pickaxe, unlocking iron mining. Craft an iron pickaxe to unlock the next level.');
+      } else if (userLevel == 5) {
+        showSuccessMessage('You have crafted an iron pickaxe, unlocking iron mining. Craft a diamond pickaxe to unlock the next level.');
+      } else if (userLevel == 6) {
+        showSuccessMessage('You have crafted a diamond pickaxe, unlocking all materials! All recipes are now available to you.');
+      }
+
+
+    }
   }
+}
+
+function showSuccessMessage (whatMessage, whatTitle) {
+  if (whatTitle == null) {
+    whatTitle = "Success!";
+  }
+
+  $('#craftingMessage').html('');
+  $('#craftingMessage').removeClass('animated zoomInUp Off');
+
+  setTimeout(function () {
+    $('#craftingMessage').html('<h2>' + whatTitle + '</h3><p>' + whatMessage + '</p>');
+    $('#craftingMessage').addClass('animated zoomInUp');
+  }, 100)
 }
 
 function selectMiningBlock (blockNum) {

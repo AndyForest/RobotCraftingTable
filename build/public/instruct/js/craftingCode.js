@@ -1,5 +1,5 @@
 // URL of the NodeJS server that receives the robot commands
-var robotServerURL = "http://192.168.12.12";
+// var robotServerURL = "http://192.168.13.13:8080";
 
 // Inventory levels of each of the crafting materials
 // First item is always 0 because the slots are numbered 1 - 9
@@ -15,8 +15,7 @@ var robotInstructionSequence
 
 // Item ID that the robot is currently holding
 var robotHolding
-// Item ID lookup table
-var itemCodeLookup = [["Blank","0"], ["Planks","1"], ["Cobblestone","2"], ["Sticks","3"], ["Sand","4"], ["Gunpowder","5"], ["Redstone","6"], ["Empty", "7"], ["Iron", "8"], ["Diamond","9"]];
+
 // Items currently on the crafting table. First item is always 0 because the slots are numbered 1 - 9
 var craftingTableItems
 // If this is changed from 0 to anything else, there has been an error, stop processing the sequence
@@ -25,56 +24,9 @@ var sequenceError
 var miningTargets
 var miningTargetsString
 
-function initCraftingSequence(userLevel) {
-  // Starting inventory levels
-  if (userLevel == 2) {
-    // Everything unlocked
-    inventoryCount = [0, 8, 8, 4, 4, 5, 1, 0, 8, 8];
-  } else if (userLevel == 1) {
-    // Iron unlocked
-    inventoryCount = [0, 8, 8, 4, 4, 5, 1, 0, 8, 0];
-  } else {
-    // Basic items unlocked
-    inventoryCount = [0, 8, 8, 4, 4, 5, 1, 0, 0, 0];
-  }
+var myID = 1;
 
-  // starts at 1, not 0
-  craftingTableItems = [0,0,0,0,0,0,0,0,0,0];
-  robotInstructionSequence = new Array();
-
-  // Add this iPad's ID number to the sequence
-  var myID = $.urlParam('myID')
-  if (  myID == null) {
-    myID = 1;
-  }
-  var messageToSend = "myID," + myID;
-  robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 0};
-
-  // Initialize the sequence with some mining materials on screen
-  generateMiningTargets();
-
-  robotHolding = 0;
-  sequenceError = 0;
-}
-
-function generateMiningTargets() {
-
-  // starts at 1, not 0
-  miningTargets = [0, 8, 0, 0, 0, 0, 0, 0, 0, 0];
-
-  var diamondPosition = getRandomInt(2,9);
-  miningTargets[diamondPosition] = 9;
-  miningTargetsString = "miningTargets,";
-  for (var i=1; i<=9; i++) {
-    miningTargetsString = miningTargetsString + miningTargets[i].toString();
-  }
-
-  robotInstructionSequence[robotInstructionSequence.length] = {message: miningTargetsString, delay: 0};
-}
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+var refreshAfterSend = false;
 
 // example.com?param1=name&param2=&id=6
 // $.urlParam('param1'); // name
@@ -88,6 +40,106 @@ $.urlParam = function(name){
     }
 }
 
+if (  $.urlParam('myID') != null) {
+  myID = $.urlParam('myID');
+  window.localStorage['selector'] = JSON.stringify({ identifier: myID })
+}
+
+function initCraftingSequence(userLevelOverride) {
+
+  if ( userLevelOverride == null) {
+    // nothing
+  } else {
+    userLevel = userLevelOverride;
+  }
+
+  // Starting inventory levels
+  if (userLevel == 1) {
+    // Basic unlocked
+    inventoryCount = [0, 8, 0, 0, 4, 5, 1, 0, 0, 0];
+  } else if (userLevel == 2) {
+    // Sticks unlocked
+    inventoryCount = [0, 8, 0, 4, 4, 5, 1, 0, 0, 0];
+  } else if (userLevel == 3) {
+    // Sticks unlocked
+    inventoryCount = [0, 8, 0, 4, 4, 5, 1, 0, 0, 0];
+  } else if (userLevel == 4) {
+    // Cobblestone unlocked
+    inventoryCount = [0, 8, 8, 4, 4, 5, 1, 0, 0, 0];
+  } else if (userLevel == 5) {
+    // Iron unlocked
+    inventoryCount = [0, 8, 8, 4, 4, 5, 1, 0, 8, 0];
+  } else if (userLevel == 6) {
+    // Everything unlocked
+    inventoryCount = [0, 8, 8, 4, 4, 5, 1, 0, 8, 8];
+  }
+
+  // starts at 1, not 0
+  craftingTableItems = [0,0,0,0,0,0,0,0,0,0];
+  robotInstructionSequence = new Array();
+
+  // Add this iPad's ID number to the sequence
+
+
+
+  // Send the iPad's ID to the display screen
+  sendMyID();
+
+  sendInventoryLevels();
+
+  // Initialize the sequence with some mining materials on screen
+  generateMiningTargets();
+
+  // Initialize the user's level
+  sendSetUserLevel();
+
+  robotHolding = 0;
+  sequenceError = 0;
+}
+
+function sendSetUserLevel(annouce) {
+  // annouce = true to announce the new level on the display screen
+
+  var messageToSend = "userLevel," + userLevel;
+  var timingDelay = 0;
+
+  if ( annouce == true ) {
+    messageToSend = messageToSend + ",true";
+    timingDelay = 3;
+  } else {
+    messageToSend = messageToSend + ",false";
+  }
+
+  robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: timingDelay};
+
+}
+
+function sendMyID() {
+  var messageToSend = "myID," + myID;
+  robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 0};
+}
+
+function generateMiningTargets() {
+
+  // starts at 1, not 0
+  miningTargets = [0, 8, 2, 2, 2, 2, 2, 2, 2, 2];
+
+  var diamondPosition = getRandomInt(3,8);
+  miningTargets[diamondPosition] = 9;
+  miningTargetsString = "miningTargets,";
+  for (var i=1; i<=9; i++) {
+    miningTargetsString = miningTargetsString + miningTargets[i].toString();
+  }
+
+  robotInstructionSequence[robotInstructionSequence.length] = {message: miningTargetsString, delay: 0};
+}
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+
+
 function checkMiningBlockID(blockNum) {
   var messageToSend = "checkMiningBlock," + blockNum;
   // Hilight the block being checked on the display screen for user feedback
@@ -99,13 +151,24 @@ function checkMiningBlockID(blockNum) {
 
 
 function mineBlockSequence(blockNum) {
-  var messageToSend = "mineBlock," + blockNum;
-  // Hilight the block being checked on the display screen for user feedback
-
-  robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 1};
 
   // Update inventory level
-  inventoryCount[miningTargets[blockNum]] = inventoryCount[miningTargets[blockNum]] +1;
+  var blockMinedID = miningTargets[blockNum];
+  var mineCount = 1;
+  if (blockMinedID == 2) {
+    // Mine 1 cobblestone to get 8 cobblestone
+    mineCount = 8;
+  }
+  inventoryCount[blockMinedID] = inventoryCount[blockMinedID] +mineCount;
+  if (inventoryCount[blockMinedID] > 64 ) {
+    inventoryCount[blockMinedID] = 64;
+  }
+  sendInventoryLevels();
+
+  var messageToSend = "mineBlock," + blockMinedID + "," + blockNum;
+  // Hilight the block being checked on the display screen for user feedback
+  robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 1};
+
 
   // Create new mining targets
   generateMiningTargets();
@@ -128,14 +191,19 @@ function selectInventorySlotSequence(inventorySlotNum) {
       robotHolding = inventorySlotNum;
       inventoryCount[inventorySlotNum] = inventoryCount[inventorySlotNum] -1;
 
-      // Send the current inventory counts
-      var messageToSend = "inventoryCount"
-      for (var i=1;i<=9;i++) {
-        messageToSend = messageToSend + "," + inventoryCount[i]
-      }
-      robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 0};
+      sendInventoryLevels();
+
     }
   }
+}
+
+function sendInventoryLevels() {
+  // Send the current inventory counts
+  var messageToSend = "inventoryCount"
+  for (var i=1;i<=9;i++) {
+    messageToSend = messageToSend + "," + inventoryCount[i]
+  }
+  robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 0};
 }
 
 function placeCraftingItemSequence(craftingTableSlotNum) {
@@ -174,9 +242,51 @@ function placeCraftingItemSequence(craftingTableSlotNum) {
 
         if (singleRecipeBlank == false && singleRecipeComplete == true) {
           // Recipe is complete!
+
+          // Search for other completed recipes in the queue and remove them
+          // eg: {"message":"recipeComplete,49","delay":3}
+
+          for (var g=0; g<robotInstructionSequence.length; g++) {
+            var thisMessage = robotInstructionSequence[g]["message"];
+            // console.log("thisMessage " + thisMessage);
+            if (typeof thisMessage === "undefined") {
+              // Leave it alone
+            } else if(thisMessage.indexOf("recipeComplete,") > -1) {
+              robotInstructionSequence[g] = {message: "deleted", delay: 0};
+            }
+          }
+
+
+          // Notify the display screen about the completed recipe
           recipeCompleteID = craftingRecipesArr[i]["ID"];
           var messageToSend = "recipeComplete," + recipeCompleteID;
           robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 3};
+
+          // Check if completing this recipe unlocks the next user level part
+          var newLevel = 0;
+          if (recipeCompleteID == 14) {
+            // "Stick"
+            newLevel = 2;
+          } else if (recipeCompleteID == 1) {
+            // "Wooden Pickaxe"
+            newLevel = 3;
+          } else if (recipeCompleteID == 6) {
+            // "Stone Pickaxe"
+            newLevel = 4;
+          } else if (recipeCompleteID == 18) {
+            // "Iron Pickaxe"
+            newLevel = 5;
+          } else if (recipeCompleteID == 24) {
+            // "Diamond Pickaxe"
+            newLevel = 6;
+          }
+
+          if (newLevel > userLevel) {
+            // User has acheived a higher level, announce on the display screen
+            userLevel = newLevel;
+            refreshAfterSend = true;
+            sendSetUserLevel(true);
+          }
 
         }
       }
@@ -206,21 +316,53 @@ function sendRobotInstructionSequence() {
     // It is contained in the variable: robotInstructionSequence
     // Send to robotServerURL
 
+    // console.log(robotInstructionSequence)
     robotInstructionSequence.unshift(JSON.parse(localStorage['selector']))
 
-    // console.log(JSON.stringify(robotInstructionSequence));
+    console.log(JSON.stringify(robotInstructionSequence));
     // evt.preventDefault()
     server = window.io();
-    console.log(robotInstructionSequence)
+    //console.log(robotInstructionSequence)
+
     server.emit('instructCommand',
       robotInstructionSequence
     )
 
-    alertMessage('Your instructions have been sent to the robot!');
+    setTimeout(function(){
+      alertMessage('Your instructions have been sent to the robot!');
+      if (refreshAfterSend) {
+        window.location="/instruct/?userLevel=" + userLevel;
+      }
+    }, 2000);
+
   }
 }
 
+function reset() {
+  window.location="/instruct/";
+}
 
+// Check if the iPad has been idle and reset if it has
+var idleTime = 0;
+$(document).ready(function () {
+    //check for idle time
+    var idleInterval = setInterval(timerIncrement, 60000); // 1 minute
+
+    //Zero the idle timer on mouse movement.
+    $(this).mousemove(function (e) {
+        idleTime = 0;
+    });
+    $(this).keypress(function (e) {
+        idleTime = 0;
+    });
+});
+
+function timerIncrement() {
+    idleTime = idleTime + 1;
+    if (idleTime > 2) { // reset after 3 minutes
+      reset();
+    }
+}
 
 function alertMessage(alertMessage){
   window.alert(alertMessage);

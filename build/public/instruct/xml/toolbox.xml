@@ -53,7 +53,7 @@
     </block>
     <block type="controls_if"></block>
     <block type="logic_compare">
-      <field name="OP">GTE</field>
+      <field name="OP">EQ</field>
     </block>
     <block type="miningtargetblocktypeid">
       <value name="Mining Block">
