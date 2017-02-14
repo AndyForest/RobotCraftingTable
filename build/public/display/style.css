@@ -10,7 +10,7 @@ html {
 	height: 100%;
 	margin: 0 !important;
 	padding: 0 !important;
-	/* hide cursor */cursor: none;
+	/* hide cursor cursor: none;*/
 }
 
 #pagewrap {
@@ -28,28 +28,57 @@ header {
   border-bottom: 10px solid #000;
 }
 
-header img {
-  margin-top: 76px;
+.headerLeft img {
+  margin-top: 34px;
+}
+
+.headerLeft { 
+	float: left;
+	height: 300px;
+	width: 402px;
+	margin-left: 336px;
+}
+
+.headerRight img { 
+	vertical-align: middle;
+	margin-right: 10px;
+}
+
+.headerRight h1 { 
+	font-size: 18px;
+	background: #ABABAB;
+	display: inline-block;
+	padding: 10px;
+	border: 3px inset #000;
+	margin-top: 100px;
+}
+
+.headerRight { 
+	float: left;
+	height: 300px;
+	width: 544px;
+	margin-left: 94px;
 }
 
 #container {
   width: 1132px;
   margin: 0 auto;
+  clear: both;
  }
 
 #sidebarLeft {
   background: rgba(255,255,255, 0.75);
-  width: 260px;
+  width: 256px;
   height: 559px;
   float: left;
 }
 
-#middle {
+.middle {
   background: url('images/wall.jpg') no-repeat center center;
   background-color: black;
   width: 544px; /* Account for margins + border values */
   float: left;
-  margin: 0 31px 0 27px;
+  margin: 0 0 0 29px;
 }
 
 #middle h3 {
@@ -62,6 +91,7 @@ header img {
   height: 559px;
   float: left;
 	position: relative;
+	border-left: 3px solid black;
 }
 
 #craftingMessage {
@@ -82,7 +112,7 @@ footer {
   clear: both;
   height: 100px;
   background: #ABABAB;
-  width: 1118px;
+  width: 1087px;
 }
 
 footer h2 {
@@ -95,8 +125,8 @@ footer h2 {
 
 
  .inventory {
-    width: 100px;
-    height: 100px;
+    width: 98px;
+    height: 98px;
     float: left;
     background-size: contain;
 	margin:0 5px;

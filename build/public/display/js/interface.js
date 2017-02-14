@@ -145,10 +145,11 @@ function parseMessage (messageData, messageParameter) {
 
     if (userLevel < 3) {
       // Hide Mining area
-      $('#middle').addClass('Off');
+      $('#middle12').addClass('Off');
     } else {
-      $('#middle').removeClass('Off');
+      $('#middle12').removeClass('Off');
     }
+
 
     if (messageArr[2] == "true") {
       // Announce the successful level increase
