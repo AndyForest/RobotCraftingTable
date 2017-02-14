@@ -18,16 +18,34 @@ table {
   width: 100%;
 }
 
+.topButton {
+  float:left;
+}
+
+.hiddenButton {
+  float:right;
+  width: 200px;
+  height: 80px;
+}
+
 .Off {
   visibility: hidden;
 }
 
-#helpDisplay {
+.helpDisplay {
   position: absolute;
   top: 110px;
   left: 100px;
   z-index: 2000;
   background: white;
+}
+
+.helpDisplay3 {
+  left: 140px;
+}
+
+.helpDisplay5 {
+  left: 170px;
 }
 
 #blocklyArea {

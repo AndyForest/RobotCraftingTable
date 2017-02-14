@@ -1,4 +1,5 @@
 var myID;
+var myQueue;
 
 (function () {
   'use strict'
@@ -25,7 +26,7 @@ var myID;
       updateQueue();
     }
 
-    console.log(queue)
+    // console.log(queue)
 
     /*
     console.log(data.data.message)
@@ -35,8 +36,15 @@ var myID;
   }
 
   var updateQueue = () => {
+    myQueue = queue;
+
     if (active !== undefined) {
+      $('#queue1').removeClass('Off');
       $('#queue1').html('<h3>Now:</h3><img src="./images/iPad' + active + '.png"/>')
+      $('#robotPlayerTitle').html('<img src="images/user.png"/>Robot executing player ' + active + '\'s code');
+      $('#robotPlayerTitle').removeClass('Off');
+      $('#robotInventoryTitle').html('Player ' + myID + ' inventory:')
+      clearTimeout(robotIdleTimeout);
     }
 
     if (queue.length >= 1) {
@@ -90,7 +98,7 @@ function parseMessage (messageData, messageParameter) {
     // Set the mining target blocks displayed on the screen
     // eg: "miningTargets,800900000"
     for (var i = 1; i <= 9; i++) {
-      console.log('miningTargets setting: ' + i)
+      // console.log('miningTargets setting: ' + i)
       var miningtargetblocktypeid = messageArr[1].charAt(i - 1)
       if (miningtargetblocktypeid === '0') {
         $('#mining' + i).html('<h1>1</h1>')
@@ -118,6 +126,7 @@ function parseMessage (messageData, messageParameter) {
 
   } else if (messageArr[0] === 'recipeComplete') {
     // recipeComplete,32
+    console.log('recipeComplete');
     $('#success3').html($('#success2').html())
     $('#success2').html($('#success1').html())
 
@@ -134,6 +143,9 @@ function parseMessage (messageData, messageParameter) {
     $('#queue2').html('<h3>Next:</h3><img src="images/iPad' + messageArr[1].charAt(1) + '.png"/>')
     $('#queue3').html('<h3>Next:</h3><img src="images/iPad' + messageArr[1].charAt(2) + '.png"/>')
   } else if (messageArr[0] === 'inventoryCount') {
+    
+    clearTimeout(robotIdleTimeout);
+
     // Update the inventory counts
     for (var i=1;i<=9;i++) {
       $('#inventory' + i).html('<p>' + messageArr[i] + '</p>');
@@ -143,11 +155,14 @@ function parseMessage (messageData, messageParameter) {
   } else if (messageArr[0] == 'userLevel') {
     userLevel = parseInt(messageArr[1]);
 
+
     if (userLevel < 3) {
       // Hide Mining area
-      $('#middle12').addClass('Off');
+      // $('#middle12').addClass('Off');
+      $('#middleMessage').removeClass('Off');
     } else {
-      $('#middle12').removeClass('Off');
+      // $('#middle12').removeClass('Off');
+      $('#middleMessage').addClass('Off');
     }
 
 
@@ -168,6 +183,8 @@ function parseMessage (messageData, messageParameter) {
 
 
     }
+  } else if (messageArr[0] == 'robotSequenceDone') {
+    robotIdle();
   }
 }
 
@@ -193,4 +210,34 @@ function selectMiningBlock (blockNum) {
       $('#mining' + i).removeClass('selectedbox')
     }
   }
+}
+
+var robotIdleTimeout
+function robotIdle() {
+  // Called when nothing is executing in the queue
+  clearTimeout(robotIdleTimeout);
+  robotIdleTimeout = setTimeout(function () {
+    // Check if the queue is empty
+    if(myQueue.length < 1) {
+      // Don't show the queue item 1
+      $('#queue1').addClass('Off');
+
+      // Reset to basic inventory
+      var inventoryCount = [0, 8, 0, 0, 4, 5, 1, 0, 0, 0];
+      for (var i=1;i<=9;i++) {
+        $('#inventory' + i).html('<p>' + inventoryCount[i] + '</p>');
+      }
+
+      $('#craftingMessage').addClass('Off');
+      selectMiningBlock (0);
+      $('#middleMessage').html('Complete Level 1+2 to access mining');
+      $('#middleMessage').removeClass('Off');
+
+      // Hide the player executing title
+      $('#robotPlayerTitle').addClass('Off');
+
+      // Hide the inventory label
+      $('#robotInventoryTitle').html('');
+    }
+  }, 10000)
 }

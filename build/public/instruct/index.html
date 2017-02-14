@@ -38,27 +38,30 @@
       <td>
 
 
-        <p>
+        <section class="topButton">
+          <p>
+            <button onclick="runCode()">Send Instructions to Robot</button>
+            <button onclick="showHelp()">Help</button>
 
-          <button onclick="runCode()">Send Instructions to Robot</button>
-          <button onclick="showHelp()">Help</button>
-
-          <button onclick="reset()">Start Over</button>
+            <button onclick="reset()">Start Over</button>
+          </p>
 
 <!--
           TESTING:
           <button onclick="showCode()">Show JavaScript</button>
           <a href="#" id="sendInstruction">send Marc's test instructions</a>
         -->
-        </p>
+        </section>
 
+        <section class="hiddenButton" onclick="showHelp(9000)">
 
+        </section>
       </td>
     </tr>
     <tr>
       <td>
 
-        <section id="helpDisplay" class="Off">
+        <section id="helpDisplay" class="helpDisplay Off">
           <h1>Help Title</h1>
           <p>Help Content</p>
 
@@ -106,7 +109,7 @@
       <block type="mine_block">
         <value name="mineBlockNum">
           <shadow type="math_number">
-            <field name="NUM">1</field>
+            <field name="NUM">2</field>
           </shadow>
         </value>
       </block>
@@ -338,8 +341,8 @@
         alert(e);
       }
 
-      // reset inventory counts for the next person
-      //initCraftingSequence();
+      robotSequenceDone();
+
       sendRobotInstructionSequence();
 
 
@@ -385,6 +388,16 @@
     window.addEventListener('resize', onresize, false);
     onresize();
     Blockly.svgResize(workspace);
+
+    function onBlocklyUI(event) {
+      if (event.type == Blockly.Events.UI &&
+          event.element == 'category' &&
+          !event.oldValue && event.newValue) {
+        // UI action, remove the help menu
+        closeHelp(true);
+      }
+    }
+    workspace.addChangeListener(onBlocklyUI);
   </script>
 
   <table>

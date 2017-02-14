@@ -30,6 +30,8 @@
       document.getElementById('idSelector').addEventListener('change', onChangeId)
     } else {
       console.log('this ipad has already received an id', data)
+      myID = data["identifier"];
+
       idSelectorDiv.style.display = 'none'
       // contentDiv.style.display = 'block'
 

@@ -32,19 +32,19 @@ header {
   margin-top: 34px;
 }
 
-.headerLeft { 
+.headerLeft {
 	float: left;
 	height: 300px;
 	width: 402px;
 	margin-left: 336px;
 }
 
-.headerRight img { 
+.headerRight img {
 	vertical-align: middle;
 	margin-right: 10px;
 }
 
-.headerRight h1 { 
+.headerRight h1 {
 	font-size: 18px;
 	background: #ABABAB;
 	display: inline-block;
@@ -53,7 +53,7 @@ header {
 	margin-top: 100px;
 }
 
-.headerRight { 
+.headerRight {
 	float: left;
 	height: 300px;
 	width: 544px;
@@ -79,6 +79,13 @@ header {
   width: 544px; /* Account for margins + border values */
   float: left;
   margin: 0 0 0 29px;
+	position: relative;
+}
+
+.middleMessage {
+	position: absolute;
+	left: 75px;
+	z-index: 200;
 }
 
 #middle h3 {
@@ -99,7 +106,7 @@ header {
 	top: 35%;
 	left: 0;
 	border: 2;
-	background: rgba(180,180,180, 0.85);
+	background: rgba(180,180,180, 1);
 	width: 256px;
   height: 65%;
 }

@@ -24,7 +24,7 @@ var sequenceError
 var miningTargets
 var miningTargetsString
 
-var myID = 1;
+var myID;
 
 var refreshAfterSend = false;
 
@@ -46,9 +46,85 @@ if (  $.urlParam('myID') != null) {
 }
 
 $( document ).ready(function() {
+  setSelectableInventory();
   showHelp();
 });
 
+function setSelectableInventory() {
+  // console.log('regenerating select_slot block');
+
+  if (userLevel == 1) {
+    // Basic unlocked
+    Blockly.Blocks['select_slot'] = {
+      init: function() {
+        this.appendDummyInput()
+            .appendField("Select inventory:")
+            .appendField(new Blockly.FieldDropdown([["Planks","1"], ["Sand","4"], ["Gunpowder","5"], ["Redstone","6"]]), "blockMaterial");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(230);
+        this.setTooltip('Select an item from your inventory');
+        this.setHelpUrl('');
+      }
+    };
+  } else if (userLevel == 2) {
+    // Basic unlocked
+    Blockly.Blocks['select_slot'] = {
+      init: function() {
+        this.appendDummyInput()
+            .appendField("Select inventory:")
+            .appendField(new Blockly.FieldDropdown([["Planks","1"], ["Sticks","3"], ["Sand","4"], ["Gunpowder","5"], ["Redstone","6"]]), "blockMaterial");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(230);
+        this.setTooltip('Select an item from your inventory');
+        this.setHelpUrl('');
+      }
+    };
+  } else if (userLevel == 3) {
+    // Basic unlocked
+    Blockly.Blocks['select_slot'] = {
+      init: function() {
+        this.appendDummyInput()
+            .appendField("Select inventory:")
+            .appendField(new Blockly.FieldDropdown([["Planks","1"], ["Cobblestone","2"], ["Sticks","3"], ["Sand","4"], ["Gunpowder","5"], ["Redstone","6"]]), "blockMaterial");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(230);
+        this.setTooltip('Select an item from your inventory');
+        this.setHelpUrl('');
+      }
+    };
+  } else if (userLevel == 4) {
+    // Basic unlocked
+    Blockly.Blocks['select_slot'] = {
+      init: function() {
+        this.appendDummyInput()
+            .appendField("Select inventory:")
+            .appendField(new Blockly.FieldDropdown([["Planks","1"], ["Cobblestone","2"], ["Sticks","3"], ["Sand","4"], ["Gunpowder","5"], ["Redstone","6"], ["Iron","8"]]), "blockMaterial");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(230);
+        this.setTooltip('Select an item from your inventory');
+        this.setHelpUrl('');
+      }
+    };
+  } else if (userLevel >= 5) {
+    // Basic unlocked
+    Blockly.Blocks['select_slot'] = {
+      init: function() {
+        this.appendDummyInput()
+            .appendField("Select inventory:")
+            .appendField(new Blockly.FieldDropdown([["Planks","1"], ["Cobblestone","2"], ["Sticks","3"], ["Sand","4"], ["Gunpowder","5"], ["Redstone","6"], ["Iron","8"], ["Diamond","9"]]), "blockMaterial");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(230);
+        this.setTooltip('Select an item from your inventory');
+        this.setHelpUrl('');
+      }
+    };
+  }
+}
 
 function initCraftingSequence(userLevelOverride) {
 
@@ -121,6 +197,11 @@ function sendSetUserLevel(annouce) {
 
 function sendMyID() {
   var messageToSend = "myID," + myID;
+  robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 0};
+}
+
+function robotSequenceDone() {
+  var messageToSend = "robotSequenceDone," + myID;
   robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 0};
 }
 
@@ -336,15 +417,23 @@ function sendRobotInstructionSequence() {
     setTimeout(function(){
       alertMessage('Your instructions have been sent to the robot!');
       if (refreshAfterSend) {
-        window.location="/instruct/?userLevel=" + userLevel;
+        gotoUserLevel(userLevel);
       }
     }, 2000);
 
   }
 }
 
+
 function reset() {
-  window.location="/instruct/";
+  gotoUserLevel(1);
+}
+
+function gotoUserLevel(whatlevel) {
+  if (whatlevel == null) {
+    whatlevel = 1;
+  }
+  window.location="/instruct/?userLevel=" + whatlevel;
 }
 
 // Check if the iPad has been idle and reset if it has
@@ -364,7 +453,7 @@ $(document).ready(function () {
 
 function timerIncrement() {
     idleTime = idleTime + 1;
-    if (idleTime > 2) { // reset after 3 minutes
+    if (idleTime > 20) { // reset after 20 minutes
       reset();
     }
 }
@@ -373,59 +462,77 @@ function alertMessage(alertMessage){
   window.alert(alertMessage);
 }
 
-function closeHelp(){
-  $('#helpDisplay').removeClass('animated zoomIn');
-  setTimeout(function () {
-    $('#helpDisplay').addClass('animated zoomOut');
-  }, 100)
-  setTimeout(function () {
+function closeHelp(noAnimation){
+  if (noAnimation == true) {
     $('#helpDisplay').addClass('Off');
-  }, 500)
+  } else {
+    $('#helpDisplay').removeClass('animated zoomIn');
+    setTimeout(function () {
+      $('#helpDisplay').addClass('animated zoomOut');
+    }, 100)
+    setTimeout(function () {
+      $('#helpDisplay').addClass('Off');
+    }, 500)
+  }
 }
 
 function showHelp(helpLevel){
   var helpHTML = '';
   if (helpLevel == null) helpLevel = 1;
+  $('#helpDisplay').removeClass('helpDisplay3');
+  $('#helpDisplay').removeClass('helpDisplay5');
+
   if (userLevel == 1) {
     if (helpLevel == 1) {
       helpHTML = '<h2 onclick="closeHelp()">There are coding blocks in the “Crafting” section on the left. Use the “Select Inventory” block to select an inventory item. Then use the “Place in crafting table” block to position it for the recipe you want to complete. Craft some sticks to progress to the next level with more recipes available!</h2>';
     } else {
-      helpHTML = '<h2 onclick="closeHelp()">Here’s the recipe to progress to the next level:</h2>';
+      helpHTML = '<h2 onclick="closeHelp()">Here’s the recipe to progress to the next level:</h2>\n';
+      helpHTML = helpHTML + '<p onclick="closeHelp()"><img src="images/userLevel1_challenge.png" width="60%"> <img src="images/Recipe_14_Complete.png"></p>\n'
     }
   } else if (userLevel == 2) {
     // Level 2 help
     if (helpLevel == 1) {
-      helpHTML = '<h2 onclick="closeHelp()"></h2>';
+      helpHTML = '<h2 onclick="closeHelp()">Now that you have some sticks, use them to craft a wooden pickaxe to unlock the next level!</h2>';
     } else {
-      helpHTML = '<h2 onclick="closeHelp()"></h2>';
+      helpHTML = '<h2 onclick="closeHelp()">Here’s the recipe to progress to the next level:</h2>\n';
+      helpHTML = helpHTML + '<p onclick="closeHelp()"><img src="images/userLevel2_challenge.png" width="50%"> <img src="images/Recipe_1_Complete.png"></p>\n'
     }
   } else if (userLevel == 3) {
+
+    $('#helpDisplay').addClass('helpDisplay3');
+    //$('#helpDisplay').css( "left", "150" );
     // Level 3 help
     if (helpLevel == 1) {
-      helpHTML = '<h2 onclick="closeHelp()"></h2>';
+      helpHTML = '<h2 onclick="closeHelp()">Mine some cobblestone with your new wooden pickaxe. Use the new blocks in the "Basic Mining" section on the left. Cobblestone can always be found in block number 2, and mining one block will give you 8 in your inventory to craft with. Watch the display screen as your code is executed. Use the cobblestone to craft a stone pickaxe and unlock the next level!</h2>';
     } else {
-      helpHTML = '<h2 onclick="closeHelp()"></h2>';
+      helpHTML = '<h2 onclick="closeHelp()">Here’s the recipe to progress to the next level:</h2>\n';
+      helpHTML = helpHTML + '<p onclick="closeHelp()"><img src="images/userLevel3_challenge.png" width="50%"> <img src="images/Recipe_6_Complete.png"></p>\n'
     }
   } else if (userLevel == 4) {
     // Level 4 help
+    $('#helpDisplay').addClass('helpDisplay3');
     if (helpLevel == 1) {
-      helpHTML = '<h2 onclick="closeHelp()"></h2>';
+      helpHTML = '<h2 onclick="closeHelp()">Mine some iron with your new stone pickaxe. Iron can sometimes be found in block number 1, but mining one block will only give you 1 in your inventory, so you will need to mine more. Watch the display screen as your code is executed. Use the iron to craft an iron pickaxe and unlock the next level!</h2>';
     } else {
-      helpHTML = '<h2 onclick="closeHelp()"></h2>';
+      helpHTML = '<h2 onclick="closeHelp()">Here’s the recipe to progress to the next level:</h2>\n';
+      helpHTML = helpHTML + '<p onclick="closeHelp()"><img src="images/userLevel4_challenge.png" width="50%"> <img src="images/Recipe_18_Complete.png"></p>\n'
     }
   } else if (userLevel == 5) {
     // Level 5 help
+    $('#helpDisplay').addClass('helpDisplay5');
     if (helpLevel == 1) {
-      helpHTML = '<h2 onclick="closeHelp()"></h2>';
+      helpHTML = '<h2 onclick="closeHelp()">Mine some diamond with your new iron pickaxe. Diamond is randomly placed in any mining location, so you will need to use the new blocks to write some code to search for the right block. Craft a diamond pickaxe and unlock the next level!</h2>';
     } else {
-      helpHTML = '<h2 onclick="closeHelp()"></h2>';
+      helpHTML = '<h2 onclick="closeHelp()">Here’s the recipe to progress to the next level:</h2>\n';
+      helpHTML = helpHTML + '<p onclick="closeHelp()"><img src="images/userLevel5_challenge.png" width="50%"> <img src="images/Recipe_24_Complete.png"></p>\n'
     }
   } else if (userLevel == 6) {
     // Level 6 help
+    $('#helpDisplay').addClass('helpDisplay5');
     if (helpLevel == 1) {
-      helpHTML = '<h2 onclick="closeHelp()"></h2>';
+      helpHTML = '<h2 onclick="closeHelp()">Congratulations! You have completed the final challenge! All materials are unlocked in your inventory to craft anything you like. SECRET TIP: Press the upper right corner of the screen at any time to jump to level 6 instantly!</h2>';
     } else {
-      helpHTML = '<h2 onclick="closeHelp()"></h2>';
+      helpHTML = '<h2 onclick="closeHelp()">Craft anything you like!</h2>';
     }
 }
 
@@ -433,6 +540,16 @@ function showHelp(helpLevel){
     helpHTML = helpHTML + '<button onclick="showHelp(2)">More Help</button>\n';
   } else if (helpLevel == 2) {
     helpHTML = helpHTML + '<button onclick="showHelp(1)">More Help</button>\n';
+  } else if (helpLevel == 9000) {
+    // Secret menu
+    helpHTML = '<h2 onclick="closeHelp()"><ul>\n'
+    helpHTML = helpHTML + '<li><button onclick="gotoUserLevel(1)">Level 1</button></li>\n';
+    helpHTML = helpHTML + '<li><button onclick="gotoUserLevel(2)">Level 2</button></li>\n';
+    helpHTML = helpHTML + '<li><button onclick="gotoUserLevel(3)">Level 3</button></li>\n';
+    helpHTML = helpHTML + '<li><button onclick="gotoUserLevel(4)">Level 4</button></li>\n';
+    helpHTML = helpHTML + '<li><button onclick="gotoUserLevel(5)">Level 5</button></li>\n';
+    helpHTML = helpHTML + '<li><button onclick="gotoUserLevel(6)">Level 6</button></li>\n';
+    helpHTML = helpHTML + '</ul></h2>\n'
   }
 
   helpHTML = helpHTML + '<button onclick="closeHelp()">Close Help</button>\n';

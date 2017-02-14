@@ -29,7 +29,7 @@
     <img class="animated infinite pulse" src="images/header.png"/>
 	</section>
 	<section class="headerRight">
-		<h1><img src="images/user.png"/>Robot executing player 1 code</h1>
+		<h1 id="robotPlayerTitle"><img src="images/user.png"/>Robot executing player 1 code</h1>
 	</section>
   </header>
 
@@ -58,10 +58,11 @@
         -->
       </section>
     </section>
-	
+
 	<!-- <img src="images/mining8.png"/> -->
     <section class="middle" id="middle12">
-	  <h3>Complete Level 1+2 to access mining</h3>
+      <!-- Kat TODO: fix this h3 from bumping down the inventory partially off the screen-->
+	  <h3 id="middleMessage" class="middleMessage">Complete Level 1+2 to access mining</h3>
       <section class="box" id="mining1"/><h1>1</h1><img src="images/mining8.png"/></section>
       <section class="box" id="mining2"/><h1>2</h1></section>
       <section class="box" id="mining3"/><h1>3</h1></section>
@@ -73,7 +74,8 @@
       <section class="box" id="mining9"/><h1>9</h1></section>
       <img class="axe" src="images/axe.png"/>
     </section>
-	
+
+  <!--
 	  <section class="middle" id="middle345">
 	  <h3>Mine to get more inventory items</h3>
       <section class="box" id="mining1"/><h1>1</h1><img src="images/mining8.png"/></section>
@@ -87,9 +89,9 @@
       <section class="box" id="mining9"/><h1>9</h1></section>
       <img class="axe" src="images/axe.png"/>
     </section>
-
+-->
     <footer>
-	  <section class="inventory"><h2>inventory:</h2></section>
+	  <section class="inventory"><h2 id="robotInventoryTitle">inventory:</h2></section>
       <section class="inventory inventory1" id="inventory1"><p>8</p></section>
       <section class="inventory inventory2" id="inventory2"><p>8</p></section>
       <section class="inventory inventory3" id="inventory3"><p>4</p></section>
