@@ -46,8 +46,14 @@ if (  $.urlParam('myID') != null) {
 }
 
 $( document ).ready(function() {
+
   setSelectableInventory();
-  showHelp();
+  if (userLevel != 1) {
+    showHelp();
+  } else {
+    showHelpArrow();
+  }
+
 });
 
 function setSelectableInventory() {
@@ -462,7 +468,17 @@ function alertMessage(alertMessage){
   window.alert(alertMessage);
 }
 
+function showHelpArrow() {
+  $('#arrowDisplay').removeClass('Off');
+}
+
+function closeHelpArrow() {
+  $('#arrowDisplay').addClass('Off');
+}
+
 function closeHelp(noAnimation){
+  closeHelpArrow();
+
   if (noAnimation == true) {
     $('#helpDisplay').addClass('Off');
   } else {
@@ -477,6 +493,7 @@ function closeHelp(noAnimation){
 }
 
 function showHelp(helpLevel){
+  closeHelpArrow();
   var helpHTML = '';
   if (helpLevel == null) helpLevel = 1;
   $('#helpDisplay').removeClass('helpDisplay3');
@@ -484,6 +501,7 @@ function showHelp(helpLevel){
 
   if (userLevel == 1) {
     if (helpLevel == 1) {
+      // helpHTML = '<p onclick="closeHelp()"><img src="images/left_arrow_green.png" class="animated infinite pulse" width="15%"></p>'
       helpHTML = '<h2 onclick="closeHelp()">There are coding blocks in the “Crafting” section on the left. Use the “Select Inventory” block to select an inventory item. Then use the “Place in crafting table” block to position it for the recipe you want to complete. Craft some sticks to progress to the next level with more recipes available!</h2>';
     } else {
       helpHTML = '<h2 onclick="closeHelp()">Here’s the recipe to progress to the next level:</h2>\n';
