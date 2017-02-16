@@ -46,3 +46,11 @@ Blockly.JavaScript['miningtargetblocktypeid'] = function(block) {
   // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.JavaScript.ORDER_NONE];
 };
+
+Blockly.JavaScript['number_1to9'] = function(block) {
+  var dropdown_whatnumber = block.getFieldValue('whatNumber');
+  // TODO: Assemble JavaScript into code variable.
+  var code = ' ' + dropdown_whatnumber + ' ';
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.JavaScript.ORDER_NONE];
+};

@@ -73,3 +73,14 @@ Blockly.Blocks['miningtargetblocktypeid'] = {
     this.setHelpUrl('');
   }
 };
+
+Blockly.Blocks['number_1to9'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown([["1",1], ["2",2], ["3",3], ["4",4], ["5",5], ["6",6], ["7",7], ["8",8], ["9",9]]), "whatNumber");
+    this.setOutput(true, "Number");
+    this.setColour(230);
+    this.setTooltip('Select which slot on the crafting table you would like to place the block.');
+    this.setHelpUrl('');
+  }
+};
