@@ -6,9 +6,10 @@ html, body {
 }
 body {
   background-color: #fff;
-  font-family: sans-serif;
+  font-family: 'Verdana', sans-serif;
   overflow: hidden;
 }
+
 h1 {
   font-weight: normal;
   font-size: 140%;
@@ -61,7 +62,34 @@ table {
   top: 110px;
   left: 150px;
   z-index: 2000;
-  background: white;
+  background: url('images/sky.png');
+  width: 480px;
+  border: 3px solid black;
+  padding: 38px;
+}
+
+.helpDisplay h2 {
+  line-height: 1.4;
+  background: rgba(255,255,255, 0.75);
+  padding: 20px;
+  font-weight: 200;
+}
+
+.close  { 
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  z-index: 9999;
+  background-color: #DDD;
+  color: black;
+ }
+
+ .close:hover {background-color: #CCC}
+
+.close:active {
+  background-color: #CCC;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
 }
 
 .helpDisplay3 {
