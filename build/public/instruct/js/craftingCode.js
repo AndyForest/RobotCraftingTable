@@ -46,7 +46,10 @@ if (  $.urlParam('myID') != null) {
 }
 
 $( document ).ready(function() {
+  initDisplay();
+});
 
+function initDisplay() {
   setSelectableInventory();
   if (userLevel != 1) {
     showHelp();
@@ -54,7 +57,26 @@ $( document ).ready(function() {
     showHelpArrow();
   }
 
-});
+  var userLevelHTML = '<p><b>Challenge Level ' + userLevel + '</b></p>';
+
+  //
+  if (userLevel == 1) {
+    userLevelHTML = userLevelHTML + '<p>Craft some sticks to advance to the next level.</p>'
+  } else if (userLevel == 2) {
+    userLevelHTML = userLevelHTML + '<p>Craft a wooden pickaxe to advance to the next level.</p>'
+  } else if (userLevel == 3) {
+    userLevelHTML = userLevelHTML + '<p>Craft a stone pickaxe to advance to the next level.</p>';
+  } else if (userLevel == 4) {
+    userLevelHTML = userLevelHTML + '<p>Craft an iron pickaxe to advance to the next level.</p>';
+  } else if (userLevel == 5) {
+    userLevelHTML = userLevelHTML + '<p>Craft a diamond pickaxe to advance to the next level.</p>';
+  } else if (userLevel == 6) {
+    userLevelHTML = userLevelHTML + '<p>All challenges complete!</p>';
+  }
+
+  $('#userInfo').html(userLevelHTML);
+  $('#userInfo').removeClass('Off');
+}
 
 function setSelectableInventory() {
   // console.log('regenerating select_slot block');
@@ -403,7 +425,7 @@ function checkForSequenceError(hideAlert) {
 }
 
 function sendRobotInstructionSequence() {
-  if (checkForSequenceError() == 0) {
+  if (checkForSequenceError(true) == 0) {
     // Send the sequence to the robot
     // It is contained in the variable: robotInstructionSequence
     // Send to robotServerURL

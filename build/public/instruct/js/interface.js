@@ -74,6 +74,9 @@
 
   var runCode = () => {
     // Generate JavaScript code and run it.
+
+    console.log('runcode interface.js');
+
     window.LoopTrap = 1000
     window.Blockly.JavaScript.INFINITE_LOOP_TRAP =
         'if (--window.LoopTrap == 0) throw "Infinite loop.";\n'

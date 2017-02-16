@@ -52,7 +52,7 @@
           <a href="#" id="sendInstruction">send Marc's test instructions</a>
         -->
         </section>
-        <section id="userInfo" class="userInfo">
+        <section id="userInfo" class="userInfo Off">
           <p><b>Challenge Level 1</b></p>
             <p>Craft some sticks to advance to the next level.
         </section>
@@ -64,7 +64,7 @@
     <tr>
       <td>
 
-        <section id="helpDisplay" class="helpDisplay">
+        <section id="helpDisplay" class="helpDisplay Off">
           <button class="close">X</button>
           <h1>Help Title</h1>
           <p>Help Content</p>
@@ -506,16 +506,24 @@
 
     function runCode() {
       // Generate JavaScript code and run it.
+      console.log('runcode index.html');
+
       initCraftingSequence();
       window.LoopTrap = 1000;
-      Blockly.JavaScript.INFINITE_LOOP_TRAP =
-          'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+      // Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+
+      Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite Loop. Are you checking the inventory for a block you are not mining?";\n';
+      //Blockly.JavaScript.INFINITE_LOOP_TRAP =  'setSequenceError("Infinite Loop. Are you checking the inventory for a block you are not mining?", false);\n';
+      //setSequenceError(sequenceErrorMessage, hideAlert);
+
       var code = Blockly.JavaScript.workspaceToCode(workspace);
+
       Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+
       try {
         eval(code);
       } catch (e) {
-        alert(e);
+        setSequenceError(e);
       }
 
       robotSequenceDone();
