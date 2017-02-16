@@ -18,6 +18,18 @@ table {
   width: 100%;
 }
 
+.blocklyTreeLabel {
+    font-size: 32px;
+}
+
+.blocklyTreeRow {
+    height: 44px;
+    line-height: 44px;
+    margin-bottom: 6px;
+    padding-right: 8px;
+    white-space: nowrap;
+}
+
 .topButton {
   float:left;
 }
@@ -35,17 +47,17 @@ table {
 .helpDisplay {
   position: absolute;
   top: 110px;
-  left: 100px;
+  left: 150px;
   z-index: 2000;
   background: white;
 }
 
 .helpDisplay3 {
-  left: 140px;
+  left: 220px;
 }
 
 .helpDisplay5 {
-  left: 170px;
+  left: 290px;
 }
 
 #blocklyArea {

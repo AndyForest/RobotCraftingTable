@@ -178,4 +178,100 @@
     </block>
   </category>
   <category name="Variables" colour="#A65C81" custom="VARIABLE"></category>
+  <category name="Completed Code">
+    <block type="select_slot">
+      <field name="blockMaterial">1</field>
+      <next>
+        <block type="place_crafting_number">
+          <value name="CraftingSlot">
+            <block type="number_1to9">
+              <field name="whatNumber">5</field>
+            </block>
+          </value>
+          <next>
+            <block type="select_slot">
+              <field name="blockMaterial">1</field>
+              <next>
+                <block type="place_crafting_number">
+                  <value name="CraftingSlot">
+                    <block type="number_1to9">
+                      <field name="whatNumber">8</field>
+                    </block>
+                  </value>
+                </block>
+              </next>
+            </block>
+          </next>
+        </block>
+      </next>
+    </block>
+    <block type="select_slot">
+      <field name="blockMaterial">3</field>
+      <next>
+        <block type="place_crafting_number">
+          <value name="CraftingSlot">
+            <block type="number_1to9">
+              <field name="whatNumber">5</field>
+            </block>
+          </value>
+          <next>
+            <block type="select_slot">
+              <field name="blockMaterial">3</field>
+              <next>
+                <block type="place_crafting_number">
+                  <value name="CraftingSlot">
+                    <block type="number_1to9">
+                      <field name="whatNumber">8</field>
+                    </block>
+                  </value>
+                  <next>
+                    <block type="select_slot">
+                      <field name="blockMaterial">1</field>
+                      <next>
+                        <block type="place_crafting_number">
+                          <value name="CraftingSlot">
+                            <block type="number_1to9">
+                              <field name="whatNumber">1</field>
+                            </block>
+                          </value>
+                          <next>
+                            <block type="select_slot">
+                              <field name="blockMaterial">1</field>
+                              <next>
+                                <block type="place_crafting_number">
+                                  <value name="CraftingSlot">
+                                    <block type="number_1to9">
+                                      <field name="whatNumber">2</field>
+                                    </block>
+                                  </value>
+                                  <next>
+                                    <block type="select_slot">
+                                      <field name="blockMaterial">1</field>
+                                      <next>
+                                        <block type="place_crafting_number">
+                                          <value name="CraftingSlot">
+                                            <block type="number_1to9">
+                                              <field name="whatNumber">3</field>
+                                            </block>
+                                          </value>
+                                        </block>
+                                      </next>
+                                    </block>
+                                  </next>
+                                </block>
+                              </next>
+                            </block>
+                          </next>
+                        </block>
+                      </next>
+                    </block>
+                  </next>
+                </block>
+              </next>
+            </block>
+          </next>
+        </block>
+      </next>
+    </block>
+  </category>
 </xml>
