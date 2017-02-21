@@ -21,6 +21,8 @@
     // even cols are full (5 cm)
     //
 
+    let validQueueSerials = [0,0,0,0];
+
     let commandQueue = []
     let lastCommandSource = undefined
     let busy = false
@@ -276,7 +278,7 @@
       this.sendGCode({ gcode: this.moveTo(0, 0, false) })
       this.sendGCode({ gcode: this.dwell(2, false) })
 
-      // Andy commented this out
+      // Andy commented this out to stop it from re-homing in between queue items
       // this.initCommands()
     }
 

@@ -172,6 +172,7 @@
       }
 
       this.socketServer.potentialEvents.instructCommand = (data, connection) => {
+        // Received new set of robot instructions from an iPad
         console.log(data)
         this.xcarve.processCommands(data)
       }

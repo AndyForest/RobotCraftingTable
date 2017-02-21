@@ -187,6 +187,12 @@ function initCraftingSequence(userLevelOverride) {
   craftingTableItems = [0,0,0,0,0,0,0,0,0,0];
   robotInstructionSequence = new Array();
 
+  // Add a unique identifier to this sequence
+  /*
+  let mySerialNum = {serialNum: getRandomInt(1,1000000)};
+  robotInstructionSequence.unshift(mySerialNum);
+  */
+
   // Add this iPad's ID number to the sequence
 
 
@@ -431,6 +437,8 @@ function sendRobotInstructionSequence() {
     // Send to robotServerURL
 
     // console.log(robotInstructionSequence)
+
+    // Add this iPad's identifier to the sequence
     robotInstructionSequence.unshift(JSON.parse(localStorage['selector']))
 
     console.log(JSON.stringify(robotInstructionSequence));
