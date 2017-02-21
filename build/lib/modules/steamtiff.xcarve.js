@@ -21,7 +21,8 @@
     // even cols are full (5 cm)
     //
 
-    let validQueueSerials = [0,0,0,0];
+    var validQueueSerials = [0,0,0,0];
+    var executingSerial = 0;
 
     let commandQueue = []
     let lastCommandSource = undefined
@@ -235,6 +236,7 @@
     })
 
     this.reverseData = () => {
+      SteamTIFF.log.notify('Reverse Data');
 
       for (var item in lastCommand) {
         if (lastCommand[item].pickup) {
@@ -445,8 +447,26 @@
       // if (commandQueue.length > 0){
         // SteamTIFF.serialPort.send(commandQueue.shift())
       // }  else {
-      if (command.message) SteamTIFF.socketServer.io.emit('global', { evt: 'message', data: command.message })
-      if (command.source && command.source !== lastCommandSource) SteamTIFF.socketServer.io.emit('global', { evt: 'changeSource', data: command.source })
+      if (command.message) {
+        SteamTIFF.socketServer.io.emit('global', { evt: 'message', data: command.message })
+
+        if (command.message.serialNum) {
+          // Check for a message with a new serialNum
+          SteamTIFF.log.notify('command.message: ' + JSON.stringify(command.message));
+        }
+        /*
+        let messageArr = command.message.split(',')
+        if (messageArr[0] == 'serialNum') {
+          SteamTIFF.log.notify('serialNum executing: ' + messageArr[1]);
+        }
+        */
+      }
+
+      if (command.source && command.source !== lastCommandSource) {
+        SteamTIFF.socketServer.io.emit('global', { evt: 'changeSource', data: command.source })
+        SteamTIFF.log.notify('changeSource: ' + JSON.stringify(command.source.identifier));
+      }
+
       SteamTIFF.serialPort.send(command.gcode)
       // }
 

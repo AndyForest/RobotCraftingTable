@@ -28,6 +28,8 @@ var myID;
 
 var refreshAfterSend = false;
 
+var mySerialNum;
+
 // example.com?param1=name&param2=&id=6
 // $.urlParam('param1'); // name
 $.urlParam = function(name){
@@ -188,10 +190,11 @@ function initCraftingSequence(userLevelOverride) {
   robotInstructionSequence = new Array();
 
   // Add a unique identifier to this sequence
-  /*
-  let mySerialNum = {serialNum: getRandomInt(1,1000000)};
-  robotInstructionSequence.unshift(mySerialNum);
-  */
+
+  mySerialNum = getRandomInt(1,1000000);
+  robotInstructionSequence[robotInstructionSequence.length] = {serialNum: mySerialNum};
+  var messageToSend = "serialNum," + mySerialNum;
+  robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 0};
 
   // Add this iPad's ID number to the sequence
 
