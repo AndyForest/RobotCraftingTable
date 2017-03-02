@@ -192,7 +192,8 @@ function initCraftingSequence(userLevelOverride) {
   // Add a unique identifier to this sequence
 
   mySerialNum = getRandomInt(1,1000000);
-  robotInstructionSequence[robotInstructionSequence.length] = {serialNum: mySerialNum};
+  // Can't add new instruction types, the code on the other end looks for a delay
+  // robotInstructionSequence[robotInstructionSequence.length] = {serialNum: mySerialNum};
   var messageToSend = "serialNum," + mySerialNum;
   robotInstructionSequence[robotInstructionSequence.length] = {message: messageToSend, delay: 0};
 

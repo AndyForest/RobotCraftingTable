@@ -155,7 +155,7 @@
     }
 
     this.processCommands = (data) => new Promise((resolve, reject) => {
-      SteamTIFF.log.notify('process commands received from iPad')
+      SteamTIFF.log.notify('process command')
       console.log(data[0])
       let identifier = undefined
       if (data[0].identifier) {
@@ -173,7 +173,6 @@
 
       for (var item in data) {
         if (data[item].pickup) {
-          // This is a block pickup and move command
           // figure out which block to pick up
           var startRow = data[item].pickup - 1
           var startCol = inventory[startRow] - 1
