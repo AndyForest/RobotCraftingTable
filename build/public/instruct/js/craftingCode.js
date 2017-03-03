@@ -459,7 +459,7 @@ function sendRobotInstructionSequence() {
       if (refreshAfterSend) {
         gotoUserLevel(userLevel);
       }
-    }, 2000);
+    }, 200);
 
   }
 }
