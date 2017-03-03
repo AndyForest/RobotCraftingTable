@@ -160,6 +160,8 @@
       let identifier = undefined
       if (data[0].identifier) {
         identifier = data.shift()
+        // SteamTIFF.log.notify('New identifier: ');
+        // console.log(identifier.identifier);
         SteamTIFF.socketServer.io.emit('global', { evt: 'addedToQueue', data: identifier.identifier })
         // currentIdentifier = identifier.identifier
       } else {
@@ -174,6 +176,9 @@
       for (var item in data) {
         if (data[item].pickup) {
           // This is a block pickup and move command
+          SteamTIFF.log.notify('Block pickup command:');
+          console.log(data[item]);
+
           // figure out which block to pick up
           var startRow = data[item].pickup - 1
           var startCol = inventory[startRow] - 1
@@ -217,6 +222,31 @@
 
           // let destination = (data[item].drop - 1) * 2
         } else {
+          SteamTIFF.log.notify('Message command:');
+          console.log(data[item]);
+
+          // Check for a new serial number being submitted
+          if (data[item].message) {
+            let messageArr = data[item].message.split(',')
+            if (messageArr[0] == 'serialNum') {
+
+              SteamTIFF.log.notify('serialNum received: ' + messageArr[1]);
+
+              // Update valid derial number list. These are the only ones that can start
+              validQueueSerials[parseInt(identifier.identifier)] = parseInt(messageArr[1]);
+              SteamTIFF.log.notify('New valid serial numbers to start:');
+              console.log(validQueueSerials);
+
+              /*
+              for (var i=1; i<validQueueSerials.length; i++) {
+
+              }
+              */
+
+            }
+          }
+
+
           // console.log('ASDASD', data, data.delay)
           // this.dwell(data[item].delay)
           // gcode += 'G04 P' + data[item].delay + '\n'
@@ -448,11 +478,17 @@
       // if (commandQueue.length > 0){
         // SteamTIFF.serialPort.send(commandQueue.shift())
       // }  else {
+
+      // TODO: figure out what parts of this code to skip if the current serial number is not in the validQueueSerials array
+
+
       if (command.message) {
         SteamTIFF.socketServer.io.emit('global', { evt: 'message', data: command.message })
 
         if (command.message.serialNum) {
           // Check for a message with a new serialNum
+          // TODO: replace with the .split code on a message
+          // TODO: pull out the current serial number and compare it to the validQueueSerials array
           SteamTIFF.log.notify('command.message: ' + JSON.stringify(command.message));
         }
         /*
