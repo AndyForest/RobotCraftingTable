@@ -176,8 +176,8 @@
       for (var item in data) {
         if (data[item].pickup) {
           // This is a block pickup and move command
-          SteamTIFF.log.notify('Block pickup command:');
-          console.log(data[item]);
+          //SteamTIFF.log.notify('Block pickup command:');
+          //console.log(data[item]);
 
           // figure out which block to pick up
           var startRow = data[item].pickup - 1
@@ -222,8 +222,8 @@
 
           // let destination = (data[item].drop - 1) * 2
         } else {
-          SteamTIFF.log.notify('Message command:');
-          console.log(data[item]);
+          //SteamTIFF.log.notify('Message command:');
+          //console.log(data[item]);
 
           // Check for a new serial number being submitted
           if (data[item].message) {
@@ -484,17 +484,31 @@
 
       if (command.message) {
         SteamTIFF.socketServer.io.emit('global', { evt: 'message', data: command.message })
+        // SteamTIFF.log.notify('command.message: ' + JSON.stringify(command.message));
 
         if (command.message.serialNum) {
           // Check for a message with a new serialNum
           // TODO: replace with the .split code on a message
           // TODO: pull out the current serial number and compare it to the validQueueSerials array
-          SteamTIFF.log.notify('command.message: ' + JSON.stringify(command.message));
+
         }
+
+        /*
+        let messageArr = command.message.split(',')
+        if (messageArr[0] == 'serialNum') {
+          SteamTIFF.log.notify('serial number processing: ' + JSON.stringify(command.message));
+        }
+        */
         /*
         let messageArr = command.message.split(',')
         if (messageArr[0] == 'serialNum') {
           SteamTIFF.log.notify('serialNum executing: ' + messageArr[1]);
+        }
+        */
+
+        /*
+        for (var i=1; i<validQueueSerials.length; i++) {
+
         }
         */
       }
@@ -504,6 +518,7 @@
         SteamTIFF.log.notify('changeSource: ' + JSON.stringify(command.source.identifier));
       }
 
+      //SteamTIFF.log.notify('sending gcode: ' + JSON.stringify(command.message));
       SteamTIFF.serialPort.send(command.gcode)
       // }
 
