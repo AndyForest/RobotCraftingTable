@@ -143,7 +143,7 @@ function parseMessage (messageData, messageParameter) {
     $('#queue2').html('<h3>Next:</h3><img src="images/iPad' + messageArr[1].charAt(1) + '.png"/>')
     $('#queue3').html('<h3>Next:</h3><img src="images/iPad' + messageArr[1].charAt(2) + '.png"/>')
   } else if (messageArr[0] === 'inventoryCount') {
-    
+
     clearTimeout(robotIdleTimeout);
 
     // Update the inventory counts
@@ -176,7 +176,7 @@ function parseMessage (messageData, messageParameter) {
       } else if (userLevel == 4) {
         showSuccessMessage('You have crafted a stone pickaxe, unlocking iron mining. Craft an iron pickaxe to unlock the next level.');
       } else if (userLevel == 5) {
-        showSuccessMessage('You have crafted an iron pickaxe, unlocking iron mining. Craft a diamond pickaxe to unlock the next level.');
+        showSuccessMessage('You have crafted an iron pickaxe, unlocking diamond mining. Craft a diamond pickaxe to unlock the next level.');
       } else if (userLevel == 6) {
         showSuccessMessage('You have crafted a diamond pickaxe, unlocking all materials! All recipes are now available to you.');
       }

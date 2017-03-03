@@ -23,6 +23,7 @@
 
     var validQueueSerials = [0,0,0,0];
     var executingSerial = 0;
+    var skipCurrentSerial = false;
 
     let commandQueue = []
     let lastCommandSource = undefined
@@ -210,6 +211,12 @@
           this.sendGCode({ source: identifier, gcode: this.dwell(0.02, false) }) // 'G04 P1\n'     // pause
           this.sendGCode({ source: identifier, gcode: this.disengageMagnet(false) }) // 'M7\n'         // turn on
           this.sendGCode({ source: identifier, gcode: this.dwell(0.2, false) }) // 'G04 P1\n'     // pause
+          // Added second polarity reverse to help disengage the Magnet
+          this.sendGCode({ source: identifier, gcode: this.reversePolarity(false) }) // 'M7\n'         // turn on
+          this.sendGCode({ source: identifier, gcode: this.dwell(0.02, false) }) // 'G04 P1\n'     // pause
+          this.sendGCode({ source: identifier, gcode: this.disengageMagnet(false) }) // 'M7\n'         // turn on
+          this.sendGCode({ source: identifier, gcode: this.dwell(0.2, false) }) // 'G04 P1\n'     // pause
+
           this.sendGCode({ source: identifier, gcode: this.raiseMagnetABit(false) })
 
           // var targetRow = positions[data[item].drop - 1][0]
@@ -251,6 +258,7 @@
           // this.dwell(data[item].delay)
           // gcode += 'G04 P' + data[item].delay + '\n'
 
+          // Add a pause gcode message that matches the delay in the received message
           this.sendGCode({ source: identifier, gcode: this.dwell(data[item].delay, false), message: data[item] })
         }
       }
@@ -388,7 +396,7 @@
     }
 
     this.engageMagnet = (direct) => {
-      SteamTIFF.log.notify('⚡  engage the magnet')
+      // SteamTIFF.log.notify('⚡  engage the magnet')
       direct = (direct !== undefined) ? direct : true
       if (direct) {
         SteamTIFF.serialPort.send('M8\nM4 P1\n')
@@ -399,7 +407,7 @@
     }
 
     this.disengageMagnet = (direct) => {
-      SteamTIFF.log.notify('⚡  disengage the magnet')
+      // SteamTIFF.log.notify('⚡  disengage the magnet')
       direct = (direct !== undefined) ? direct : true
       if (direct) {
         SteamTIFF.serialPort.send('M9')
@@ -410,7 +418,7 @@
     }
 
 	this.reversePolarity = (direct) => {
-		SteamTIFF.log.notify(' reverse polarity of the magnet')
+		// SteamTIFF.log.notify(' reverse polarity of the magnet')
 		direct = (direct !== undefined) ? direct : true
 		if (direct) {
 		SteamTIFF.serialPort.send('M7')
@@ -421,7 +429,7 @@
 	}
 
     this.lowerMagnet = (direct) => {
-      SteamTIFF.log.notify('⚡  lower the magnet')
+      // SteamTIFF.log.notify('⚡  lower the magnet')
       direct = (direct !== undefined) ? direct : true
       if (direct) {
         // Lower by 25 mm:
@@ -438,7 +446,7 @@
     }
 
     this.raiseMagnet = (direct) => {
-      SteamTIFF.log.notify('⚡  raise the magnet')
+      // SteamTIFF.log.notify('⚡  raise the magnet')
       direct = (direct !== undefined) ? direct : true
       if (direct) {
         SteamTIFF.serialPort.send('G90 G0 Z-5')
@@ -449,7 +457,7 @@
     }
 
     this.raiseMagnetABit = (direct) => {
-      SteamTIFF.log.notify('⚡  raise the magnet')
+      // SteamTIFF.log.notify('⚡  raise the magnet')
       direct = (direct !== undefined) ? direct : true
       if (direct) {
         SteamTIFF.serialPort.send('G90 G0 Z-62')
@@ -460,7 +468,7 @@
     }
 
     this.dwell = (duration, direct) => {
-      SteamTIFF.log.notify('⚡  pause the machine')
+      // SteamTIFF.log.notify('⚡  pause the machine')
       // console.log(duration)
       direct = (direct !== undefined) ? direct : true
       if (direct) {
@@ -479,51 +487,59 @@
         // SteamTIFF.serialPort.send(commandQueue.shift())
       // }  else {
 
-      // TODO: figure out what parts of this code to skip if the current serial number is not in the validQueueSerials array
+        if (command.message) {
+          SteamTIFF.socketServer.io.emit('global', { evt: 'message', data: command.message })
+          SteamTIFF.log.notify('sendGCode command.message: ' + JSON.stringify(command.message));
 
+          if (command.message.message) {
+            let messageArr = command.message.message.split(',')
+            if (messageArr[0] == 'serialNum') {
+              executingSerial = parseInt(messageArr[1]);
+              SteamTIFF.log.notify('sendGCode serial number processing: ' + JSON.stringify(executingSerial));
+              // Check if the current serial number is in the list of ones allowed to execute
+              skipCurrentSerial = true;
+              for (var j=1; j<validQueueSerials.length; j++) {
+                if (executingSerial == validQueueSerials[j]) {
+                  skipCurrentSerial = false;
 
-      if (command.message) {
-        SteamTIFF.socketServer.io.emit('global', { evt: 'message', data: command.message })
-        // SteamTIFF.log.notify('command.message: ' + JSON.stringify(command.message));
+                }
+              }
+              SteamTIFF.log.notify('sendGCode set skipCurrentSerial = ' + skipCurrentSerial);
+            }
+          }
 
-        if (command.message.serialNum) {
-          // Check for a message with a new serialNum
-          // TODO: replace with the .split code on a message
-          // TODO: pull out the current serial number and compare it to the validQueueSerials array
+          /*
+          let messageArr = command.message.split(',')
+          if (messageArr[0] == 'serialNum') {
+            SteamTIFF.log.notify('serialNum executing: ' + messageArr[1]);
+          }
+          */
 
+          /*
+          for (var i=1; i<validQueueSerials.length; i++) {
+
+          }
+          */
         }
 
-        /*
-        let messageArr = command.message.split(',')
-        if (messageArr[0] == 'serialNum') {
-          SteamTIFF.log.notify('serial number processing: ' + JSON.stringify(command.message));
+        if (command.source && command.source !== lastCommandSource) {
+          SteamTIFF.socketServer.io.emit('global', { evt: 'changeSource', data: command.source })
+          SteamTIFF.log.notify('sendGCode changeSource: ' + JSON.stringify(command.source.identifier));
         }
-        */
-        /*
-        let messageArr = command.message.split(',')
-        if (messageArr[0] == 'serialNum') {
-          SteamTIFF.log.notify('serialNum executing: ' + messageArr[1]);
+
+        if (skipCurrentSerial == true) {
+          // If the current serial number was identified as not in the list, skip it's execution
+          // Identifying valid serial numbers only happens at the start of executing the sequence for the serial number so we don't interrupt a current sequence because a new sequence was received
+          // SteamTIFF.log.notify('sendGCode skipping gcode ' + JSON.stringify(command.gcode));
+          SteamTIFF.serialPort.send("G4 P0");
+        } else {
+          // SteamTIFF.log.notify('sendGCode sending gcode: ' + JSON.stringify(command.gcode));
+          SteamTIFF.serialPort.send(command.gcode)
         }
-        */
 
-        /*
-        for (var i=1; i<validQueueSerials.length; i++) {
+        lastCommandSource = command.source || undefined
+        busy = true
 
-        }
-        */
-      }
-
-      if (command.source && command.source !== lastCommandSource) {
-        SteamTIFF.socketServer.io.emit('global', { evt: 'changeSource', data: command.source })
-        SteamTIFF.log.notify('changeSource: ' + JSON.stringify(command.source.identifier));
-      }
-
-      //SteamTIFF.log.notify('sending gcode: ' + JSON.stringify(command.message));
-      SteamTIFF.serialPort.send(command.gcode)
-      // }
-
-      lastCommandSource = command.source || undefined
-      busy = true
     }
 
     this.gotSerialData = (message) => {
