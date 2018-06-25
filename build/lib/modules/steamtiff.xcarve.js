@@ -441,7 +441,7 @@
       } else {
         // return 'G90 G0 Z-35'
         // lower by 86 mm height instead:
-        return 'G90 G0 Z-72'
+        return 'G90 G0 Z-73'
       }
     }
 
