@@ -63,7 +63,7 @@ function initDisplay() {
 
   //
   if (userLevel == 1) {
-    userLevelHTML = userLevelHTML + '<p>Craft some sticks to advance to the next level.</p>'
+    userLevelHTML = userLevelHTML + '<p>Craft some sticks to advance to the next level. Select "Crafting" on the left and click on the code blocks.</p>'
   } else if (userLevel == 2) {
     userLevelHTML = userLevelHTML + '<p>Craft a wooden pickaxe to advance to the next level.</p>'
   } else if (userLevel == 3) {
@@ -536,7 +536,7 @@ function showHelp(helpLevel){
   if (userLevel == 1) {
     if (helpLevel == 1) {
       // helpHTML = '<p onclick="closeHelp()"><img src="images/left_arrow_green.png" class="animated infinite pulse" width="15%"></p>'
-      helpHTML = '<h2 onclick="closeHelp()">There are coding blocks in the “Crafting” section on the left. Use the “Select Inventory” block to select an inventory item. Then use the “Place in crafting table” block to position it for the recipe you want to complete. Craft some sticks to progress to the next level with more recipes available!</h2>';
+      helpHTML = '<h2 onclick="closeHelp()">Use code to control the robot! The completed code is in the “Crafting” section on the left.  Click on the code to load it, and then click on “Send Instructions to Robot”. This will craft some sticks to progress to the next level with more commands and recipes available!</h2>';
     } else {
       helpHTML = '<h2 onclick="closeHelp()">Here’s the recipe to progress to the next level:</h2>\n';
       helpHTML = helpHTML + '<p onclick="closeHelp()"><img src="images/userLevel1_challenge.png" width="60%"> <img src="images/Recipe_14_Complete.png"></p>\n'
@@ -544,7 +544,7 @@ function showHelp(helpLevel){
   } else if (userLevel == 2) {
     // Level 2 help
     if (helpLevel == 1) {
-      helpHTML = '<h2 onclick="closeHelp()">Now that you have some sticks, use them to craft a wooden pickaxe to unlock the next level!</h2>';
+      helpHTML = '<h2 onclick="closeHelp()">Now that you have some sticks, use them to craft a wooden pickaxe to unlock the next level! Use the “Select Inventory” block to select an inventory item. Then use the “Place in crafting table” block to position it for the recipe you want to complete.</h2>';
     } else {
       helpHTML = '<h2 onclick="closeHelp()">Here’s the recipe to progress to the next level:</h2>\n';
       helpHTML = helpHTML + '<p onclick="closeHelp()"><img src="images/userLevel2_challenge.png" width="50%"> <img src="images/Recipe_1_Complete.png"></p>\n'

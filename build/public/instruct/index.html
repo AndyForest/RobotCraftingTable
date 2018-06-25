@@ -54,7 +54,7 @@
         </section>
         <section id="userInfo" class="userInfo Off">
           <p><b>Challenge Level 1</b></p>
-            <p>Craft some sticks to advance to the next level.
+            <p><!-- Text loaded in here by initDisplay() in craftingCode.js --></p>
         </section>
         <section class="hiddenButton" onclick="showHelp(9000)">
 
@@ -84,7 +84,53 @@
 
   <div id="blocklyDiv" style="position: absolute"></div>
 
+  <xml xmlns="http://www.w3.org/1999/xhtml" id="toolboxLevel1_old" style="display: none;">
+    <category name="Crafting">
+      <block type="select_slot">
+        <field name="blockMaterial">1</field>
+      </block>
+      <block type="place_crafting_number">
+        <value name="CraftingSlot">
+          <block type="number_1to9">
+            <field name="whatNumber">1</field>
+          </block>
+        </value>
+      </block>
+    </category>
+  </xml>
+
   <xml xmlns="http://www.w3.org/1999/xhtml" id="toolboxLevel1" style="display: none;">
+    <category name="Crafting">
+      <block type="select_slot">
+        <field name="blockMaterial">1</field>
+        <next>
+          <block type="place_crafting_number">
+            <value name="CraftingSlot">
+              <block type="number_1to9">
+                <field name="whatNumber">5</field>
+              </block>
+            </value>
+            <next>
+              <block type="select_slot">
+                <field name="blockMaterial">1</field>
+                <next>
+                  <block type="place_crafting_number">
+                    <value name="CraftingSlot">
+                      <block type="number_1to9">
+                        <field name="whatNumber">8</field>
+                      </block>
+                    </value>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </category>
+  </xml>
+
+  <xml xmlns="http://www.w3.org/1999/xhtml" id="toolboxLevel2" style="display: none;">
     <category name="Crafting">
       <block type="select_slot">
         <field name="blockMaterial">1</field>
@@ -549,8 +595,10 @@
       toolboxXMLID = "toolboxLevel6";
     } else if (userLevel >= 5) {
         toolboxXMLID = "toolboxLevel5";
-    } else if (userLevel >= 3) {
-      toolboxXMLID = "toolboxLevel3";
+      } else if (userLevel >= 3) {
+        toolboxXMLID = "toolboxLevel3";
+      } else if (userLevel >= 2) {
+        toolboxXMLID = "toolboxLevel2";
     }
 
     var workspace = Blockly.inject(blocklyDiv,
