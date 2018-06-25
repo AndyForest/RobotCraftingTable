@@ -435,7 +435,7 @@
         // Lower by 25 mm:
         // SteamTIFF.serialPort.send('G90 G0 Z-25')
 
-        SteamTIFF.serialPort.send('G90 G0 Z-72')
+        SteamTIFF.serialPort.send('G90 G0 Z-73')
 
         // resolve()
       } else {
