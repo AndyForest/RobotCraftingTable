@@ -63,7 +63,7 @@ function initDisplay() {
 
   //
   if (userLevel == 1) {
-    userLevelHTML = userLevelHTML + '<p>Select "Crafting" on the left and click on the code blocks.</p>'
+    userLevelHTML = userLevelHTML + '<p>Select "Crafting" on the left and click on the code.</p>'
   } else if (userLevel == 2) {
     userLevelHTML = userLevelHTML + '<p>Craft a wooden pickaxe to advance to the next level.</p>'
   } else if (userLevel == 3) {
