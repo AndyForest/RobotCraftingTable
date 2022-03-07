@@ -27,7 +27,7 @@
                 .then(resolve)
                 .then(this.emitReady)
                 .catch(err => {
-                  SteamTIFF.log.error(`⚡ SerialPort Error: ${JSON.stringify(err, true, 2)}`)
+                  SteamTIFF.log.error(`⚡1 SerialPort Error: ${JSON.stringify(err, true, 2)}`)
                   reject(err)
                 })
     })
@@ -43,6 +43,7 @@
     this.connect = (com, baud) => new Promise((resolve, reject) => {
       com = com || config.com
       baud = baud || config.baudrate
+      SteamTIFF.log.notify(`⚡  SerialPort COM:  ${JSON.stringify(com)}`)
       if (!this.connection) {
         try {
           switch (typeof com) {
@@ -65,11 +66,11 @@
             this.attachListeners()
                             .then(resolve)
           } else {
-            SteamTIFF.log.error(`⚡ SerialPort Error: Invalid Port ${JSON.stringify(com, true, 2)}`)
+            SteamTIFF.log.error(`⚡2 SerialPort Error: Invalid Port ${JSON.stringify(com, true, 2)}`)
             reject('invalid port provided')
           }
         } catch (err) {
-          SteamTIFF.log.error(`⚡ SerialPort Error: ${JSON.stringify(err, true, 2)}`)
+          SteamTIFF.log.error(`⚡3 SerialPort Error: ${JSON.stringify(err, true, 2)}`)
         }
       }
     })
@@ -101,9 +102,9 @@
     }
 
     this.errored = (err) => {
-      SteamTIFF.log.error('⚡ SerialPort Error: ' + JSON.stringify(err, true, 2))
+      SteamTIFF.log.error('⚡4 SerialPort Error: ' + JSON.stringify(err, true, 2))
       this.emit('error', err)
-      if (!this.connection.isOpen()) {
+      if (!this.connection.isOpen) {
         setTimeout(this.reconnect, 5000)
       }
     }
@@ -113,14 +114,14 @@
         this.connection.open()
       } catch (e) {
         setTimeout(() => {
-          if (!this.connection.isOpen()) this.reconnect()
+          if (!this.connection.isOpen) this.reconnect()
         }, 3000)
       }
     }
 
     this.send = (message) => new Promise((resolve, reject) => {
       if (this.ready) {
-        if (this.connection.isOpen()) {
+        if (this.connection.isOpen) {
           this.connection.write(message + config.terminator)
           resolve()
         }

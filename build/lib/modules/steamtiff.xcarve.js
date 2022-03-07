@@ -359,12 +359,14 @@
     }
 
     this.moveTo = (x, y, direct) => {
-      SteamTIFF.log.notify(`⚡  moving the machine to {x}, {y}`)
+      //SteamTIFF.log.notify(`⚡  moving the machine to {x}, {y}`)
       direct = (direct !== undefined) ? direct : true
       if (direct) {
+        SteamTIFF.log.notify(`⚡  moving the machine to: ` + `G90 G0 X{x} Y{y}`)
         SteamTIFF.serialPort.send(`G90 G0 X{x} Y{y}`)
         // resolve()
       } else {
+        SteamTIFF.log.notify(`⚡  moving the machine to: ` + `G90 G0 X` + x + ` Y` + y)
         return `G90 G0 X` + x + ` Y` + y
       }
     }
@@ -544,7 +546,7 @@
 
     this.gotSerialData = (message) => {
       if (message.indexOf('ok') !== -1) {
-        // console.log('XCARVE got serial data', message, commandQueue)
+        console.log('XCARVE got serial data', message, commandQueue)
         busy = false
         if (commandQueue.length > 0) this.sendGCode(commandQueue.shift())
       } else  {
