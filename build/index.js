@@ -118,7 +118,7 @@
       })
 
       this.serialPort.on('connected', () => {
-        console.log('Connected to connection:', this.serialPort.connection.path)
+        console.log('Connected to serial port:', this.serialPort.connection.path)
         setTimeout(this.xcarve.begin, 5000)
       })
 

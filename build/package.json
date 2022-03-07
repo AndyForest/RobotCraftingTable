@@ -21,7 +21,7 @@
     "nodejs-websocket": "1.7.1",
     "object.observe": "0.2.6",
     "oh-my-log": "5.0.1",
-    "serialport": "4.0.7",
+    "serialport": "6.2.2",
     "socket.io": "1.7.2",
     "socket.io-parser": "2.3.2",
     "socketio": "1.0.0"
