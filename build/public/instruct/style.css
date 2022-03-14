@@ -1,8 +1,9 @@
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
-  /*no scroll*/ overflow: hidden;
-
+  /*no scroll*/
+  overflow: hidden;
 }
 body {
   background-color: #fff;
@@ -14,138 +15,56 @@ h1 {
   font-weight: normal;
   font-size: 140%;
 }
-table {
-  height: 100%;
+
+.active-page {
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
-
-.blocklyTreeLabel {
-    font-size: 32px;
+.container {
+  /* margin: 2rem; */
 }
-
-.blocklyTreeRow {
-    height: 44px;
-    line-height: 44px;
-    margin-bottom: 6px;
-    padding-right: 8px;
-    white-space: nowrap;
+.header {
+  background-color: gray;
+  height: 35%;
+  display: flex;
+  flex-direction: row;
 }
-
-.topButton {
-  float:left;
+.challenge {
+  /* background-color: aquamarine; */
+  width: 20%;
+  height: 100%;
+  background-image: url('./assets/challengebackground.svg');
+  background-repeat: no-repeat;
+  background-position: center;
 }
-
-.hiddenButton {
-  float:right;
-  width: 100px;
-  height: 80px;
+.inventory {
+  height: 100%;
+  width: 45%;
+  /* background-color: aquamarine; */
+  background-image: url('./assets/inventorybackground.svg');
+  background-repeat: no-repeat;
+  background-position: center;
 }
-
-.userInfo {
-  float:left;
-  margin-left: 20px;
+.history {
+  height: 100%;
+  width: 30%;
+  /* background-color: aquamarine; */
+  background-image: url('./assets/historyofcomputing.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  /* background-size: contain; */
+  background-size: 600px;
 }
-
-.Off {
-  visibility: hidden;
+.body {
+  background-color: gray;
+  height: 70%;
+  margin: 0rem 1rem 1rem 1rem;
 }
-
-.arrowDisplay {
-  position: absolute;
-  top: 88px;
-  left: 160px;
-  z-index: 3000;
+.blockly {
+  background-color: gray;
 }
-
-.helpDisplay {
-  position: absolute;
-  top: 110px;
-  left: 150px;
-  z-index: 2000;
-  background: url('images/sky.png');
-  width: 480px;
-  border: 3px solid black;
-  padding: 38px;
-}
-
-.helpDisplay h2 {
-  line-height: 1.4;
-  background: rgba(255,255,255, 0.75);
-  padding: 20px;
-  font-weight: 200;
-}
-
-.close  { 
-  position: absolute;
-  top: -30px;
-  right: -30px;
-  z-index: 9999;
-  background-color: #DDD;
-  color: black;
- }
-
- .close:hover {background-color: #CCC}
-
-.close:active {
-  background-color: #CCC;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
-}
-
-.helpDisplay3 {
-  left: 220px;
-}
-
-.helpDisplay5 {
-  left: 290px;
-}
-
-#blocklyArea {
-  height: 99%;
-}
-
-#pre {
-    position: fixed;
-    top: 0;
-    left:0;
-    width: 100%;
-    height: 100%;
-    z-index: 100;
-    background: white;
-}
-
-#contentforeground {
-  width: 100px;
-  height: 100px;
-  position: relative;
-  top: 50%;
-  margin: -50px auto 0;
-
-}
-
-button {
-  display: inline-block;
-  padding: 10px 18px;
-  font-size: 18px;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  outline: none;
-  color: #fff;
-  background-color: #4CAF50;
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 9px #999;
-}
-
-red.button {
-  background-color: #AF4C50;
-}
-
-button:hover {background-color: #3e8e41}
-
-button:active {
-  background-color: #3e8e41;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
+.map {
+  background-color: gray;
 }
