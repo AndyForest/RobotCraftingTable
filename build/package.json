@@ -1,12 +1,12 @@
 {
   "name": "steam-dps",
-  "version": "1.0.0",
-  "description": "steam labs minecraft system for TIFF Digi PlaySpace",
+  "version": "2.0.0",
+  "description": "steamlabs Robot Crafting Table",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Marc Pelland",
+  "author": "Marc Pelland, Andy Forest",
   "license": "ISC",
   "dependencies": {
     "a-star": "0.2.0",
