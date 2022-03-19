@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>STEAMLabs Robot Crafting Table Instruct</title>
+  <meta name="author" content="Andy Forest">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <script src="../externals/blockly/blockly_compressed.js"></script>
+  <script src="../externals/blockly/blocks_compressed.js"></script>
+  <script src="../externals/blockly/javascript_compressed.js"></script>
+  <script src="../externals/blockly/msg/js/en.js"></script>
+  <script src="./js/craftingBlockDefinitions.js"></script>
+  <script src="./js/craftingBlockGenerators.js"></script>
+  <!-- <script src="workspace.js"></script> -->
+  <script src="../externals/jquery-3.1.1.min.js"></script>
+  <script src="./js/craftingCode.js"></script>
+  <script src="./js/recipes.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../display/animate.css">
+
+</head>
+<body>
+
+  <div id="pre">
+    <!-- <div id="contentbackground"></div> -->
+    <div id="contentforeground">
+      <select id="idSelector">
+        <option value="0">Select this iPad's ID</option>
+        <option value="1">ipad 1</option>
+        <option value="2">ipad 2</option>
+        <option value="3">ipad 3</option>
+      </select>
+    </div>
+  </div>
+
+  <table>
+    <tr>
+      <td>
+
+
+        <section class="topButton">
+          <p>
+            <button onclick="runCode()">Send Instructions to Robot</button>
+            <button onclick="showHelp()">Help</button>
+
+            <button onclick="reset()">Start Over</button>
+          </p>
+
+<!--
+          TESTING:
+          <button onclick="showCode()">Show JavaScript</button>
+          <a href="#" id="sendInstruction">send Marc's test instructions</a>
+        -->
+        </section>
+        <section id="userInfo" class="userInfo Off">
+          <p><b>Challenge Level 1</b></p>
+            <p><!-- Text loaded in here by initDisplay() in craftingCode.js --></p>
+        </section>
+        <section class="hiddenButton" onclick="showHelp(9000)">
+
+        </section>
+      </td>
+    </tr>
+    <tr>
+      <td>
+
+        <section id="helpDisplay" class="helpDisplay Off">
+          <button class="close">X</button>
+          <h1>Help Title</h1>
+          <p>Help Content</p>
+
+        </section>
+        <section id="arrowDisplay" class="arrowDisplay Off">
+          <p onclick="closeHelpArrow()"><img src="images/left_arrow_green.png" class="animated infinite pulse" width="15%"></p>
+        </section>
+
+      </td>
+    </tr>
+    <tr>
+      <td id="blocklyArea">
+      </td>
+    </tr>
+  </table>
+
+  <div id="blocklyDiv" style="position: absolute"></div>
+
+  <xml xmlns="http://www.w3.org/1999/xhtml" id="toolboxLevel1_old" style="display: none;">
+    <category name="Crafting">
+      <block type="select_slot">
+        <field name="blockMaterial">1</field>
+      </block>
+      <block type="place_crafting_number">
+        <value name="CraftingSlot">
+          <block type="number_1to9">
+            <field name="whatNumber">1</field>
+          </block>
+        </value>
+      </block>
+    </category>
+  </xml>
+
+  <xml xmlns="http://www.w3.org/1999/xhtml" id="toolboxLevel1" style="display: none;">
+    <category name="Crafting">
+      <block type="select_slot">
+        <field name="blockMaterial">1</field>
+        <next>
+          <block type="place_crafting_number">
+            <value name="CraftingSlot">
+              <block type="number_1to9">
+                <field name="whatNumber">5</field>
+              </block>
+            </value>
+            <next>
+              <block type="select_slot">
+                <field name="blockMaterial">1</field>
+                <next>
+                  <block type="place_crafting_number">
+                    <value name="CraftingSlot">
+                      <block type="number_1to9">
+                        <field name="whatNumber">8</field>
+                      </block>
+                    </value>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </category>
+  </xml>
+
+  <xml xmlns="http://www.w3.org/1999/xhtml" id="toolboxLevel2" style="display: none;">
+    <category name="Crafting">
+      <block type="select_slot">
+        <field name="blockMaterial">1</field>
+      </block>
+      <block type="place_crafting_number">
+        <value name="CraftingSlot">
+          <block type="number_1to9">
+            <field name="whatNumber">1</field>
+          </block>
+        </value>
+      </block>
+    </category>
+  </xml>
+
+  <xml xmlns="http://www.w3.org/1999/xhtml" id="toolboxLevel3" style="display: none;">
+    <category name="Crafting">
+      <block type="select_slot">
+        <field name="blockMaterial">1</field>
+      </block>
+      <block type="place_crafting_number">
+        <value name="CraftingSlot">
+          <block type="number_1to9">
+            <field name="whatNumber">1</field>
+          </block>
+        </value>
+      </block>
+    </category>
+    <category name="Basic Mining">
+      <block type="mine_block">
+        <value name="mineBlockNum">
+          <shadow type="math_number">
+            <field name="NUM">2</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="controls_whileUntil">
+        <field name="MODE">UNTIL</field>
+      </block>
+      <block type="logic_compare">
+        <field name="OP">GTE</field>
+      </block>
+      <block type="check_inventory">
+        <field name="blockMaterial">2</field>
+      </block>
+      <block type="math_number">
+        <field name="NUM">3</field>
+      </block>
+    </category>
+  </xml>
+
+  <xml xmlns="http://www.w3.org/1999/xhtml" id="toolboxLevel5" style="display: none;">
+      <category name="Crafting">
+        <block type="select_slot">
+          <field name="blockMaterial">1</field>
+        </block>
+        <block type="place_crafting_number">
+          <value name="CraftingSlot">
+            <block type="number_1to9">
+              <field name="whatNumber">1</field>
+            </block>
+          </value>
+        </block>
+      </category>
+      <category name="Basic Mining">
+        <block type="mine_block">
+          <value name="mineBlockNum">
+            <shadow type="math_number">
+              <field name="NUM">1</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="controls_whileUntil">
+          <field name="MODE">UNTIL</field>
+        </block>
+        <block type="logic_compare">
+          <field name="OP">GTE</field>
+        </block>
+        <block type="check_inventory">
+          <field name="blockMaterial">2</field>
+        </block>
+        <block type="math_number">
+          <field name="NUM">3</field>
+        </block>
+      </category>
+      <category name="Advanced Mining">
+        <block type="controls_for">
+          <field name="VAR">i</field>
+          <value name="FROM">
+            <shadow type="math_number">
+              <field name="NUM">1</field>
+            </shadow>
+          </value>
+          <value name="TO">
+            <shadow type="math_number">
+              <field name="NUM">9</field>
+            </shadow>
+          </value>
+          <value name="BY">
+            <shadow type="math_number">
+              <field name="NUM">1</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="controls_if"></block>
+        <block type="logic_compare">
+          <field name="OP">EQ</field>
+        </block>
+        <block type="miningtargetblocktypeid">
+          <value name="Mining Block">
+            <block type="variables_get">
+              <field name="VAR">i</field>
+            </block>
+          </value>
+        </block>
+        <block type="blocktypeid">
+          <field name="blockMaterial">9</field>
+        </block>
+        <block type="mine_block"></block>
+        <block type="variables_get">
+          <field name="VAR">i</field>
+        </block>
+      </category>
+
+  </xml>
+
+  <xml xmlns="http://www.w3.org/1999/xhtml" id="toolboxLevel6" style="display: none;">
+      <category name="Crafting">
+        <block type="select_slot">
+          <field name="blockMaterial">1</field>
+        </block>
+        <block type="place_crafting_number">
+          <value name="CraftingSlot">
+            <block type="number_1to9">
+              <field name="whatNumber">1</field>
+            </block>
+          </value>
+        </block>
+      </category>
+      <category name="Basic Mining">
+        <block type="mine_block">
+          <value name="mineBlockNum">
+            <shadow type="math_number">
+              <field name="NUM">1</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="controls_whileUntil">
+          <field name="MODE">UNTIL</field>
+        </block>
+        <block type="logic_compare">
+          <field name="OP">GTE</field>
+        </block>
+        <block type="check_inventory">
+          <field name="blockMaterial">2</field>
+        </block>
+        <block type="math_number">
+          <field name="NUM">3</field>
+        </block>
+      </category>
+      <category name="Advanced Mining">
+        <block type="controls_for">
+          <field name="VAR">i</field>
+          <value name="FROM">
+            <shadow type="math_number">
+              <field name="NUM">1</field>
+            </shadow>
+          </value>
+          <value name="TO">
+            <shadow type="math_number">
+              <field name="NUM">9</field>
+            </shadow>
+          </value>
+          <value name="BY">
+            <shadow type="math_number">
+              <field name="NUM">1</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="controls_if"></block>
+        <block type="logic_compare">
+          <field name="OP">EQ</field>
+        </block>
+        <block type="miningtargetblocktypeid">
+          <value name="Mining Block">
+            <block type="variables_get">
+              <field name="VAR">i</field>
+            </block>
+          </value>
+        </block>
+        <block type="blocktypeid">
+          <field name="blockMaterial">9</field>
+        </block>
+        <block type="mine_block"></block>
+        <block type="variables_get">
+          <field name="VAR">i</field>
+        </block>
+      </category>
+      <category name="Loops" colour="#5CA65C">
+        <block type="controls_repeat_ext">
+          <value name="TIMES">
+            <shadow type="math_number">
+              <field name="NUM">10</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="controls_whileUntil">
+          <field name="MODE">UNTIL</field>
+        </block>
+        <block type="controls_whileUntil">
+          <field name="MODE">UNTIL</field>
+          <value name="BOOL">
+            <block type="logic_compare">
+              <field name="OP">GTE</field>
+              <value name="A">
+                <block type="check_inventory">
+                  <field name="blockMaterial">8</field>
+                </block>
+              </value>
+              <value name="B">
+                <block type="math_number">
+                  <field name="NUM">3</field>
+                </block>
+              </value>
+            </block>
+          </value>
+        </block>
+        <block type="controls_for">
+          <field name="VAR">i</field>
+          <value name="FROM">
+            <shadow type="math_number">
+              <field name="NUM">1</field>
+            </shadow>
+          </value>
+          <value name="TO">
+            <shadow type="math_number">
+              <field name="NUM">10</field>
+            </shadow>
+          </value>
+          <value name="BY">
+            <shadow type="math_number">
+              <field name="NUM">1</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="controls_forEach">
+          <field name="VAR">j</field>
+        </block>
+        <block type="controls_flow_statements" disabled="true">
+          <field name="FLOW">BREAK</field>
+        </block>
+      </category>
+      <category name="Logic" colour="#5C81A6">
+        <block type="controls_if"></block>
+        <block type="logic_compare">
+          <field name="OP">EQ</field>
+        </block>
+        <block type="logic_operation">
+          <field name="OP">AND</field>
+        </block>
+        <block type="logic_negate"></block>
+        <block type="logic_boolean">
+          <field name="BOOL">TRUE</field>
+        </block>
+        <block type="logic_null"></block>
+      </category>
+      <category name="Math" colour="#5C68A6">
+        <block type="math_number">
+          <field name="NUM">0</field>
+        </block>
+        <block type="math_arithmetic">
+          <field name="OP">ADD</field>
+          <value name="A">
+            <shadow type="math_number">
+              <field name="NUM">1</field>
+            </shadow>
+          </value>
+          <value name="B">
+            <shadow type="math_number">
+              <field name="NUM">1</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="math_number_property">
+          <mutation divisor_input="false"></mutation>
+          <field name="PROPERTY">EVEN</field>
+          <value name="NUMBER_TO_CHECK">
+            <shadow type="math_number">
+              <field name="NUM">0</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="math_modulo">
+          <value name="DIVIDEND">
+            <shadow type="math_number">
+              <field name="NUM">64</field>
+            </shadow>
+          </value>
+          <value name="DIVISOR">
+            <shadow type="math_number">
+              <field name="NUM">10</field>
+            </shadow>
+          </value>
+        </block>
+      </category>
+      <category name="Variables" colour="#A65C81" custom="VARIABLE"></category>
+      <category name="Completed Code">
+        <block type="select_slot">
+          <field name="blockMaterial">1</field>
+          <next>
+            <block type="place_crafting_number">
+              <value name="CraftingSlot">
+                <block type="number_1to9">
+                  <field name="whatNumber">5</field>
+                </block>
+              </value>
+              <next>
+                <block type="select_slot">
+                  <field name="blockMaterial">1</field>
+                  <next>
+                    <block type="place_crafting_number">
+                      <value name="CraftingSlot">
+                        <block type="number_1to9">
+                          <field name="whatNumber">8</field>
+                        </block>
+                      </value>
+                    </block>
+                  </next>
+                </block>
+              </next>
+            </block>
+          </next>
+        </block>
+        <block type="select_slot">
+          <field name="blockMaterial">3</field>
+          <next>
+            <block type="place_crafting_number">
+              <value name="CraftingSlot">
+                <block type="number_1to9">
+                  <field name="whatNumber">5</field>
+                </block>
+              </value>
+              <next>
+                <block type="select_slot">
+                  <field name="blockMaterial">3</field>
+                  <next>
+                    <block type="place_crafting_number">
+                      <value name="CraftingSlot">
+                        <block type="number_1to9">
+                          <field name="whatNumber">8</field>
+                        </block>
+                      </value>
+                      <next>
+                        <block type="select_slot">
+                          <field name="blockMaterial">1</field>
+                          <next>
+                            <block type="place_crafting_number">
+                              <value name="CraftingSlot">
+                                <block type="number_1to9">
+                                  <field name="whatNumber">1</field>
+                                </block>
+                              </value>
+                              <next>
+                                <block type="select_slot">
+                                  <field name="blockMaterial">1</field>
+                                  <next>
+                                    <block type="place_crafting_number">
+                                      <value name="CraftingSlot">
+                                        <block type="number_1to9">
+                                          <field name="whatNumber">2</field>
+                                        </block>
+                                      </value>
+                                      <next>
+                                        <block type="select_slot">
+                                          <field name="blockMaterial">1</field>
+                                          <next>
+                                            <block type="place_crafting_number">
+                                              <value name="CraftingSlot">
+                                                <block type="number_1to9">
+                                                  <field name="whatNumber">3</field>
+                                                </block>
+                                              </value>
+                                            </block>
+                                          </next>
+                                        </block>
+                                      </next>
+                                    </block>
+                                  </next>
+                                </block>
+                              </next>
+                            </block>
+                          </next>
+                        </block>
+                      </next>
+                    </block>
+                  </next>
+                </block>
+              </next>
+            </block>
+          </next>
+        </block>
+      </category>
+  </xml>
+
+  <script>
+    /*
+      Block definitions:
+      https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#9z4zty
+    */
+
+
+
+    function showCode() {
+      // Generate JavaScript code and display it.
+      initCraftingSequence();
+      Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+      var code = Blockly.JavaScript.workspaceToCode(workspace);
+      alert(code);
+    }
+
+    function runCode() {
+      // Generate JavaScript code and run it.
+      console.log('runcode index.html');
+
+      initCraftingSequence();
+      window.LoopTrap = 1000;
+      // Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+
+      Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite Loop. Are you checking the inventory for a block you are not mining?";\n';
+      //Blockly.JavaScript.INFINITE_LOOP_TRAP =  'setSequenceError("Infinite Loop. Are you checking the inventory for a block you are not mining?", false);\n';
+      //setSequenceError(sequenceErrorMessage, hideAlert);
+
+      var code = Blockly.JavaScript.workspaceToCode(workspace);
+
+      Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+
+      try {
+        eval(code);
+      } catch (e) {
+        setSequenceError(e);
+      }
+
+      robotSequenceDone();
+
+      sendRobotInstructionSequence();
+
+
+    }
+  </script>
+
+  <script>
+    var blocklyArea = document.getElementById('blocklyArea');
+    var blocklyDiv = document.getElementById('blocklyDiv');
+
+    // What part has the user unlocked?
+    var userLevel = 1;
+    if (  $.urlParam('userLevel') != null) {
+      userLevel = $.urlParam('userLevel');
+    }
+
+    var toolboxXMLID = "toolboxLevel1";
+    if (userLevel >= 6) {
+      toolboxXMLID = "toolboxLevel6";
+    } else if (userLevel >= 5) {
+        toolboxXMLID = "toolboxLevel5";
+      } else if (userLevel >= 3) {
+        toolboxXMLID = "toolboxLevel3";
+      } else if (userLevel >= 2) {
+        toolboxXMLID = "toolboxLevel2";
+    }
+
+    var workspace = Blockly.inject(blocklyDiv,
+        {media: '../externals/blockly/media/',
+         toolbox: document.getElementById(toolboxXMLID)});
+    var onresize = function(e) {
+      // Compute the absolute coordinates and dimensions of blocklyArea.
+      var element = blocklyArea;
+      var x = 0;
+      var y = 0;
+      do {
+        x += element.offsetLeft;
+        y += element.offsetTop;
+        element = element.offsetParent;
+      } while (element);
+      // Position blocklyDiv over blocklyArea.
+      blocklyDiv.style.left = x + 'px';
+      blocklyDiv.style.top = y + 'px';
+      blocklyDiv.style.width = blocklyArea.offsetWidth + 'px';
+      blocklyDiv.style.height = blocklyArea.offsetHeight + 'px';
+    };
+    window.addEventListener('resize', onresize, false);
+    onresize();
+    Blockly.svgResize(workspace);
+
+    function onBlocklyUI(event) {
+      if (event.type == Blockly.Events.UI &&
+          event.element == 'category' &&
+          !event.oldValue && event.newValue) {
+        // UI action, remove the help menu
+        closeHelp(true);
+      }
+    }
+    workspace.addChangeListener(onBlocklyUI);
+  </script>
+
+  <table>
+    <tr>
+      <td>
+
+
+        <p>
+          TESTING:
+          <button onclick="showCode()">Show JavaScript</button>
+          <a href="#" id="sendInstruction">send test instructions</a>
+        </p>
+
+      </td>
+    </tr>
+    <tr>
+      <td id="blocklyArea">
+      </td>
+    </tr>
+  </table>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="./js/interface.js"></script>
+
+</body>
+</html>
