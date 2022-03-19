@@ -1,113 +1,120 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>STEAMLabs Crafting Table</title>
-  <meta name="description" content="STEAMLabs Crafting Table">
-  <meta name="author" content="Marc Pelland">
-  <meta name="author" content="Kat Barrett">
-  <meta name="author" content="Andy Forest">
+  <head>
+    <meta charset="utf-8" />
+    <title>STEAMLabs Crafting Table</title>
+    <meta name="description" content="STEAMLabs Crafting Table" />
+    <meta name="author" content="Marc Pelland" />
+    <meta name="author" content="Kat Barrett" />
+    <meta name="author" content="Andy Forest" />
 
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="animate.css">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="animate.css" />
 
-  <!--[if lt IE 9]>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
-  <![endif]-->
+    <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+    <![endif]-->
 
-  <script src="../externals/jquery-3.1.1.min.js"></script>
-  <script src="../instruct/js/recipes.js"></script>
-</head>
+    <script src="../externals/jquery-3.1.1.min.js"></script>
+    <script src="../instruct/js/recipes.js"></script>
+  </head>
 
-<body>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="./js/interface.js"></script>
+  <body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./js/interface.js"></script>
 
-<section id="pagewrap">
-  <header>
-	<section class="headerLeft">
-    <img class="animated infinite pulse" src="images/header.png"/>
-	</section>
-	<section class="headerRight">
-		<h1 id="robotPlayerTitle"><img src="images/user.png"/>Robot executing player 1 code</h1>
-	</section>
-  </header>
-
-  <section id="container">
-    <section id="sidebarLeft">
-      <h2>Queue</h2>
-        <ol>
-          <li id="queue1" class="animated infinite bounce"><h3>Now:</h3><img src="images/iPad1.png"/></li>
-          <li id="queue2"><h3>Next:</h3><img src="images/iPad2.png"/></li>
-          <li id="queue3"><h3>Next:</h3><img src="images/iPad3.png"/></li>
-        </ol>
-    </section>
-
-    <section id="sidebarRight">
-    <h2>Recently Crafted</h2>
-      <ol>
-        <li id="success1"><!-- <img src="images/recipeSuccess/22.png"/> --></li>
-        <li id="success2"></li>
-        <li id="success3"></li>
-      </ol>
-      <section id="craftingMessage" class="Off">
-        <!-- Example Success Message: -->
-        <!--
-        <h2>Success!</h3>
-          <p>You have built a stone pickaxe, unlocking iron mining. Build an iron pickaxe to unlock the next level.</p>
-        -->
-      </section>
-    </section>
-
-	<!-- <img src="images/mining8.png"/> -->
-    <section class="middle" id="middle12">
-      <!-- Kat TODO: fix this h3 from bumping down the inventory partially off the screen-->
-	  <h3 id="middleMessage" class="middleMessage">Complete Level 1+2 to access mining</h3>
-      <section class="box" id="mining1"/><h1>1</h1><img src="images/mining8.png"/></section>
-      <section class="box" id="mining2"/><h1>2</h1></section>
-      <section class="box" id="mining3"/><h1>3</h1></section>
-      <section class="box" id="mining4"/><h1>4</h1></section>
-      <section class="box" id="mining5"/><h1>5</h1></section>
-      <section class="box" id="mining6"/><h1>6</h1></section>
-      <section class="box" id="mining7"/><h1>7</h1></section>
-      <section class="box" id="mining8"/><h1>8</h1></section>
-      <section class="box" id="mining9"/><h1>9</h1></section>
-      <img class="axe" src="images/axe.png"/>
-    </section>
-
-  <!--
-	  <section class="middle" id="middle345">
-	  <h3>Mine to get more inventory items</h3>
-      <section class="box" id="mining1"/><h1>1</h1><img src="images/mining8.png"/></section>
-      <section class="box" id="mining2"/><h1>2</h1></section>
-      <section class="box" id="mining3"/><h1>3</h1></section>
-      <section class="box" id="mining4"/><h1>4</h1></section>
-      <section class="box" id="mining5"/><h1>5</h1></section>
-      <section class="box" id="mining6"/><h1>6</h1></section>
-      <section class="box" id="mining7"/><h1>7</h1></section>
-      <section class="box" id="mining8"/><h1>8</h1></section>
-      <section class="box" id="mining9"/><h1>9</h1></section>
-      <img class="axe" src="images/axe.png"/>
-    </section>
--->
-    <footer>
-	  <section class="inventory"><h2 id="robotInventoryTitle">inventory:</h2></section>
-      <section class="inventory inventory1" id="inventory1"><p>8</p></section>
-      <section class="inventory inventory2" id="inventory2"><p>8</p></section>
-      <section class="inventory inventory3" id="inventory3"><p>4</p></section>
-      <section class="inventory inventory4" id="inventory4"><p>4</p></section>
-      <section class="inventory inventory5" id="inventory5"><p>5</p></section>
-      <section class="inventory inventory6" id="inventory6"><p>1</p></section>
-      <section class="inventory inventory7" id="inventory7"><p>0</p></section>
-      <section class="inventory inventory8" id="inventory8"><p>0</p></section>
-      <section class="inventory inventory9" id="inventory9"><p>0</p></section>
-
-    </footer>
-  </section>
-</section>
-
- <!--<p>Debug messages:</p>
-      <p id="demoMessage"></p>-->
-
-</body>
+    <div class="page-container">
+      <div class="dashboard">
+        <div class="robot-state">
+          <h1>ROBOT IS CRAFTING...</h1>
+          <div class="container">
+            <div class="scroll" scr="./assets/scroll.svg">
+              <div class="scroll-container">
+                <span class="scroll-title">PLAYER 1</span>
+                <div class="scroll-subtitle">DIAMOND SWORD</div>
+              </div>
+            </div>
+            <div class="gears">
+              <img src="./assets/timebase-08.svg" />
+              <img
+                src="./assets/Player Circle-10.svg"
+                class="top player-circle"
+              />
+              <div class="player-tag top-tag">PLAYER 1</div>
+              <img src="./assets/Player Circle-09.svg" class="mid" />
+              <div class="player-tag mid-tag">PLAYER 2</div>
+              <img src="./assets/Player Circle-09.svg" class="bottom" />
+              <div class="player-tag bot-tag">PLAYER 3</div>
+              <div class="timer-container">
+                TIME REMAINING
+                <div class="clock">3:05</div>
+              </div>
+              <img src="./assets/arrow.svg" class="active-arrow player1" />
+            </div>
+          </div>
+        </div>
+        <div class="history">
+          <div class="history-top">
+            <div class="container">
+              <h1>HISTORY OF COMPUTING</h1>
+              <div class="subtitle">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+                auctor vulputate diam quis blandit. Suspendisse porta id ex vel
+                pellentesque. Aenean cursus aliquet quam sit amet condimentum.
+                Integer sed orci elit. Suspendisse gravida, urna a feugiat
+                aliquet, quam tortor congue nisl, ac fermentum ligula lectus
+                quis enim. Etiam malesuada faucibus ligula a blandit.
+              </div>
+            </div>
+          </div>
+          <div class="history-bottom">
+            <div class="container">
+              <h1>HISTORY OF COMPUTING</h1>
+              <div class="subtitle">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+                auctor vulputate diam quis blandit. Suspendisse porta id ex vel
+                pellentesque. Aenean cursus aliquet quam sit amet condimentum.
+                Integer sed orci elit. Suspendisse gravida, urna a feugiat
+                aliquet, quam tortor congue nisl, ac fermentum ligula lectus
+                quis enim. Etiam malesuada faucibus ligula a blandit.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="crafting-log">
+        <h1>CRAFTING LOG</h1>
+        <div class="log-container">
+          <div class="item-log item1">
+            <div class="item-placeholder"></div>
+            <div class="log-content">
+              <span class="title">PLAYER 1</span>
+              <span class="subtitle">Wood Pressure Plates</span>
+            </div>
+          </div>
+          <div class="item-log item2">
+            <div class="item-placeholder"></div>
+            <div class="log-content">
+              <span class="title">PLAYER 1</span>
+              <span class="subtitle">Wood Pressure Plates</span>
+            </div>
+          </div>
+          <div class="item-log item3">
+            <div class="item-placeholder"></div>
+            <div class="log-content">
+              <span class="title">PLAYER 1</span>
+              <span class="subtitle">Wood Pressure Plates</span>
+            </div>
+          </div>
+          <div class="item-log item4">
+            <div class="item-placeholder"></div>
+            <div class="log-content">
+              <span class="title">PLAYER 1</span>
+              <span class="subtitle">Wood Pressure Plates</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
