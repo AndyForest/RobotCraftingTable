@@ -1,8 +1,9 @@
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
-  /*no scroll*/ overflow: hidden;
-
+  /*no scroll*/
+  overflow: hidden;
 }
 body {
   background-color: #fff;
@@ -14,138 +15,290 @@ h1 {
   font-weight: normal;
   font-size: 140%;
 }
-table {
-  height: 100%;
+
+.active-page {
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: radial-gradient(
+      56.15% 177.45% at 46.04% 65.28%,
+      #132c50 0%,
+      #0a6b94 97.43%
+    ),
+    radial-gradient(32.73% 103.46% at 44.27% 61.06%, #c19a77 0%, #513914 100%);
 }
 
-.blocklyTreeLabel {
-    font-size: 32px;
+.header {
+  height: 35%;
+  display: flex;
+  flex-direction: row;
 }
 
-.blocklyTreeRow {
-    height: 44px;
-    line-height: 44px;
-    margin-bottom: 6px;
-    padding-right: 8px;
-    white-space: nowrap;
-}
-
-.topButton {
-  float:left;
-}
-
-.hiddenButton {
-  float:right;
-  width: 100px;
-  height: 80px;
-}
-
-.userInfo {
-  float:left;
+.challenge {
+  width: 319px;
+  height: 316px;
+  background-image: url(./assets/challengebackground.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-top: 20px;
   margin-left: 20px;
 }
 
-.Off {
-  visibility: hidden;
+.challenge .container {
+  margin: 24px;
+}
+.challenge .container .title {
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 28px;
+  margin: 0%;
+}
+.challenge .container .progress {
+  margin-bottom: 20px;
+}
+.challenge .container .description {
+  font-size: 20px;
+}
+.inventory {
+  height: 100%;
+  width: 933px;
+  background-image: url('./assets/inventorybackground.svg');
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-.arrowDisplay {
-  position: absolute;
-  top: 88px;
-  left: 160px;
-  z-index: 3000;
+.inventory .container {
+  margin-top: 40px;
+  margin-left: 70px;
+  margin-right: 70px;
+}
+.inventory .container .title {
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 28px;
+  color: white;
+  flex-basis: 40%;
+  margin: 0%;
 }
 
-.helpDisplay {
-  position: absolute;
-  top: 110px;
-  left: 150px;
-  z-index: 2000;
-  background: url('images/sky.png');
-  width: 480px;
-  border: 3px solid black;
-  padding: 38px;
+.selected {
+  display: flex;
+}
+.placeholder {
+  width: 177px;
+  height: 177px;
+  background: #ffffff;
+}
+.items {
+  height: 85px;
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  flex-flow: row;
+  justify-content: space-evenly;
 }
 
-.helpDisplay h2 {
-  line-height: 1.4;
-  background: rgba(255,255,255, 0.75);
-  padding: 20px;
-  font-weight: 200;
+.item-placeholder {
+  background-image: url('./assets/inventory-item-box.svg');
+  height: 100%;
+  width: 80px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.history {
+  background-image: url(./assets/historyofcomputingbackground.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: 708px;
+  height: 337px;
+  margin-right: 20px;
 }
 
-.close  { 
-  position: absolute;
-  top: -30px;
-  right: -30px;
-  z-index: 9999;
-  background-color: #DDD;
-  color: black;
- }
-
- .close:hover {background-color: #CCC}
-
-.close:active {
-  background-color: #CCC;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
+.history .container {
+  padding: 32px;
 }
 
-.helpDisplay3 {
-  left: 220px;
+.history h1 {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 28px;
+  margin: 0;
+  margin-bottom: 20px;
 }
 
-.helpDisplay5 {
-  left: 290px;
+.history .description {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+}
+.body {
+  display: flex;
+  flex-flow: row;
+  height: 70%;
+  margin: 0rem 1rem 1rem 1rem;
+  justify-content: space-between;
+}
+.blockly {
+  height: 100%;
+  width: 1176px;
+  background: #e6f6ff;
+  display: flex;
+  flex-flow: row;
+  margin-right: 20px;
+  border-radius: 35px;
 }
 
-#blocklyArea {
-  height: 99%;
+.blockly .library {
+  height: 100%;
+  width: 435px;
+  background: #5bbcdb;
+  border-radius: 35px 0px 0px 35px;
+  display: flex;
 }
 
-#pre {
-    position: fixed;
-    top: 0;
-    left:0;
-    width: 100%;
-    height: 100%;
-    z-index: 100;
-    background: white;
+.library .container {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(82, 108, 123, 0) 100%
+  );
+  /* filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5)); */
+  border-radius: 35px 17px 29px 35px;
+  margin: 10px;
+  padding: 0 20px;
+  display: flex;
+  flex-flow: column;
 }
 
-#contentforeground {
-  width: 100px;
-  height: 100px;
-  position: relative;
-  top: 50%;
-  margin: -50px auto 0;
-
+.library h1 {
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 28px;
 }
 
-button {
-  display: inline-block;
-  padding: 10px 18px;
-  font-size: 18px;
+.library .banner {
+  height: 32px;
+  background: #ffffff;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.library .pannel {
+}
+
+.code {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+}
+.code h1 {
+  margin: 0;
+  margin-top: 10px;
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 28px;
+}
+
+.code .container {
+  margin: 20px;
+  display: flex;
+  flex-flow: column;
+}
+
+.code .blockly-output {
+  height: 100%;
+  width: 100%;
+}
+.map {
+  border-radius: 35px;
+  width: 683px;
+  height: 100%;
+  background-image: url('./assets/maze_-_trees.jpg');
+}
+
+.panel {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+  margin-bottom: 48px;
+}
+.panel .run {
+  background: url('./assets/run-program-button.svg') no-repeat;
   cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  outline: none;
-  color: #fff;
-  background-color: #4CAF50;
   border: none;
-  border-radius: 15px;
-  box-shadow: 0 9px #999;
+  width: 201px;
+  height: 40px;
+  margin-bottom: 10px;
 }
 
-red.button {
-  background-color: #AF4C50;
+.panel .grouped {
+  display: flex;
+  justify-content: space-between;
+  width: 201px;
+  margin-bottom: 10px;
+}
+.panel .help {
+  background: url('./assets/help-button.svg') no-repeat;
+  cursor: pointer;
+  border: none;
+  width: 91px;
+  height: 40px;
 }
 
-button:hover {background-color: #3e8e41}
+.panel .clear {
+  background: url('./assets/clear-code-button.svg') no-repeat;
+  cursor: pointer;
+  border: none;
+  width: 100px;
+  height: 40px;
+}
 
-button:active {
-  background-color: #3e8e41;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
+.panel .reset {
+  background: url('./assets/reset-challenge-button.svg') no-repeat;
+  cursor: pointer;
+  border: none;
+  width: 201px;
+  height: 40px;
+}
+
+.map .container {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+.grid {
+  background: url('./assets/grid.png') no-repeat;
+  height: 100%;
+}
+.map .buttons {
+  margin-top: auto;
+  margin-bottom: 18px;
+  align-self: center;
+}
+
+.cmap {
+  background: url('./assets/challenge-map-button.png') no-repeat;
+  cursor: pointer;
+  border: none;
+  width: 317px;
+  height: 79px;
+}
+
+.start-over {
+  background: url('./assets/start-over-button.png') no-repeat;
+  cursor: pointer;
+  border: none;
+  width: 251px;
+  height: 79px;
 }
